@@ -74,21 +74,34 @@ document.addEventListener('keydown', (e) => {
 
 //if currPos == freePath || coin && currPos == pacman width -20px, -> goToDirect()
 
+check fps, with opacity teleport ? avg 59 ? norm
+
 const update = (type) => {
         //update style elem in Dom, replace class in coin div
         let transformTranslate
         let temp = obj.indexDom + 1 // with pacman elem
         if (type == 'left') {
             transformTranslate = `${obj.posX -=30}px, ${ obj.posY}px`
+            obj.pacman.style.opacity = '1'
         }
         if (type == 'right') {
             transformTranslate = `${obj.posX +=30}px, ${ obj.posY}px`
+            obj.pacman.style.opacity = '1'
         }
         if (type == 'up') {
             transformTranslate = `${obj.posX}px, ${ obj.posY-=30}px`
         }
         if (type == 'down') {
             transformTranslate = `${obj.posX}px, ${ obj.posY+=30}px`
+        }
+        if (type == 'teleportLeft') {
+            //replace pacman in Div
+            transformTranslate = `${obj.posX+=810}px, ${ obj.posY}px`
+            obj.pacman.style.opacity = '.1'
+        }
+        if (type == 'teleportRight') {
+            transformTranslate = `${obj.posX-=810}px, ${ obj.posY}px`
+            obj.pacman.style.opacity = '.1'
         }
 
         if ((mapGame[obj.indexDom]) === 0) {
@@ -102,58 +115,70 @@ const update = (type) => {
     // 873 length dom, with pacamn & ghosts
     //child len - 869, with pacman + 4 ghost - 873 length
 
-block doorEnemy, todoTeleport, replace class ?
+// block doorEnemy, todoTeleport, replace class ?
+//     if cookie
+// add ghosts - check fps
 
-    const step = () => {
-            // let speed = 2, add 2 px, withou cooldown in RAF
-            //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
-            let speed = 30
+const step = () => {
+        // let speed = 2, add 2 px, withou cooldown in RAF
+        //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
+        let speed = 30
 
-            if (obj.inPlay) {
-                obj.cool--
-                    if (obj.cool < 0) {
-                        // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
-                        obj.indexDom = Math.floor(((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30)
-                        let currPos = obj.indexDom // 659, next 658 == wall, f
-                        if (obj.keys.ArrowLeft) {
-                            obj.indexDom-- //nextPos check if != wall, -> update()
-                                if (mapGame[obj.indexDom] !== 1) {
+        if (obj.inPlay) {
+            obj.cool--
+                if (obj.cool < 0) {
+                    // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
+                    obj.indexDom = Math.floor(((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30)
+                    let currPos = obj.indexDom // 659, next 658 == wall, f
+                    if (obj.keys.ArrowLeft) {
+                        obj.indexDom-- //nextPos check if != wall, -> update()
+                            if (mapGame[obj.indexDom] !== 1) {
+                                //currentPos && nextPos != teleport
+                                if (mapGame[obj.indexDom] !== 8) {
                                     update('left')
                                 } else {
-                                    obj.indexDom = currPos
+                                    update('teleportLeft')
                                 }
-                        }
-                        if (obj.keys.ArrowRight) {
-                            obj.indexDom++
-                                if (mapGame[obj.indexDom] !== 1) {
-                                    update('right')
-                                } else {
-                                    obj.indexDom = currPos
-                                }
-                        }
-                        if (obj.keys.ArrowUp) {
-                            obj.indexDom -= 28
-                                // console.log('up', obj.indexDom)
-                            if (mapGame[obj.indexDom] !== 1) {
-                                update('up')
                             } else {
                                 obj.indexDom = currPos
                             }
-                        }
-                        if (obj.keys.ArrowDown) {
-                            obj.indexDom += 28
-                            if (mapGame[obj.indexDom] !== 1) {
-                                update('down')
-                            } else {
-                                obj.indexDom = currPos
-                            }
-                        }
-                        obj.cool = 6 //6* 16.7 each 100ms raf  check inside if cond
                     }
-                obj.rafId = requestAnimationFrame(step);
-            }
+                    if (obj.keys.ArrowRight) {
+                        obj.indexDom++
+                            console.log(mapGame[obj.indexDom], mapGame[currPos], mapGame[obj.indexDom - 1])
+                        if (mapGame[obj.indexDom] !== 1) {
+                            if (mapGame[obj.indexDom] !== 8) {
+                                update('right')
+                            } else {
+                                update('teleportRight')
+                            }
+                        } else {
+                            obj.indexDom = currPos
+                        }
+                    }
+                    if (obj.keys.ArrowUp) {
+                        obj.indexDom -= 28
+                            // console.log('up', obj.indexDom)
+                        if (mapGame[obj.indexDom] !== 1) {
+                            update('up')
+                        } else {
+                            obj.indexDom = currPos
+                        }
+                    }
+                    if (obj.keys.ArrowDown) {
+                        obj.indexDom += 28
+                        if (mapGame[obj.indexDom] !== 1 && mapGame[obj.indexDom] !== 6) {
+                            update('down')
+                        } else {
+                            obj.indexDom = currPos
+                        }
+                    }
+                    obj.cool = 6 //6* 16.7 each 100ms raf  check inside if cond
+                }
+            obj.rafId = requestAnimationFrame(step);
         }
-        //currPos 870 % 30  != 0, if currPos  % 30 < 15, = currPos -=15 else currPos- currPos% 30 + 30
+    }
+    //currPos 870 % 30  != 0, if currPos  % 30 < 15, = currPos -=15 else currPos- currPos% 30 + 30
 
 const createBoard = () => {
     //create each block -> get data from mapGame array
@@ -180,21 +205,11 @@ const createBoard = () => {
 
 };
 
-let y = 0
-let x = 0
+
 const createSquare = (type, index) => {
 
     let div = document.createElement("div");
-
     div.classList.add("box");
-    x++
-    if (x % 28 == 0) {
-        y++
-        x = 0
-    }
-    //set attr, x,y pos -for transform tarnsalte
-    div.posX = x * 30 //
-    div.posY = y * 30 //
 
     // console.log(x * 30, y * 30 * x)
     //create new div -> add class, append object - props.grid

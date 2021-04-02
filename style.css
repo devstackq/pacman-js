@@ -8,7 +8,7 @@
     background: #fff;
     display: none;
     z-index: 3;
-    border-radius: 50%;
+    /* border-radius: 50%; */
     will-change: transform;
     transition: transform .2s ease;
     position: absolute;
@@ -35,7 +35,7 @@
 }
 
 .teleport {
-    background-color: blue;
+    background-color: red;
     width: 30px;
     height: 30px;
 }
