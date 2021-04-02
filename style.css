@@ -189,6 +189,7 @@ body {
     height: 25%;
     background-color: gold;
     border-radius: 50%;
+    opacity: 1;
     /* will-change: transform;
     transition: 1s ease; */
 }

@@ -74,7 +74,7 @@ document.addEventListener('keydown', (e) => {
 
 //if currPos == freePath || coin && currPos == pacman width -20px, -> goToDirect()
 
-check fps, with opacity teleport ? avg 59 ? norm
+// check fps, with opacity teleport ? avg 59 ? norm
 
 const update = (type) => {
         //update style elem in Dom, replace class in coin div
@@ -108,7 +108,8 @@ const update = (type) => {
             player.score += 10
             mapGame[obj.indexDom] = 9
                 // console.log(temp, obj.indexDom)
-            obj.grid.children[temp].children[0].classList.replace('coin', 'freePath')
+                // obj.grid.children[temp].children[0].classList.replace('coin', 'freePath')
+            obj.grid.children[temp].children[0].style.opacity = 0
         }
         obj.pacman.style.transform = `translate(${transformTranslate})`;
     }
