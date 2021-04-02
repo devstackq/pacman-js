@@ -7,12 +7,15 @@
     height: 20px;
     background: #fff;
     display: none;
-    z-index: 5;
-    /* position: absolute; */
-    transition : 0.4s ease;
+    z-index: 3;
+    border-radius: 50%;
+    will-change: transform;
+    transition: transform .2s ease;
+    position: absolute;
 }
 
 #grid {
+    z-index: 1;
     margin: auto;
     justify-content: center;
     display: grid;
@@ -186,6 +189,17 @@ body {
     height: 25%;
     background-color: gold;
     border-radius: 50%;
+    /* will-change: transform;
+    transition: 1s ease; */
+}
+
+.freePath {
+    /* will-change: transform;
+    transition: transform 1s ease; */
+    /* background-color: rgba(0, 0, 0, 0.4);
+    border-bottom: .5px solid gold;
+    width: 28px;
+    height: 28px; */
 }
 
 .cookie {

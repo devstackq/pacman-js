@@ -1,7 +1,6 @@
 import { mapGame } from "./map.js";
-let p = document.getElementById('pacman')
 let obj = {
-    indexDom: 658,
+    indexDom: 659,
     posDiv: 0,
     rafId: 0,
     keys: {
@@ -10,19 +9,24 @@ let obj = {
         ArrowUp: false,
         ArrowDown: false
     },
-    progress: 7,
-    posX: 420,
-    posY: 630,
+    posX: 425, //half width pacman - 10
+    posY: 695, // + height pacman
     x: "",
     y: "",
     h: 31, // height each block
     size: 28,
     inPlay: false,
     cool: 0,
+    nextPos: 0,
+}
+const player = {
+    score: 0
+
 }
 document.addEventListener("DOMContentLoaded", () => {
-    obj.pacman = p
+    obj.pacman = document.getElementById('pacman')
     obj.grid = document.getElementById('grid')
+
     createBoard()
 })
 
@@ -41,7 +45,8 @@ document.addEventListener('keydown', (e) => {
     if (!obj.inPlay) {
         obj.inPlay = true
         obj.pacman.style.display = 'block'
-        p.style.position='absolute'
+            // obj.pacman.style.transition = '.1s ease'
+            // obj.pacman.style.position = 'absolute'
         obj.rafId = requestAnimationFrame(step)
     }
 })
@@ -56,73 +61,99 @@ document.addEventListener('keydown', (e) => {
 //     if obj.grid.children[indexDom].type == 1, no tanfosrTransalte,
 //     if type == 0, replace value this dom elems,
 //     class freepath, add score, type = 9
-set bound in Map - for pacman, if type 0, score+=10, etc 
+
+//transition - and ghost move -> check fps
+//try use webworker - another thread - fro each ghost
+// try use - scale , rotate, tansform 3d element
+// opacity - change bg color - killGhost, scale pacman
+// static eleme change -> use tanasform will change -> change class, -> static elems event
+
+// set bound in Map - for pacman, if type 0, score+=10, etc 
 //computing posit -> inside func, not Dom
 //get posx, posy -> get in mapGame - by Index - type value,  if type ==1, etc
 
 //if currPos == freePath || coin && currPos == pacman width -20px, -> goToDirect()
 
+const update = (type) => {
+        //update style elem in Dom, replace class in coin div
+        let transformTranslate
+        let temp = obj.indexDom + 1 // with pacman elem
+        if (type == 'left') {
+            transformTranslate = `${obj.posX -=30}px, ${ obj.posY}px`
+        }
+        if (type == 'right') {
+            transformTranslate = `${obj.posX +=30}px, ${ obj.posY}px`
+        }
+        if (type == 'up') {
+            transformTranslate = `${obj.posX}px, ${ obj.posY-=30}px`
+        }
+        if (type == 'down') {
+            transformTranslate = `${obj.posX}px, ${ obj.posY+=30}px`
+        }
 
-const  step = ()=> {
-
-    let w = 20 / 2
-    let h = 20 / 2
-    let diff = 10
-    // let speed = 2, add 2 px, withou cooldown in RAF
-    //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
-
-    let speed = 30
-
-    //dom index, by X ?
-    //obj.grid.children[obj.posX / 30 * obj.posY / 30]
-
-    console.log(obj.indexDom, obj.posX, obj.posY)
-
-    if (obj.inPlay) {
-                    //-1 ?
-                    obj.cool--
-                    if(obj.cool < 0) {
-                    // console.log(Math.floor(obj.indexDom), 'index dom', obj.posX, obj.posY, 'pos pacman x,y', obj.grid.children[Math.floor(obj.indexDom)], 'dom elem by index')
-                    if (obj.keys.ArrowLeft) {
-                        if (obj.posX >= 38 ) {
-                            //set pacan correct position
-                            obj.indexDom = Math.floor(obj.posY + (obj.posX / 30) )
-                            //in Dom elements, 868
-                            // if (obj.grid.children[obj.posX] && obj.grid.children[obj.posY]) {
-                            // }
-                        p.style.transform = `translate(${obj.posX-= speed}px, ${obj.posY}px  )`;
-                       }
-                }
-//840-10 < 840,
-                    if (obj.keys.ArrowRight) {
-                        if ( obj.posX  <= 782 ) {
-                    obj.indexDom = Math.floor(obj.posY + (obj.posX / 30))
-                        p.style.transform = `translate(${obj.posX+=speed}px, ${ obj.posY}px )`;
-                    }
-                }
-                // console.log(obj.posX, obj.posY, 'bef', obj.pacman)
-                    if (obj.keys.ArrowUp) {
-                        if ( obj.posY   >= 41  ) {
-                    obj.indexDom = Math.floor(obj.posY + (obj.posX / 30) - 28)  
-                        p.style.transform = `translate(${obj.posX}px, ${ obj.posY-=speed}px )`;
-                    }
-                }
-                //1 vlock 30px, + height pacman 20px, 930 - 50
-                    if (obj.keys.ArrowDown) {
-                        if ( obj.posY  < 870  ) {
-                    obj.indexDom = Math.floor( obj.posY + (obj.posX / 30) + 28)
-                        p.style.transform = `translate(${obj.posX}px, ${ obj.posY+=speed }px )`;
-                    }
-                }
-            obj.cool = 6
-            }
-
-            obj.rafId = requestAnimationFrame(step);
+        if ((mapGame[obj.indexDom]) === 0) {
+            player.score += 10
+            mapGame[obj.indexDom] = 9
+                // console.log(temp, obj.indexDom)
+            obj.grid.children[temp].children[0].classList.replace('coin', 'freePath')
+        }
+        obj.pacman.style.transform = `translate(${transformTranslate})`;
     }
-}
+    // 873 length dom, with pacamn & ghosts
+    //child len - 869, with pacman + 4 ghost - 873 length
 
-//currPos 870 % 30  != 0, if currPos  % 30 < 15, = currPos -=15 else currPos- currPos% 30 + 30
+block doorEnemy, todoTeleport, replace class ?
 
+    const step = () => {
+            // let speed = 2, add 2 px, withou cooldown in RAF
+            //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
+            let speed = 30
+
+            if (obj.inPlay) {
+                obj.cool--
+                    if (obj.cool < 0) {
+                        // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
+                        obj.indexDom = Math.floor(((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30)
+                        let currPos = obj.indexDom // 659, next 658 == wall, f
+                        if (obj.keys.ArrowLeft) {
+                            obj.indexDom-- //nextPos check if != wall, -> update()
+                                if (mapGame[obj.indexDom] !== 1) {
+                                    update('left')
+                                } else {
+                                    obj.indexDom = currPos
+                                }
+                        }
+                        if (obj.keys.ArrowRight) {
+                            obj.indexDom++
+                                if (mapGame[obj.indexDom] !== 1) {
+                                    update('right')
+                                } else {
+                                    obj.indexDom = currPos
+                                }
+                        }
+                        if (obj.keys.ArrowUp) {
+                            obj.indexDom -= 28
+                                // console.log('up', obj.indexDom)
+                            if (mapGame[obj.indexDom] !== 1) {
+                                update('up')
+                            } else {
+                                obj.indexDom = currPos
+                            }
+                        }
+                        if (obj.keys.ArrowDown) {
+                            obj.indexDom += 28
+                            if (mapGame[obj.indexDom] !== 1) {
+                                update('down')
+                            } else {
+                                obj.indexDom = currPos
+                            }
+                        }
+                        obj.cool = 6 //6* 16.7 each 100ms raf  check inside if cond
+                    }
+                obj.rafId = requestAnimationFrame(step);
+            }
+        }
+        //currPos 870 % 30  != 0, if currPos  % 30 < 15, = currPos -=15 else currPos- currPos% 30 + 30
 
 const createBoard = () => {
     //create each block -> get data from mapGame array
@@ -145,12 +176,14 @@ const createBoard = () => {
     obj.grid.style.gridTemplateColumns = obj.x;
     obj.grid.style.gridTemplateRows = obj.y;
     //board localy dom, props.grid -> in DOm browser inserted
-    console.log("created board", 2);
+    console.log("created board", 2, obj.grid.children[646]);
+
 };
 
 let y = 0
 let x = 0
 const createSquare = (type, index) => {
+
     let div = document.createElement("div");
 
     div.classList.add("box");
@@ -178,6 +211,7 @@ const createSquare = (type, index) => {
         empty.classList.add("empty");
         div.append(empty);
     } else if (type === 4) {
+        console.log(index)
         let cookie = document.createElement("div");
         cookie.classList.add("cookie");
         div.append(cookie);
