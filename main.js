@@ -1,14 +1,47 @@
-import { mapGame } from "./map.js";
-let obj = {
+ const mapGame = [
+  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,4,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,4,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+  1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,
+  1,0,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,0,1,
+  1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,
+  1,1,1,1,1,1,0,1,1,1,1,1,9,1,1,9,1,1,1,1,1,0,1,1,1,1,1,1,
+  3,3,3,3,3,1,0,1,1,1,1,1,9,1,1,9,1,1,1,1,1,0,1,3,3,3,3,3,
+  3,3,3,3,3,1,0,1,1,9,9,9,9,9,9,9,9,9,9,1,1,0,1,3,3,3,3,3,
+  3,3,3,3,3,1,0,1,1,9,1,1,1,6,6,1,1,1,9,1,1,0,1,3,3,3,3,3,
+  1,1,1,1,1,1,0,1,1,9,1,1,9,9,9,9,1,1,9,1,1,0,1,1,1,1,1,8,
+  9,9,9,9,9,9,0,9,9,9,1,1,2,2,2,2,1,1,9,9,9,0,9,9,9,9,9,9,
+  8,1,1,1,1,1,0,1,1,9,1,1,1,1,1,1,1,1,9,1,1,0,1,1,1,1,1,1,
+  3,3,3,3,3,1,0,1,1,9,1,1,1,1,1,1,1,1,9,1,1,0,1,3,3,3,3,3,
+  3,3,3,3,3,1,0,1,1,9,9,9,9,9,9,9,9,9,9,1,1,0,1,3,3,3,3,3,
+  3,3,3,3,3,1,0,1,1,9,1,1,1,1,1,1,1,1,9,1,1,0,1,3,3,3,3,3,
+  1,1,1,1,1,1,0,1,1,9,1,1,1,1,1,1,1,1,9,1,1,0,1,1,1,1,1,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,1,1,0,0,0,0,0,0,0,0,0,0,0,0,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,0,1,1,1,1,0,1,1,1,1,1,0,1,1,0,1,1,1,1,1,0,1,1,1,1,0,1,
+  1,4,0,0,1,1,0,0,0,0,0,0,0,9,9,0,0,0,0,0,0,0,1,1,0,0,4,1,
+  1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,
+  1,1,1,0,1,1,0,1,1,0,1,1,1,1,1,1,1,1,0,1,1,0,1,1,0,1,1,1,
+  1,0,0,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,1,1,0,0,0,0,0,0,1,
+  1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,
+  1,0,1,1,1,1,1,1,1,1,1,1,0,1,1,0,1,1,1,1,1,1,1,1,1,1,0,1,
+  1,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,0,1,
+  1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,1,
+];
+
+const keys = {
+  ArrowLeft: false,
+  ArrowRight: false,
+  ArrowUp: false,
+  ArrowDown: false,
+}
+const temp = []
+const obj = {
   indexDom: 0,
-  posDiv: 0,
   rafId: 0,
-  keys: {
-    ArrowLeft: false,
-    ArrowRight: false,
-    ArrowUp: false,
-    ArrowDown: false,
-  },
   posX: 425, //half width pacman - 10
   posY: 695, // + height pacman
   x: "",
@@ -17,11 +50,12 @@ let obj = {
   size: 28,
   inPlay: false,
   cool: 0,
-  nextPos: 0,
 };
+
 const player = {
   score: 0,
 };
+
 document.addEventListener("DOMContentLoaded", () => {
   obj.pacman = document.getElementById("pacman");
   obj.grid = document.getElementById("grid");
@@ -29,31 +63,22 @@ document.addEventListener("DOMContentLoaded", () => {
 });
 
 document.addEventListener("keyup", (e) => {
-  if (e.code in obj.keys) {
-    obj.keys[e.code] = false;
+  if (e.code in keys) {
+    keys[e.code] = false;
   }
 });
 
 document.addEventListener("keydown", (e) => {
-  if (e.code in obj.keys) {
-    obj.keys[e.code] = true;
+  if (e.code in keys) {
+    keys[e.code] = true;
   }
-  if (
-    e.key == "ArrowLeft" ||
-    e.key == "ArrowRight" ||
-    e.key == "ArrowUp" ||
-    e.key == "ArrowDown"
-  ) {
-    obj.indexDom = Math.floor(((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30);
-  }
-
   if (!obj.inPlay) {
     obj.inPlay = true;
     // obj.pacman.style.display = "block";
     // obj.pacman.style.transition = ".2s ease";
     // obj.pacman.style.transform = " translate(425px, 695px)";
     obj.rafId = requestAnimationFrame(step);
-  }
+}
 });
 
 // define parent,
@@ -81,44 +106,6 @@ document.addEventListener("keydown", (e) => {
 
 // check fps, with opacity teleport ? avg 59 ? norm
 
-const update = (type) => {
-  //update style elem in Dom, replace class in coin div
-  let transformTranslate;
-  let temp = obj.indexDom + 1; // with pacman elem
-
-  //slow keydown - frame drop
-    player.score += 10;
-    mapGame[obj.indexDom] = 9;
-
-
-  if (type == "left") {
-    transformTranslate = `${(obj.posX -= 30)}px, ${obj.posY}px`;
-  }
-  if (type == "right") {
-    transformTranslate = `${(obj.posX += 30)}px, ${obj.posY}px`;
-  }
-  if (type == "up") {
-    transformTranslate = `${obj.posX}px, ${(obj.posY -= 30)}px`;
-  }
-  if (type == "down") {
-    transformTranslate = `${obj.posX}px, ${(obj.posY += 30)}px`;
-  }
-  if (type == "teleportLeft") {
-    //replace pacman in Div
-    transformTranslate = `${(obj.posX += 810)}px, ${obj.posY}px`;
-    obj.pacman.style.opacity = "0";
-  }
-  if (type == "teleportRight") {
-    transformTranslate = `${(obj.posX -= 810)}px, ${obj.posY}px`;
-    obj.pacman.style.opacity = "0";
-  }
-  if (obj.indexDom == 420 || obj.indexDom == 391) {
-    obj.pacman.style.opacity = "1";
-  }
-  return transformTranslate;
-
-  //   obj.pacman.style.transform = `translate3d(${transformTranslate})`;
-};
 // 873 length dom, with pacamn & ghosts
 //child len - 869, with pacman + 4 ghost - 873 length
 
@@ -135,94 +122,72 @@ const update = (type) => {
   //https://blog.logrocket.com/using-webworkers-for-safe-concurrent-javascript-3f33da4eb0b2/
   // /https://developer.chrome.com/docs/devtools/speed/get-started/
   //https://developers.google.com/web/fundamentals/performance/rendering/optimize-javascript-execution  
-
   // https://blog.teamtreehouse.com/efficient-animations-with-requestanimationframe
 
 const step = () => {
   // let speed = 2, add 2 px, withou cooldown in RAF
   //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
-  let tt;
   if (obj.inPlay) {
     obj.cool--;
     if (obj.cool < 0) {
       // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
-      //   obj.indexDom = Math.floor(
-      //     ((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30
-      //   );
+    obj.indexDom = Math.floor(((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30);
+
       let currPos = obj.indexDom; // 659, next 658 == wall
 
-      if (obj.keys.ArrowLeft) {
+      if (keys.ArrowLeft) {
         obj.indexDom--; //nextPos check if != wall, -> update()
-      //   if (mapGame[obj.indexDom] === 0) {
-      //     //currentPos && nextPos != tedleport
-      //     player.score += 10;
-      //     mapGame[obj.indexDom] = 9;
-      //     tt = `${(obj.posX -= 30)}px, ${obj.posY}px`;
-
-      //   } else if (mapGame[obj.indexDom] == 1) {
-      //     obj.indexDom = currPos;
+        if (mapGame[obj.indexDom] == 1 ) {
+          obj.indexDom = currPos
+        }else {
+          obj.posX -= 30
+        }
       //   }else if (mapGame[obj.indexDom] == 8) {
       //     tt = update("teleportLeft");
       // }
-      tt = `${(obj.posX -= 30)}px, ${obj.posY}px`;
     }
-      if (obj.keys.ArrowRight) {
+      if (keys.ArrowRight) {
         obj.indexDom++;
-        tt = `${(obj.posX -= 30)}px, ${obj.posY}px`;
-        
-        // if (mapGame[obj.indexDom] !== 1 && mapGame[obj.indexDom] !== 8) {
-        //   tt = update("right");
-        //   //500 - 30, 470, raf click, --
-        // } else if (mapGame[obj.indexDom] == 8) {
-        //   tt = update("teleportRight");
-        // } else if (mapGame[obj.indexDom] == 1) {
-        //   obj.indexDom = currPos;
-        // }
+        if (mapGame[obj.indexDom] == 1 ) {
+          obj.indexDom = currPos
+        }else {
+        obj.posX += 30
+
+        }
       }
-      if (obj.keys.ArrowUp) {
+      if (keys.ArrowUp) {
         obj.indexDom -= 28;
-        tt = `${(obj.posX)}px, ${obj.posY-=30}px`;
-        // console.log('up', obj.indexDom)
-        // if (mapGame[obj.indexDom] !== 1) {
-        //   tt = update("up");
-        // } else {
-        //   obj.indexDom = currPos;
-        // }
+        if (mapGame[obj.indexDom] == 1 ) {
+          obj.indexDom = currPos
+        }else {
+          obj.posY-=30
+        }
       }
-      if (obj.keys.ArrowDown) {
+      if (keys.ArrowDown) {
         obj.indexDom += 28;
-        tt = `${(obj.posX )}px, ${obj.posY+=30}px`;
-        // if (mapGame[obj.indexDom] !== 1 && mapGame[obj.indexDom] !== 6) {
-        //   tt = update("down");
-        // } else {
-        //   obj.indexDom = currPos;
-        // }
+        if (mapGame[obj.indexDom] == 1 ) {
+          obj.indexDom = currPos
+        }else {
+          obj.posY+=30
+        }
       }
 
       if (mapGame[obj.indexDom] === 0) {
         //currentPos && nextPos != tedleport
         player.score += 10;
         mapGame[obj.indexDom] = 9;
-
-        // tt = `${(obj.posX -= 30)}px, ${obj.posY}px`;
-      } else if (mapGame[obj.indexDom] == 1) {
-        obj.indexDom = currPos;
-      }
-        //check direc teleport
-    //   }else if (mapGame[obj.indexDom] == 8) {
-    //     tt = update("teleportLeft");
-    // }
-      
-      obj.cool = 5; //6* 16.7 each 100ms raf  check inside if cond
+      }      
+      obj.cool = 4; //6* 16.7 each 100ms raf  check inside if cond
     }
-    //calculate, then render
-    if (tt != undefined) {
-      obj.grid.children[obj.indexDom+1].children[0].style.opacity = 0;
-      obj.pacman.style.transform = `translate(${tt})`;
-    }
+      // obj.grid.children[obj.indexDom+1].children[0].style.opacity = 0;
+      temp[obj.indexDom].children[0].style.opacity = 0;
+      obj.pacman.style.transform = `translate(${obj.posX}px, ${obj.posY}px)`;
     obj.rafId = requestAnimationFrame(step);
   }
 };
+
+//composite layer, garbage collector
+
 //currPos 870 % 30  != 0, if currPos  % 30 < 15, = currPos -=15 else currPos- currPos% 30 + 30
 
 const createBoard = () => {
@@ -246,7 +211,7 @@ const createBoard = () => {
   obj.grid.style.gridTemplateColumns = obj.x;
   obj.grid.style.gridTemplateRows = obj.y;
   //board localy dom, props.grid -> in DOm browser inserted
-  console.log("created board", 2, obj.grid.children[646]);
+  // console.log("created board", 2, obj.grid.children[646]);
 };
 
 const createBlock = (type, index) => {
@@ -281,6 +246,7 @@ const createBlock = (type, index) => {
   div.append(free);
 }
   div.type = type;
+temp.push(div)
   // div.idVal = board.length;
   obj.grid.append(div);
 };

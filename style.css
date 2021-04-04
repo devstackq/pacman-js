@@ -2,23 +2,23 @@
   position: relative;
 }
 
-
 .pacman {
   width: 20px;
   height: 20px;
   background: #fff;
-  z-index: 3;
-
   position: absolute;
+
   will-change: transform;
+  -moz-transform:translate(425px, 695px) ;
   transform: translate(425px, 695px);
   display: block;
+  will-change: transition;
   transition: .2s ease;
   -moz-transition: .2s ease;
+  
 }
 
 .grid {
-  z-index: 1;
   margin: auto;
   justify-content: center;
   display: grid;
@@ -46,19 +46,6 @@ body {
   background: #000;
 }
 
-.board_wrapper {
-  width: 100vw;
-  height: 100vh;
-  max-height: fit-content;
-  background: #333;
-}
-
-#stats {
-  padding: 10px;
-  color: #fff;
-  font-size: 24px;
-}
-
 .coin {
   position: absolute;
   left: 35%;
@@ -67,8 +54,7 @@ body {
   height: 25%;
   background-color: gold;
   border-radius: 50%;
-  
-  will-change: opacity;
+  /* will-change: opacity; */
 }
 
 .cookie {
