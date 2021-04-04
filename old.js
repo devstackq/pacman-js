@@ -25,6 +25,7 @@ const player = {
 document.addEventListener("DOMContentLoaded", () => {
   obj.pacman = document.getElementById("pacman");
   obj.grid = document.getElementById("grid");
+
   createBoard();
 });
 
@@ -44,16 +45,15 @@ document.addEventListener("keydown", (e) => {
     e.key == "ArrowUp" ||
     e.key == "ArrowDown"
   ) {
-    obj.indexDom = Math.floor(((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30);
-  }
+    // obj.indexDom = Math.floor(((obj.posY) / 30) * 28 + (obj.posX) / 30);
+   //slow keydown - frame drop
 
+  
   if (!obj.inPlay) {
     obj.inPlay = true;
-    // obj.pacman.style.display = "block";
-    // obj.pacman.style.transition = ".2s ease";
-    // obj.pacman.style.transform = " translate(425px, 695px)";
     obj.rafId = requestAnimationFrame(step);
   }
+}
 });
 
 // define parent,
@@ -87,29 +87,33 @@ const update = (type) => {
   let temp = obj.indexDom + 1; // with pacman elem
 
   //slow keydown - frame drop
-    player.score += 10;
-    mapGame[obj.indexDom] = 9;
-
+  // if (mapGame[obj.indexDom] === 0) {
+  //   player.score += 10;
+  //   mapGame[obj.indexDom] = 9;
+  //   // obj.grid.children[temp].children[0].classList.replace('coin', 'freePath')
+  //   obj.grid.children[temp].children[0].style.opacity = 0;
+  //   // obj.grid.children[temp].children[0].classList.remove("coin");
+  // }
 
   if (type == "left") {
-    transformTranslate = `${(obj.posX -= 30)}px, ${obj.posY}px`;
+    transformTranslate = `${(obj.posX -= 30)}px, ${obj.posY}px, 0px`;
   }
   if (type == "right") {
-    transformTranslate = `${(obj.posX += 30)}px, ${obj.posY}px`;
+    transformTranslate = `${(obj.posX += 30)}px, ${obj.posY}px, 0px`;
   }
   if (type == "up") {
-    transformTranslate = `${obj.posX}px, ${(obj.posY -= 30)}px`;
+    transformTranslate = `${obj.posX}px, ${(obj.posY -= 30)}px, 0px`;
   }
   if (type == "down") {
-    transformTranslate = `${obj.posX}px, ${(obj.posY += 30)}px`;
+    transformTranslate = `${obj.posX}px, ${(obj.posY += 30)}px, 0px`;
   }
   if (type == "teleportLeft") {
     //replace pacman in Div
-    transformTranslate = `${(obj.posX += 810)}px, ${obj.posY}px`;
+    transformTranslate = `${(obj.posX += 810)}px, ${obj.posY}px, 0px`;
     obj.pacman.style.opacity = "0";
   }
   if (type == "teleportRight") {
-    transformTranslate = `${(obj.posX -= 810)}px, ${obj.posY}px`;
+    transformTranslate = `${(obj.posX -= 810)}px, ${obj.posY}px, 0px`;
     obj.pacman.style.opacity = "0";
   }
   if (obj.indexDom == 420 || obj.indexDom == 391) {
@@ -126,25 +130,19 @@ const update = (type) => {
 //     if cookie
 // add ghosts - check fps
 
-/* if(obj.rafId % 30===0) {
-  obj.indexDom--; //nextPos check if != wall, -> update()
-//webWorker?
-  } */
-
-  //https://www.the-art-of-web.com/css/css-animation/
-  //https://blog.logrocket.com/using-webworkers-for-safe-concurrent-javascript-3f33da4eb0b2/
-  // /https://developer.chrome.com/docs/devtools/speed/get-started/
-  //https://developers.google.com/web/fundamentals/performance/rendering/optimize-javascript-execution  
-
-  // https://blog.teamtreehouse.com/efficient-animations-with-requestanimationframe
+//1 calc val, change opacity & tt pos
 
 const step = () => {
   // let speed = 2, add 2 px, withou cooldown in RAF
   //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
   let tt;
+
   if (obj.inPlay) {
     obj.cool--;
-    if (obj.cool < 0) {
+    // let temp = obj.indexDom + 1; // with pacman elem
+
+    // if (obj.cool < 0) {
+
       // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
       //   obj.indexDom = Math.floor(
       //     ((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30
@@ -152,73 +150,88 @@ const step = () => {
       let currPos = obj.indexDom; // 659, next 658 == wall
 
       if (obj.keys.ArrowLeft) {
+        obj.indexDom = Math.floor(((obj.posY) / 30) * 28 + (obj.posX) / 30);
+        //&& mapGame[obj.indexDom] !== 8
+        if(obj.rafId % 30===0) {
         obj.indexDom--; //nextPos check if != wall, -> update()
-      //   if (mapGame[obj.indexDom] === 0) {
-      //     //currentPos && nextPos != tedleport
-      //     player.score += 10;
-      //     mapGame[obj.indexDom] = 9;
-      //     tt = `${(obj.posX -= 30)}px, ${obj.posY}px`;
-
-      //   } else if (mapGame[obj.indexDom] == 1) {
-      //     obj.indexDom = currPos;
-      //   }else if (mapGame[obj.indexDom] == 8) {
-      //     tt = update("teleportLeft");
-      // }
-      tt = `${(obj.posX -= 30)}px, ${obj.posY}px`;
-    }
-      if (obj.keys.ArrowRight) {
-        obj.indexDom++;
-        tt = `${(obj.posX -= 30)}px, ${obj.posY}px`;
+      //webWorker?
+        }
+        if (mapGame[obj.indexDom] !== 1 ){
+          //currentPos && nextPos != teleport
+           tt = `${(obj.posX -= 5)}px, ${obj.posY}px, 0px`;
+          //change coin opacity, if 0
+        } 
+        if( mapGame[obj.indexDom] === 0 ) {
+          player.score += 10;
+          mapGame[obj.indexDom] = 9;
+        }
+        if (mapGame[obj.indexDom] === 8) {
+          // tt = update("teleportLeft");
+          tt = `${(obj.posX += 810)}px, ${obj.posY}px, 0px`;
+          // obj.pacman.style.opacity = "0";
+        }
+         if (mapGame[obj.indexDom] === 1) {
+          obj.indexDom = currPos;
+        }
+*********************************
+      }  else if (obj.keys.ArrowRight) {
+        //clickcoun30
+        // if(obj.rafId % 60==0) {
+          obj.posX++
+        if(obj.posX % 30 === 0) {
+          obj.indexDom++;
+        }
+// console.log(obj.posX)
+        if (mapGame[obj.indexDom] === 0) {
+            player.score += 10;
+            mapGame[obj.indexDom] = 9;
+            tt = `${(obj.posX+=5)}px, ${obj.posY}px, 0px`;
+          }
+         if (mapGame[obj.indexDom] == 1) {
+          obj.indexDom = currPos;
+        }
+         if (mapGame[obj.indexDom] == 8) {
+          // tt = update("teleportRight");
+          tt = `${(obj.posX -= 810)}px, ${obj.posY}px, 0px`;
+          obj.pacman.style.opacity = "0";
+        }
         
-        // if (mapGame[obj.indexDom] !== 1 && mapGame[obj.indexDom] !== 8) {
-        //   tt = update("right");
-        //   //500 - 30, 470, raf click, --
-        // } else if (mapGame[obj.indexDom] == 8) {
-        //   tt = update("teleportRight");
-        // } else if (mapGame[obj.indexDom] == 1) {
-        //   obj.indexDom = currPos;
-        // }
-      }
-      if (obj.keys.ArrowUp) {
+      }  else  if (obj.keys.ArrowUp) {
         obj.indexDom -= 28;
-        tt = `${(obj.posX)}px, ${obj.posY-=30}px`;
         // console.log('up', obj.indexDom)
-        // if (mapGame[obj.indexDom] !== 1) {
-        //   tt = update("up");
-        // } else {
-        //   obj.indexDom = currPos;
-        // }
-      }
-      if (obj.keys.ArrowDown) {
+        if (mapGame[obj.indexDom] !== 1) {
+          if (mapGame[obj.indexDom] === 0) {
+            player.score += 10;
+            mapGame[obj.indexDom] = 9;
+           
+          }
+          // tt = update("up");
+          tt = `${obj.posX}px, ${(obj.posY -= 1)}px, 0px`;
+        } else {
+          obj.indexDom = currPos;
+        }
+      }else  if (obj.keys.ArrowDown) {
         obj.indexDom += 28;
-        tt = `${(obj.posX )}px, ${obj.posY+=30}px`;
-        // if (mapGame[obj.indexDom] !== 1 && mapGame[obj.indexDom] !== 6) {
-        //   tt = update("down");
-        // } else {
-        //   obj.indexDom = currPos;
-        // }
+        if (mapGame[obj.indexDom] !== 1 && mapGame[obj.indexDom] !== 6) {
+          // tt = update("down");
+          if (mapGame[obj.indexDom] === 0) {
+            player.score += 10;
+            mapGame[obj.indexDom] = 9;
+           
+          }
+          tt = `${obj.posX}px, ${(obj.posY += 1)}px, 0px`;
+        } else {
+          obj.indexDom = currPos;
+        }
       }
-
-      if (mapGame[obj.indexDom] === 0) {
-        //currentPos && nextPos != tedleport
-        player.score += 10;
-        mapGame[obj.indexDom] = 9;
-
-        // tt = `${(obj.posX -= 30)}px, ${obj.posY}px`;
-      } else if (mapGame[obj.indexDom] == 1) {
-        obj.indexDom = currPos;
-      }
-        //check direc teleport
-    //   }else if (mapGame[obj.indexDom] == 8) {
-    //     tt = update("teleportLeft");
-    // }
-      
       obj.cool = 5; //6* 16.7 each 100ms raf  check inside if cond
-    }
     //calculate, then render
-    if (tt != undefined) {
-      obj.grid.children[obj.indexDom+1].children[0].style.opacity = 0;
-      obj.pacman.style.transform = `translate(${tt})`;
+    if (tt !== undefined) {
+      obj.grid.children[obj.indexDom +1].children[0].style.opacity='0'
+
+      obj.pacman.style.transform = `translate3d(${tt})`;
+      // obj.grid.children[obj.indexDom + 1].children[0].style.opacit1y = 0;
+  //  console.log(obj.grid.children[obj.indexDom +1].children[0])
     }
     obj.rafId = requestAnimationFrame(step);
   }
@@ -228,7 +241,7 @@ const step = () => {
 const createBoard = () => {
   //create each block -> get data from mapGame array
   mapGame.forEach((el, idx) => {
-    createBlock(el, idx);
+    createSquare(el, idx);
   });
   //add ghost in board
   // for (let i = 0; i < 4; i++) {
@@ -249,7 +262,7 @@ const createBoard = () => {
   console.log("created board", 2, obj.grid.children[646]);
 };
 
-const createBlock = (type, index) => {
+const createSquare = (type, index) => {
   let div = document.createElement("div");
   div.classList.add("box");
   // console.log(x * 30, y * 30 * x)
@@ -275,11 +288,10 @@ const createBlock = (type, index) => {
     teleport.classList.add("teleport");
     div.append(teleport);
   }else if (type === 9) {
-  
     let free = document.createElement("div");
-  free.classList.add("free");
-  div.append(free);
-}
+    free.classList.add("free");
+    div.append(free);
+  }
   div.type = type;
   // div.idVal = board.length;
   obj.grid.append(div);
