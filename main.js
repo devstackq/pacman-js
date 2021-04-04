@@ -54,6 +54,7 @@ const obj = {
 
 const player = {
   score: 0,
+  indexMap:0
 };
 
 document.addEventListener("DOMContentLoaded", () => {
@@ -124,6 +125,15 @@ document.addEventListener("keydown", (e) => {
   //https://developers.google.com/web/fundamentals/performance/rendering/optimize-javascript-execution  
   // https://blog.teamtreehouse.com/efficient-animations-with-requestanimationframe
 
+  https://github.com/web-standards-ru/dictionary/issues/162
+  https://stackoverflow.com/questions/18364175/best-practices-for-reducing-garbage-collector-activity-in-javascript
+  https://developer.mozilla.org/ru/docs/Tools/Performance/Waterfall
+  https://medium.com/dev-genius/memory-management-and-hunting-leakage-in-javascript-47fca2527ddf
+
+  // add -moz-,
+  // garbage collector - best ractice
+  // try not use - trnasition, || opacity
+  //garbage collectro || compositi layer
 const step = () => {
   // let speed = 2, add 2 px, withou cooldown in RAF
   //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
@@ -131,56 +141,56 @@ const step = () => {
     obj.cool--;
     if (obj.cool < 0) {
       // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
-    obj.indexDom = Math.floor(((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30);
+    player.indexMap = Math.floor(((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30);
 
-      let currPos = obj.indexDom; // 659, next 658 == wall
+      let currPos = player.indexMap; // 659, next 658 == wall
 
       if (keys.ArrowLeft) {
-        obj.indexDom--; //nextPos check if != wall, -> update()
-        if (mapGame[obj.indexDom] == 1 ) {
-          obj.indexDom = currPos
+        player.indexMap--; //nextPos check if != wall, -> update()
+        if (mapGame[player.indexMap] == 1 ) {
+          player.indexMap = currPos
         }else {
           obj.posX -= 30
         }
-      //   }else if (mapGame[obj.indexDom] == 8) {
+      //   }else if (mapGame[player.indexMap] == 8) {
       //     tt = update("teleportLeft");
       // }
     }
       if (keys.ArrowRight) {
-        obj.indexDom++;
-        if (mapGame[obj.indexDom] == 1 ) {
-          obj.indexDom = currPos
+        player.indexMap++;
+        if (mapGame[player.indexMap] == 1 ) {
+          player.indexMap = currPos
         }else {
         obj.posX += 30
 
         }
       }
       if (keys.ArrowUp) {
-        obj.indexDom -= 28;
-        if (mapGame[obj.indexDom] == 1 ) {
-          obj.indexDom = currPos
+        player.indexMap -= 28;
+        if (mapGame[player.indexMap] == 1 ) {
+          player.indexMap = currPos
         }else {
           obj.posY-=30
         }
       }
       if (keys.ArrowDown) {
-        obj.indexDom += 28;
-        if (mapGame[obj.indexDom] == 1 ) {
-          obj.indexDom = currPos
+        player.indexMap += 28;
+        if (mapGame[player.indexMap] == 1 ) {
+          player.indexMap = currPos
         }else {
           obj.posY+=30
         }
       }
 
-      if (mapGame[obj.indexDom] === 0) {
+      if (mapGame[player.indexMap] === 0) {
         //currentPos && nextPos != tedleport
         player.score += 10;
-        mapGame[obj.indexDom] = 9;
+        mapGame[player.indexMap] = 9;
       }      
       obj.cool = 4; //6* 16.7 each 100ms raf  check inside if cond
     }
-      // obj.grid.children[obj.indexDom+1].children[0].style.opacity = 0;
-      temp[obj.indexDom].children[0].style.opacity = 0;
+      // obj.grid.children[player.indexMap+1].children[0].style.opacity = 0;
+      temp[player.indexMap].children[0].style.opacity = 0;
       obj.pacman.style.transform = `translate(${obj.posX}px, ${obj.posY}px)`;
     obj.rafId = requestAnimationFrame(step);
   }
