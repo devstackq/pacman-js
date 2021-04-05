@@ -889,6 +889,9 @@ const obj = {
   cool: 0,
 };
 
+const item = {
+  id: 0,
+};
 const player = {
   score: 0,
   indexMap: 0,
@@ -897,6 +900,7 @@ const player = {
 document.addEventListener("DOMContentLoaded", () => {
   obj.pacman = document.getElementById("pacman");
   obj.grid = document.getElementById("grid");
+  item.pacman = document.getElementById("pacman");
   createBoard();
 });
 
@@ -910,6 +914,9 @@ document.addEventListener("keydown", (e) => {
   if (e.code in keys) {
     keys[e.code] = true;
   }
+  player.indexMap = Math.floor(
+    ((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30
+  );
   if (!obj.inPlay) {
     obj.inPlay = true;
     // obj.pacman.style.display = "block";
@@ -980,11 +987,9 @@ const step = () => {
   //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
   if (obj.inPlay) {
     obj.cool--;
-    if (obj.cool < 0) {
+    while (obj.cool < 0) {
+      console.log(obj.cool);
       // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
-      player.indexMap = Math.floor(
-        ((obj.posY - 5) / 30) * 28 + (obj.posX - 5) / 30
-      );
 
       let currPos = player.indexMap; // 659, next 658 == wall
 
@@ -992,6 +997,8 @@ const step = () => {
         player.indexMap--; //nextPos check if != wall, -> update()
         if (mapGame[player.indexMap] == 1) {
           player.indexMap = currPos;
+          obj.cool = 4;
+          break;
         } else {
           obj.posX -= 30;
         }
@@ -1003,6 +1010,8 @@ const step = () => {
         player.indexMap++;
         if (mapGame[player.indexMap] == 1) {
           player.indexMap = currPos;
+          obj.cool = 4;
+          break;
         } else {
           obj.posX += 30;
         }
@@ -1011,6 +1020,8 @@ const step = () => {
         player.indexMap -= 28;
         if (mapGame[player.indexMap] == 1) {
           player.indexMap = currPos;
+          obj.cool = 4;
+          break;
         } else {
           obj.posY -= 30;
         }
@@ -1019,6 +1030,8 @@ const step = () => {
         player.indexMap += 28;
         if (mapGame[player.indexMap] == 1) {
           player.indexMap = currPos;
+          obj.cool = 4;
+          break;
         } else {
           obj.posY += 30;
         }
@@ -1028,15 +1041,20 @@ const step = () => {
         //currentPos && nextPos != tedleport
         player.score += 10;
         mapGame[player.indexMap] = 9;
+        temp[player.indexMap].children[0].style.opacity = 0;
       }
+      obj.pacman.style.transform = `translate(${obj.posX}px, ${obj.posY}px)`;
+      // temp[player.indexMap].children[0].style.opacity = 0;
       obj.cool = 4; //6* 16.7 each 100ms raf  check inside if cond
     }
-    // obj.grid.children[player.indexMap+1].children[0].style.opacity = 0;
-    temp[player.indexMap].children[0].style.opacity = 0;
-    obj.pacman.style.transform = `translate(${obj.posX}px, ${obj.posY}px)`;
+
     obj.rafId = requestAnimationFrame(step);
   }
 };
+// console.log(temp[0].style);
+// obj.grid.children[player.indexMap+1].children[0].style.opacity = 0;
+// temp[0].style.transform = `translate(${obj.posX}px, ${obj.posY}px)`;
+// item.pacman.style.transform = `translate(${obj.posX}px, ${obj.posY}px)`;
 
 //composite layer, garbage collector
 
