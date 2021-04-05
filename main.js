@@ -963,17 +963,19 @@ document.addEventListener("keydown", (e) => {
 // https://blog.teamtreehouse.com/efficient-animations-with-requestanimationframe
 
 //github.com/web-standards-ru/dictionary/issues/162
-https: //stackoverflow.com/questions/18364175/best-practices-for-reducing-garbage-collector-activity-in-javascript
-https: //developer.mozilla.org/ru/docs/Tools/Performance/Waterfall
-https: //medium.com/dev-genius/memory-management-and-hunting-leakage-in-javascript-47fca2527ddf
+//stackoverflow.com/questions/18364175/best-practices-for-reducing-garbage-collector-activity-in-javascript
+// https: //developer.mozilla.org/ru/docs/Tools/Performance/Waterfall
+// https: //medium.com/dev-genius/memory-management-and-hunting-leakage-in-javascript-47fca2527ddf
 
 // add -moz-,
 // garbage collector - best ractice
 // try not use - trnasition, || opacity
 //garbage collectro || compositi layer
-//when wall, and another direction -> frameDrop
 //add keyframes - when pacman death
-https: const step = () => {
+//garbage collection
+//when wall, and another direction -> frameDrop
+
+const step = () => {
   // let speed = 2, add 2 px, withou cooldown in RAF
   //ideas #12 if currPos objX < 15 -> mod = objX % 30, objX-=mod else objX += mod
   if (obj.inPlay) {
