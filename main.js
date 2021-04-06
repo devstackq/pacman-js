@@ -1,37 +1,37 @@
-const mapGame = [
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 4, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 4, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-    1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 6, 6, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 9, 9, 9, 9, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 8,
-    9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 1, 1, 2, 2, 2, 2, 1, 1, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9,
-    8, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 4, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 4, 1,
-    1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-    1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-    1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-];
-//keys state
+const mapGame = new Array(
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 4, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 4, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+        1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 6, 6, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 9, 9, 9, 9, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 8,
+        9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 1, 1, 2, 2, 2, 2, 1, 1, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9,
+        8, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 4, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 4, 1,
+        1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
+        1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+        1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    )
+    //keys state
 const keys = {
     ArrowLeft: false,
     ArrowRight: false,
@@ -59,7 +59,7 @@ const player = {
     indexMap: 0,
     cool: 0,
     speed: 4,
-    killGhost: false,
+    canKill: false,
     time: {
         sec: 0,
         min: 0,
@@ -67,6 +67,7 @@ const player = {
     countCoin: 0,
     rafId: 0,
     pause: false,
+    killTime: 10000
 };
 
 const ghost = {
@@ -109,20 +110,23 @@ const ghost = {
     death: false, //if death, goHomePos()
     goAway: false, // if cookie, getAway()
 };
+let interval
 
 
 //dom onladed -> get grid elem, -> append - block, then manipulate this dom object, etc
 document.URL.includes("play.html") ?
 
     document.addEventListener("DOMContentLoaded", () => {
-        props.grid = document.getElementById("grid");
-        obj.pacman = document.getElementById("pacman");
-        props.modal = document.getElementById("modal");
-        props.notify = document.getElementById("notify");
+        //chache dom in nodes - addres in Ram
+        props.grid = document.querySelector("div.grid");
+        obj.pacman = document.querySelector("div.pacman")
+        obj.pacman_mouth = document.querySelector("div.pacman_mouth")
+        props.modal = document.querySelector("div.modal");
+        props.notify = document.querySelector("div.notify");
+        props.scoreBoard = document.querySelector("div.scoreBoard");
         //set default pos in Dom
         obj.pacman.style.transform = `translate(425px, 695px)`;
         // obj.pacman.style.transition = '0.1s ease'
-        obj.pacman.style.position = 'absolute'
         createBoard();
     }) : null
 
@@ -142,6 +146,11 @@ document.addEventListener("keydown", (e) => {
         props.notify.style.display = "none";
         props.inPlay = true;
         player.rafId = requestAnimationFrame(step);
+        //time
+        interval = setInterval(() => {
+            player.time.sec += 1
+            player.time.sec === 60 ? ((player.time.sec = 0), (player.time.min += 1)) : 0;
+        }, 1000)
     }
 
     //esc - show modal page
@@ -163,14 +172,14 @@ document.addEventListener("keydown", (e) => {
         props.modal.children[2].onclick = (e) => {
             //set def value
             props.modal.style.display = "none";
-            restart();
+            restart('restart');
         };
         props.modal.children[3].onclick = (e) => {
             window.location.href = "http://localhost:8000/";
         };
     }
-
 })
+
 
 const restart = (type) => {
     //set default values
@@ -184,57 +193,101 @@ const restart = (type) => {
     player.posY = 695;
 
     player.pause = false;
-    player.life = 5;
 
-    type !== "continue" ?
-        ((player.score = 0), (player.time.min = 0), (player.time.sec = 0)) :
-        (player.countCoin = 0);
+    player.countCoin = 0
+    player.time.min = 0
+    player.time.sec = 0
+
+    if (type == 'tryAgain') {
+        player.life == 0 ? player.score = 0 : player.score
+    }
+    if (type == 'restart') {
+        player.life = 5;
+        player.score = 0
+    }
+
     props.notify.style.display = "block";
+    //update time
+    clearInterval(interval)
+    props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
 
-    //replace to prev class, coin,cookie -> freePath
+    //return opacity coin elem
     for (let i = 0; i < 868; i++) {
-        if (props.grid.children[i].type == 9) {
-            if (props.grid.children[i].cookie) {
-                props.grid.children[i].children[0].classList.replace(
-                    "freePath",
-                    "cookie"
-                );
-                props.grid.children[i].type = 4;
-            }
-
-            if (props.grid.children[i].coin && i !== 657 && i !== 658) {
-                props.grid.children[i].type = 0;
-                props.grid.children[i].children[0].classList.replace(
-                    "freePath",
-                    "coin"
-                );
+        if (props.grid.children[i].children[0] != undefined) {
+            if (props.grid.children[i].children[0].className == 'coin') {
+                props.grid.children[i].children[0].style.opacity = 1
             }
         }
     }
-
     //set pacman def pos
     obj.pacman.style.transform = `translate(${player.posX}px, ${player.posY}px)`;
     player.rafId = requestAnimationFrame(step);
 };
-add teleport, cookie
+
+
+
+const endGame = () => {
+
+    props.modal.children[0].textContent = `Congrats, Yeap!  Your Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec} s`
+    props.modal.style.display = "flex"
+    player.pause = true
+
+    props.modal.children[0].style.display = "block"
+    props.modal.children[2].style.display = "block"
+    props.modal.children[3].style.display = "block"
+
+    props.modal.children[2].onclick = (e) => {
+            restart();
+        }
+        //main menu
+    props.modal.children[3].onclick = (e) => {
+        e.preventDefault();
+        window.location.href = "http://localhost:8000/";
+    }
+};
+let killTimer
+
+const killGhost = (time) => {
+
+    if (player.canKill) {
+        obj.pacman.style.backgroundColor = 'red'
+        killTimer = setTimeout(() => {
+            player.canKill = false;
+            obj.pacman.style.backgroundColor = '#fff'
+                // manageGhosts("goAway"); //set default color ghost
+        }, time); //10sec
+    }
+};
+//add sounds
+//if player.canKill -> change BgColor ghosts,
+//if ghost == pacman && !killGhost, pacman life -1, else ghost - goToHome, bgChange, score+=200 
+//algo bots
+//mapGame data structure change ? - GC, objects see
+// dom elems change ?
+
+
 const step = () => {
+
     if (props.inPlay) {
+
         player.cool--;
+        let tx
         if (player.cool < 0) {
             // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
             player.indexMap = Math.floor(
                 ((player.posY - 5) / 30) * 28 + (player.posX - 5) / 30
             );
-            let currPos = player.indexMap; // 659, next 658 == wall
-
+            //if next wall, set currPos
+            let currPos = player.indexMap;
+            //nextPos check if != wall, -> update()
             if (keys.ArrowLeft) {
-                player.indexMap -= 1; //nextPos check if != wall, -> update()
+                player.indexMap -= 1;
                 if (mapGame[player.indexMap] == 1) {
                     player.indexMap = currPos;
                 } else {
                     player.posX -= 30;
+                    tx = 'translateX(0%)'
                 }
-                //     tt = update("teleportLeft");
             }
             if (keys.ArrowRight) {
                 player.indexMap += 1;
@@ -242,6 +295,7 @@ const step = () => {
                     player.indexMap = currPos;
                 } else {
                     player.posX += 30;
+                    tx = 'translateX(100%)'
                 }
             }
             if (keys.ArrowUp) {
@@ -260,18 +314,64 @@ const step = () => {
                     player.posY += 30;
                 }
             }
-            if (mapGame[player.indexMap] === 0) {
-                //currentPos && nextPos != tedleport
-                player.score += 10;
-                mapGame[player.indexMap] = 9;
-                temp[player.indexMap].children[0].style.opacity = 0;
-            }
-            //paint - next || curr == 9
             if (mapGame[player.indexMap] !== 1) {
+
+                if (mapGame[player.indexMap] === 0 || mapGame[player.indexMap] === 4) {
+                    if (mapGame[player.indexMap] === 0) {
+                        player.score += 10;
+                        player.countCoin++
+                    }
+                    if (mapGame[player.indexMap] === 4) {
+                        player.score += 50;
+                        player.canKill = true
+                            // player.killTime += lastTime
+                        clearTimeout(killTimer)
+                        killGhost(player.killTime)
+                        player.countCoin++
+                    }
+                    mapGame[player.indexMap] = 9;
+
+                    //reload game
+                    if (player.countCoin == 244 && player.life > 0) {
+                        console.log(' next try')
+                        restart('tryAgain')
+                    }
+                    //win state
+                    if (player.countCoin == 244 && player.life == 0) {
+                        console.log('win')
+                        endGame()
+                        window.cancelAnimationFrame(player.rafId);
+                    }
+                }
+
+                if (mapGame[player.indexMap] === 8) {
+                    if (keys.ArrowLeft) {
+                        player.posX += 840
+                    } else {
+                        player.posX -= 840
+                    }
+                }
                 // props.pacman.style.transform = `translate(${player.posX}px, ${player.posY}px)`;
+                obj.pacman_mouth.style.transform = tx
+                    //index teleport
+                if (player.indexMap != 391 && player.indexMap != 420) {
+                    temp[player.indexMap].children[0].style.opacity = 0;
+                }
+
                 obj.pacman.style.transform = `translate(${player.posX}px, ${player.posY}px)`;
             }
-            player.cool = player.speed; //speed * 16.7 each 100ms raf  check inside if cond
+            // if (props.indexMap == ghost.indexMap && killGhost) {
+            //     //goHome() ghost
+            //     player.score += 200
+            // }
+            if (props.indexMap == ghost.indexMap && !killGhost) {
+                layer.life--
+                    //startPosPacman()
+            }
+            player.cool = player.speed;
+            //speed * 16.7 each 100ms raf  check inside if cond
+            //show scoreboard
+            props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
         }
         player.rafId = requestAnimationFrame(step);
     }
@@ -321,6 +421,10 @@ const createBlock = (type) => {
         let teleport = document.createElement("div");
         teleport.classList.add("teleport");
         div.append(teleport);
+    } else if (type === 9) {
+        let free = document.createElement("div");
+        free.classList.add("free");
+        div.append(free);
     }
     div.type = type;
     temp.push(div);
