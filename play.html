@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Super Pacman</title>
+    <link rel="stylesheet" href="style.css">
+    <link rel="icon" href="data:,">
+    <meta charset="UTF-8">
+</head>
+
+<body>
+
+    <div id='notify' class='notify'> Click arrow key, for start game! </div>
+    <div class="scoreBoard">
+        <span id='score' class="score">Score: 0 Lives: 5 Time: 0m:0s</span>
+    </div>
+<div id='grid' class="grid">
+         <div id='pacman' class="pacman" type=7>
+        <div class="pacman_eye"></div>
+        <div class="pacman_mouth"></div>
+    </div>
+</div>
+
+    <div class='modal' id='modal'>
+        <span id='stats' style='display:none'> </span>
+        <a id='continue' style='display:none'> Continue </a>
+        <a> Restart </a>
+        <a> Main menu </a>
+        <div id='addScoreId' style='display:none'>
+            <label>enter your name </label>
+            <input type='text'> </input>
+            <input type='submit' value='ok'> </input>
+        </div>
+    </div>
+
+    <div class="ghost">
+        <div class="left_eye"></div>
+        <div class="right_eye"></div>
+        <div class="mouth">
+    </div>
+
+</body>
+<script type="module" src='./main.js'> </script>
+</html>
