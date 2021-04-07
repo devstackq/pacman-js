@@ -1,36 +1,873 @@
 const mapGame = [
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-        1, 4, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 4, 1,
-        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-        1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-        1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-        1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-        3, 3, 3, 3, 3, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 6, 6, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-        1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 9, 9, 9, 9, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 8,
-        9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 1, 1, 2, 2, 2, 2, 1, 1, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9,
-        8, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-        1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-        1, 4, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 4, 1,
-        1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-        1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-        1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-        1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-        1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-]
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  4,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  4,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  6,
+  6,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  9,
+  9,
+  9,
+  9,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  8,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  0,
+  9,
+  9,
+  9,
+  1,
+  1,
+  2,
+  2,
+  2,
+  2,
+  1,
+  1,
+  9,
+  9,
+  9,
+  0,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  8,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  4,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  9,
+  9,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  4,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+];
 //keys state
 const keys = {
   ArrowLeft: false,
@@ -40,6 +877,7 @@ const keys = {
 };
 //manage dom elems - coin opacity
 const temp = [];
+let ghostsArray = [];
 
 const props = {
   x: "", // for grid  row - render style
@@ -58,7 +896,7 @@ const player = {
   posY: 695,
   score: 0,
   life: 5,
-  indexMap: 0,
+  indexMap: 658,
   cool: 0,
   speed: 4,
   canKill: false,
@@ -70,12 +908,16 @@ const player = {
   rafId: 0,
   pause: false,
   killTime: 10000,
+  transX: "",
+  currentPos: 0,
 };
 
 const ghosts = {
   pinkGhost: {
     name: "Pinkī",
     goOutBox: false,
+    posX: 360,
+    posY: 420,
     basePos: 405,
     direct: "up",
     turn: false,
@@ -86,6 +928,8 @@ const ghosts = {
   orangeGhost: {
     name: "Guzuta",
     goOutBox: false,
+    posX: 390,
+    posY: 420,
     basePos: 404,
     direct: "right",
     turn: false,
@@ -94,6 +938,8 @@ const ghosts = {
   redGhost: {
     name: "Akabei",
     goOutBox: false,
+    posX: 420,
+    posY: 420,
     basePos: 406,
     direct: "up",
     turn: false,
@@ -102,7 +948,8 @@ const ghosts = {
   cyanGhost: {
     name: "Aosuke",
     goOutBox: false,
-    basePos: 407,
+    posX: 450,
+    posY: 420,
     direct: "left",
     turn: false,
     color: "cyan",
@@ -124,9 +971,16 @@ document.URL.includes("play.html")
       props.notify = document.querySelector("div.notify");
       props.scoreBoard = document.querySelector("div.scoreBoard");
       //set default pos in Dom
-      obj.pacman.style.transform = `translate(425px, 695px)`;
+      obj.pacman.style.display = "block";
+      obj.pacman.style.transform = `translate3d(425px, 695px,0)`;
       // obj.pacman.style.transition = '0.1s ease'
+      obj.redGhost = document.querySelector("div.red");
+      obj.orangeGhost = document.querySelector("div.orange");
+      obj.pinkGhost = document.querySelector("div.pink");
+      obj.cyanGhost = document.querySelector("div.cyan");
+
       createBoard();
+      console.log(props.grid.children.length, temp.length);
     })
   : null;
 
@@ -140,6 +994,11 @@ document.addEventListener("keyup", (e) => {
 document.addEventListener("keydown", (e) => {
   if (e.code in keys) {
     keys[e.code] = true;
+
+    player.indexMap = Math.floor(
+      ((player.posY - 5) / 30) * 28 + (player.posX - 5) / 30
+    );
+    console.log(player.indexMap);
   }
   if (!props.inPlay) {
     props.notify.style.display = "none";
@@ -220,7 +1079,7 @@ const restart = (type) => {
     }
   }
   //set pacman def pos
-  obj.pacman.style.transform = `translate(${player.posX}px, ${player.posY}px)`;
+  obj.pacman.style.transform = `translate3d(${player.posX}px, ${player.posY}px, 0px)`;
   player.rafId = requestAnimationFrame(step);
 };
 
@@ -261,50 +1120,165 @@ const killGhost = (time) => {
 // dom elems change ?
 //audit quest check
 
+//how to correct use TT - Reshalkin
+//obj.redGhost.style.transform = `translate3d(100px, 200px,0px)`
+
+const turnNow = (curr) => {
+  let dir = ghost.redGhost.direct;
+
+  dir === "left"
+    ? (curr -= 1)
+    : dir === "right"
+    ? (curr += 1)
+    : dir === "up"
+    ? (curr -= 28)
+    : (curr += 28);
+  // console.log(dir, curr)
+  let type = props.grid.children[curr].type;
+
+  if (type !== 1 && type !== 2) {
+    ghost.redGhost.direct =
+      dir === "left"
+        ? "left"
+        : dir === "right"
+        ? "right"
+        : dir === "up"
+        ? "up"
+        : "down";
+    ghost.redGhost.turn = true;
+    return;
+  } else {
+    ghost.redGhost.turn = false;
+  }
+};
+
+//stupid bot, random position
+let arrDirects = ["left", "right", "up", "down"];
+//exlude prev direct, then change direct, reset
+
+const iCanGo = (dir) => {
+  let randomNumber = Math.floor(Math.random() * arrDirects.length);
+  // tR === 9 || tR === 0 || tR === 6 || tR === 4, tR != 1, 1 ?
+  // console.log(dir, ghosts.redGhost.pos);
+
+  ghosts.redGhost.basePos = Math.floor(
+    (ghosts.redGhost.posY / 30) * 28 + ghosts.redGhost.posX / 30
+  );
+
+  if (dir === "left") {
+    // if not wall, != another ghost || equal pacman
+    let tL = mapGame[ghosts.redGhost.basePos];
+    //turnNow()
+    if (
+      tL !== 1 &&
+      tL !== 2 &&
+      (tL === 9 || tL === 0 || tL === 6 || tL === 4)
+    ) {
+      //check 1 radius pacman
+      ghosts.redGhost.pos -= 1;
+      ghosts.redGhost.can = true;
+      // ghost.redGhost.direct = 'left'
+      // if(props.grid.children[curr + 1].type === 7)  Pacman case
+      return;
+    } else {
+      // ghost.redGhost.direct = 'up'
+      ghosts.redGhost.direct = arrDirects[randomNumber];
+      // recutsive iCanGo('right', curr)
+    }
+  }
+  if (dir === "right") {
+    let tR = mapGame[ghosts.redGhost.basePos];
+    if (
+      tR !== 1 &&
+      tR !== 2 &&
+      (tR === 9 || tR === 0 || tR === 6 || tR === 4)
+    ) {
+      ghosts.redGhost.pos += 1;
+      ghosts.redGhost.can = true;
+      return;
+    } else {
+      ghosts.redGhost.direct = arrDirects[randomNumber];
+    }
+  }
+done here
+  if (dir === "up") {
+    ghosts.redGhost.posY -= 28;
+    let tUp = mapGame[ghosts.redGhost.basePos];
+
+    console.log(ghosts.redGhost.basePos, "base", tUp);
+    //
+    if (
+      tUp !== 2 &&
+      tUp !== 1 &&
+      (tUp === 9 || tUp === 0 || tUp === 6 || tUp === 4)
+    ) {
+      // ghosts.redGhost.posY -= 28;
+      ghosts.redGhost.can = true;
+      return;
+    } else {
+      ghosts.redGhost.direct = arrDirects[randomNumber];
+    }
+  }
+
+  if (dir === "down") {
+    let tD = mapGame[ghosts.redGhost.basePos];
+
+    if (
+      tD !== 1 &&
+      tD !== 2 &&
+      (tD === 9 || tD === 0 || tD !== 6 || tD === 4)
+    ) {
+      ghosts.redGhost.pos += 28;
+      ghosts.redGhost.can = true;
+      return;
+    } else {
+      ghosts.redGhost.direct = arrDirects[randomNumber];
+    }
+  }
+};
+
 const step = () => {
   if (props.inPlay) {
     player.cool--;
-    let tx;
-    let currPos;
+
+    //1 get each ghost from obj, - change position x,y - algo
+    ghosts.cool--;
+    if (ghosts.cool < 0) {
+      iCanGo(ghosts.redGhost.direct); // change can=true
+      ghosts.cool = 5;
+      console.log(ghosts.redGhost.posX, ghosts.redGhost.posY);
+
+      obj.redGhost.style.transform = `translate3d(${ghosts.redGhost.posX}px, ${ghosts.redGhost.posY}px, 0px)`;
+    }
+
     if (player.cool < 0) {
       // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
-      player.indexMap = Math.floor(
-        ((player.posY - 5) / 30) * 28 + (player.posX - 5) / 30
-      );
-      //if next wall, set currPos
-      currPos = player.indexMap;
-      //nextPos check if != wall, -> update()
       if (keys.ArrowLeft) {
         player.indexMap -= 1;
-        if (mapGame[player.indexMap] === 1) {
-          player.indexMap = currPos;
-        } else {
+        if (mapGame[player.indexMap] !== 1) {
           player.posX -= 30;
-          tx = "translateX(0%)";
+          player.transX = "translateX(0%)";
+          //replace classs -> show layer
         }
       }
       if (keys.ArrowRight) {
         player.indexMap += 1;
-        if (mapGame[player.indexMap] === 1) {
-          player.indexMap = currPos;
-        } else {
+        if (mapGame[player.indexMap] !== 1) {
           player.posX += 30;
-          tx = "translateX(100%)";
+          player.transX = "translateX(100%)";
+          // obj.pacman_mouth.style.transform = "translateX(100%)";
         }
       }
       if (keys.ArrowUp) {
+        // get inde - when event
         player.indexMap -= 28;
-        if (mapGame[player.indexMap] === 1) {
-          player.indexMap = currPos;
-        } else {
+        if (mapGame[player.indexMap] !== 1) {
           player.posY -= 30;
         }
       }
       if (keys.ArrowDown) {
         player.indexMap += 28;
-        if (mapGame[player.indexMap] === 1) {
-          player.indexMap = currPos;
-        } else {
+        if (mapGame[player.indexMap] !== 1 && mapGame[player.indexMap] !== 6) {
           player.posY += 30;
         }
       }
@@ -323,20 +1297,18 @@ const step = () => {
             player.countCoin++;
           }
           mapGame[player.indexMap] = 9;
-
           //reload game
           if (player.countCoin === 244 && player.life > 0) {
             console.log(" next try");
             restart("tryAgain");
           }
           //win state
-          if (player.countCoin === 244 && player.life == 0) {
+          if (player.countCoin === 244 && player.life === 0) {
             console.log("win");
             endGame();
             window.cancelAnimationFrame(player.rafId);
           }
         }
-
         if (mapGame[player.indexMap] === 8) {
           if (keys.ArrowLeft) {
             player.posX += 840;
@@ -344,23 +1316,31 @@ const step = () => {
             player.posX -= 840;
           }
         }
-        // props.pacman.style.transform = `translate(${player.posX}px, ${player.posY}px)`;
-        obj.pacman_mouth.style.transform = tx;
-        //index teleport
-        if (player.indexMap !== 391 && player.indexMap !== 420) {
+        obj.pacman_mouth.style.transform = player.transX;
+        if (
+          player.indexMap !== 391 &&
+          player.indexMap !== 420 &&
+          player.indexMap !== 350 &&
+          player.indexMap !== 349
+        ) {
           temp[player.indexMap].children[0].style.opacity = 0;
         }
+        obj.pacman.style.transform = `translate3d(${player.posX}px, ${player.posY}px, 0px)`;
 
-        obj.pacman.style.transform = `translate(${player.posX}px, ${player.posY}px)`;
+        // props.grid.children[player.indexMap+1].children[0].className='' // transform translate new pos, change class ?
       }
+
       // if (props.indexMap == ghost.indexMap && killGhost) {
       //     //goHome() ghost
       //     player.score += 200
       // }
-      if (props.indexMap === ghosts.pinkGhost && !killGhost) {
-        layer.life--;
-        //startPosPacman()
-      }
+
+      //2 then one step ghost -> check, if xGhot.pos == player.indexMap && killGhost ->
+
+      // if (player.indexMap === ghosts.pinkGhost && !killGhost) {
+      //   layer.life--;
+      //   //startPosPacman()
+      // }
       player.cool = player.speed;
       //speed * 16.7 each 100ms raf  check inside if cond
       //show scoreboard
