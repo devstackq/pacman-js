@@ -1149,7 +1149,7 @@ const killGhost = (time) => {
 //when restart game , life > 0, -> - last coin not restore ? fix
 //optimize worker.js file
 
-todo ghost == pacman,
+// todo ghost == pacman,
 //add keyframe - when pacman deat
 // add audio
 
@@ -1222,6 +1222,9 @@ const step = () => {
         ((player.posY - 5) / 30) * 28 + (player.posX - 5) / 30
       );
       // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
+      try here - add all func - worker, 
+      worker.port.postMessage([keys]}
+
       if (keys.ArrowLeft) {
         // player.indexMap -= 1;
         if (mapGame[player.indexMap - 1] !== 1) {
