@@ -136,7 +136,7 @@ document.URL.includes("play.html") ?
         props.notify = document.querySelector("div.notify");
         props.scoreBoard = document.querySelector("div.scoreBoard");
         //set default pos in Dom
-        obj.pacman.style.display = "block";
+        // obj.pacman.style.display = "block";
         obj.pacman.style.transform = `translate3d(425px, 695px,0)`;
         // obj.pacman.style.transition = '0.1s ease'
         obj.redGhost = document.querySelector("div.red");
@@ -169,6 +169,7 @@ document.addEventListener("keydown", (e) => {
     if (e.code in keys) {
         keys[e.code] = true;
     }
+    // console.log(mapGame[player.indexMap - 1], player.indexMap)
     if (!props.inPlay) {
         props.notify.style.display = "none";
         props.inPlay = true;
@@ -185,8 +186,7 @@ document.addEventListener("keydown", (e) => {
         player.pause = true;
         window.cancelAnimationFrame(player.rafId);
         clearInterval(interval)
-
-        //continue btn
+            //continue btn
         props.modal.children[1].onclick = (e) => {
             player.play = requestAnimationFrame(step);
             player.pause = false;
@@ -209,10 +209,12 @@ document.addEventListener("keydown", (e) => {
 const restart = (type) => {
     //set default values
     props.inPlay = false;
-    ghost.orangeGhost.pos = 404;
-    ghost.pinkGhost.pos = 405;
-    ghost.redGhost.pos = 406;
-    ghost.cyanGhost.pos = 407;
+    ghosts.orangeGhost.basePos = 404;
+    ghosts.pinkGhost.basePos = 405;
+    ghosts.redGhost.basePos = 406;
+    ghosts.cyanGhost.basePos = 407;
+    ghosts.redGhost.posX = 420
+    ghosts.redGhost.posY = 420
 
     player.posX = 425;
     player.posY = 695;
@@ -244,8 +246,11 @@ const restart = (type) => {
             }
         }
     }
-    //set pacman def pos
     obj.pacman.style.transform = `translate3d(${player.posX}px, ${player.posY}px, 0px)`;
+    //set pacman def pos
+    //loop each ghost set default pos
+    obj.redGhost.style.transform = `translate3d(${ghosts.redGhost.posX}px, ${ghosts.redGhost.posY}px, 0px)`;
+
     player.rafId = requestAnimationFrame(step);
 };
 
@@ -278,12 +283,6 @@ const killGhost = (time) => {
         }, time); //10sec
     }
 };
-//add sounds
-//if player.canKill -> change BgColor ghosts,
-//if ghost == pacman && !killGhost, pacman life -1, else ghost - goToHome, bgChange, score+=200
-//algo bots
-//mapGame data structure change ? - GC, objects see
-// dom elems change ?
 
 //audit hint
 // 6speed - norm, without trans, 15-20s
@@ -293,19 +292,20 @@ const killGhost = (time) => {
 // without transition
 // no use teleport, and coin
 // gc - off - perfomance tools
-//chrome - work - will cahnge
 
+//chrome - work - will cahnge
 // chrome - audiit- show realtime fps - beacuse layer Work
 
-//how to correct use TT - Reshalkin
-//obj.redGhost.style.transform = `translate3d(100px, 200px,0px)`
-
 //TODO
+// fix - if pacamn pos -> doorEnemy
 // layout, paint ngc,
 // each ghost - use webworker, pacman
 //audit webpage
 //create bot center Map
 //add sounds
+//DRY, SR, 
+//delete comment
+//    //loop ghsot check || condition ? || func - ghost == pacman
 
 const turnNow = (curr) => {
     let dir = ghost.redGhost.direct;
@@ -340,10 +340,9 @@ const turnNow = (curr) => {
 let directsX = ["left", "right"];
 let directsY = ["up", "down"];
 
-//exlude prev direct, then change direct, reset
 //case currDir = left, if nextPost ==1, and downDirect nextPos == 1, gotoUp
 
-const iCanGo = (direct, typeGhost) => {
+const outerPerimeter = (direct, typeGhost, typePerimetr) => {
 
     let randomNumber = Math.floor(Math.random() * 2);
 
@@ -351,20 +350,21 @@ const iCanGo = (direct, typeGhost) => {
         (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
     );
 
+    //turnNow()
     if (direct === "left") {
         // if not wall, != another ghost || equal pacman
-      if ( mapGame[ghosts[typeGhost].basePos-1] !== 1) {
-            ghosts[typeGhost].basePos-=1
-    ghosts[typeGhost].posX -= 30;
+        if (mapGame[ghosts[typeGhost].basePos - 1] !== 1) {
+            ghosts[typeGhost].basePos -= 1
+            ghosts[typeGhost].posX -= 30;
         } else {
             ghosts[typeGhost].direct = directsY[randomNumber];
             // recutsive iCanGo('right', curr)
         }
     }
     if (direct === "right") {
-        if ( mapGame[ghosts[typeGhost].basePos+1] !== 1) {
-            ghosts[typeGhost].basePos+=1
-    ghosts[typeGhost].posX += 30;
+        if (mapGame[ghosts[typeGhost].basePos + 1] !== 1) {
+            ghosts[typeGhost].basePos += 1
+            ghosts[typeGhost].posX += 30;
         } else {
             ghosts[typeGhost].direct = directsY[randomNumber];
         }
@@ -372,23 +372,176 @@ const iCanGo = (direct, typeGhost) => {
 
     if (direct === "up") {
 
-        if ( mapGame[ghosts[typeGhost].basePos-28] !== 1 ) {
-        ghosts[typeGhost].posY -= 30;
-        ghosts[typeGhost].basePos-=28
+        if (mapGame[ghosts[typeGhost].basePos - 28] !== 1) {
+            ghosts[typeGhost].posY -= 30;
+            ghosts[typeGhost].basePos -= 28
         } else {
             ghosts[typeGhost].direct = directsX[randomNumber];
         }
     }
 
     if (direct === "down") {
-         if (mapGame[ghosts[typeGhost].basePos+28] !== 1 ) {
-        ghosts[typeGhost].posY += 30;
-        ghosts[typeGhost].basePos+=28
+        if (mapGame[ghosts[typeGhost].basePos + 28] !== 1) {
+            ghosts[typeGhost].posY += 30;
+            ghosts[typeGhost].basePos += 28
         } else {
             ghosts[typeGhost].direct = directsX[randomNumber];
         }
     }
 };
+
+//cyan, pink, outer permiter
+const intravenousPerimeter = (direct, typeGhost) => {
+
+    let randomNumber = Math.floor(Math.random() * 2);
+
+    ghosts[typeGhost].basePos = Math.floor(
+        (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
+    );
+    //go out box
+
+    if (!ghosts[typeGhost].goOutBox && ghosts[typeGhost].basePos === 377 || ghosts[typeGhost].basePos === 378) {
+        ghosts[typeGhost].direct = 'up'
+        ghosts[typeGhost].goOutBox = false
+    }
+    //set bound
+    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 320)) {
+        ghosts[typeGhost].direct = 'up'
+    }
+    if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 323)) {
+        ghosts[typeGhost].direct = 'up'
+    }
+    if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 494)) {
+        ghosts[typeGhost].direct = 'left'
+    }
+    if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos + 28 === 485)) {
+        ghosts[typeGhost].direct = 'right'
+    }
+    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 569)) {
+        ghosts[typeGhost].direct = 'up'
+    }
+    if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 578)) {
+        ghosts[typeGhost].direct = 'up'
+    }
+    if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 401)) {
+        ghosts[typeGhost].direct = 'left'
+    }
+    if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos + 28 === 410)) {
+        ghosts[typeGhost].direct = 'right'
+    }
+    if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 419)) {
+        ghosts[typeGhost].direct = 'left'
+    }
+    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 392)) {
+        ghosts[typeGhost].direct = 'right'
+    }
+    //turnNow()
+    if (direct === "left") {
+        // if not wall, != another ghost || equal pacman
+        if (mapGame[ghosts[typeGhost].basePos - 1] !== 1 && ghosts[typeGhost].basePos - 1 !== 567) {
+            ghosts[typeGhost].basePos -= 1
+            ghosts[typeGhost].posX -= 30;
+        } else {
+            ghosts[typeGhost].direct = directsY[randomNumber];
+            // recutsive iCanGo('right', curr)
+        }
+    }
+    if (direct === "right") {
+        if (mapGame[ghosts[typeGhost].basePos + 1] !== 1 && ghosts[typeGhost].basePos + 1 !== 580) {
+            ghosts[typeGhost].basePos += 1
+            ghosts[typeGhost].posX += 30;
+        } else {
+            ghosts[typeGhost].direct = directsY[randomNumber];
+        }
+    }
+
+    if (direct === "up") {
+
+        if (mapGame[ghosts[typeGhost].basePos - 28] !== 1 && ghosts[typeGhost].basePos - 28 !== 177 && ghosts[typeGhost].basePos - 28 !== 186) {
+            ghosts[typeGhost].posY -= 30;
+            ghosts[typeGhost].basePos -= 28
+        } else {
+            ghosts[typeGhost].direct = directsX[randomNumber];
+        }
+    }
+
+    if (direct === "down") {
+        if (mapGame[ghosts[typeGhost].basePos + 28] !== 1 && ghosts[typeGhost].basePos + 28 !== 628 && ghosts[typeGhost].basePos + 28 !== 631) {
+            ghosts[typeGhost].posY += 30;
+            ghosts[typeGhost].basePos += 28
+        } else {
+            ghosts[typeGhost].direct = directsX[randomNumber];
+        }
+    }
+}
+
+const squarePerimeter = (direct, typeGhost) => {
+
+    let randomNumber = Math.floor(Math.random() * 2);
+
+    ghosts[typeGhost].basePos = Math.floor(
+        (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
+    );
+
+
+    if ((ghosts[typeGhost].direct === 'left') && (ghosts[typeGhost].basePos - 1 === 146 || ghosts[typeGhost].basePos - 1 === 662)) {
+        ghosts[typeGhost].direct = 'down'
+    }
+
+    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 650)) {
+        ghosts[typeGhost].direct = 'up'
+    }
+
+    if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 161 || ghosts[typeGhost].basePos + 1 === 653)) {
+        ghosts[typeGhost].direct = 'down'
+    }
+    if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 161)) {
+        ghosts[typeGhost].direct = 'left'
+    }
+
+    if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos - 28 === 665)) {
+        ghosts[typeGhost].direct = 'left'
+    }
+
+    //turnNow()
+    if (direct === "left") {
+        // if not wall, != another ghost || equal pacman
+        if (mapGame[ghosts[typeGhost].basePos - 1] !== 1) {
+            ghosts[typeGhost].basePos -= 1
+            ghosts[typeGhost].posX -= 30;
+        } else {
+            ghosts[typeGhost].direct = directsY[randomNumber];
+            // recutsive iCanGo('right', curr)
+        }
+    }
+    if (direct === "right") {
+        if (mapGame[ghosts[typeGhost].basePos + 1] !== 1) {
+            ghosts[typeGhost].basePos += 1
+            ghosts[typeGhost].posX += 30;
+        } else {
+            ghosts[typeGhost].direct = directsY[randomNumber];
+        }
+    }
+
+    if (direct === "up") {
+
+        if (mapGame[ghosts[typeGhost].basePos - 28] !== 1) {
+            ghosts[typeGhost].posY -= 30;
+            ghosts[typeGhost].basePos -= 28
+        } else {
+            ghosts[typeGhost].direct = directsX[randomNumber];
+        }
+    }
+
+    if (direct === "down") {
+        if (mapGame[ghosts[typeGhost].basePos + 28] !== 1) {
+            ghosts[typeGhost].posY += 30;
+            ghosts[typeGhost].basePos += 28
+        } else {
+            ghosts[typeGhost].direct = directsX[randomNumber];
+        }
+    }
+}
 
 const step = () => {
 
@@ -398,33 +551,41 @@ const step = () => {
 
         if (ghosts.cool < 0) {
 
-            iCanGo(ghosts.redGhost.direct, 'redGhost'); // change can=true
-            iCanGo(ghosts.orangeGhost.direct, 'orangeGhost'); 
+            outerPerimeter(ghosts.redGhost.direct, 'redGhost');
+            outerPerimeter(ghosts.orangeGhost.direct, 'orangeGhost');
 
-            //another algo
+            intravenousPerimeter(ghosts.cyanGhost.direct, 'cyanGhost')
+            squarePerimeter(ghosts.pinkGhost.direct, 'pinkGhost')
+                //another algo
             ghosts.cool = 5;
-            // console.log(ghosts.redGhost.posX, ghosts.redGhost.posY);
+            //render, change pos
             obj.redGhost.style.transform = `translate3d(${ghosts.redGhost.posX}px, ${ghosts.redGhost.posY}px, 0px)`;
-                 obj.orangeGhost.style.transform = `translate3d(${ghosts.orangeGhost.posX}px, ${ghosts.orangeGhost.posY}px, 0px)`;
-        }
-        player.cool--;
+            obj.orangeGhost.style.transform = `translate3d(${ghosts.orangeGhost.posX}px, ${ghosts.orangeGhost.posY}px, 0px)`;
 
+            obj.cyanGhost.style.transform = `translate3d(${ghosts.cyanGhost.posX}px, ${ghosts.cyanGhost.posY}px, 0px)`;
+            obj.pinkGhost.style.transform = `translate3d(${ghosts.pinkGhost.posX}px, ${ghosts.pinkGhost.posY}px, 0px)`;
+        }
+
+        player.cool--;
         if (player.cool < 0) {
+            console.log(player.indexMap)
+
             player.indexMap = Math.floor(
                 ((player.posY - 5) / 30) * 28 + (player.posX - 5) / 30
             );
             // formula = y / 30 * 28 + x / 30, 690/30=23*28 644 + 420/30 = 644 + 14 = 658+1 mapGame[659]
             if (keys.ArrowLeft) {
-                player.indexMap -= 1;
-                if (mapGame[player.indexMap] !== 1) {
+                // player.indexMap -= 1;
+                if (mapGame[player.indexMap - 1] !== 1) {
                     player.posX -= 30;
+                    player.indexMap -= 1
                     player.transX = "translateX(0%)";
                     //replace classs -> show layer
                 }
             }
             if (keys.ArrowRight) {
-                player.indexMap += 1;
-                if (mapGame[player.indexMap] !== 1) {
+                if (mapGame[player.indexMap + 1] !== 1) {
+                    player.indexMap += 1;
                     player.posX += 30;
                     player.transX = "translateX(100%)";
                     // obj.pacman_mouth.style.transform = "translateX(100%)";
@@ -432,14 +593,14 @@ const step = () => {
             }
             if (keys.ArrowUp) {
                 // get inde - when event
-                player.indexMap -= 28;
-                if (mapGame[player.indexMap] !== 1) {
+                if (mapGame[player.indexMap - 28] !== 1) {
+                    player.indexMap -= 28;
                     player.posY -= 30;
                 }
             }
             if (keys.ArrowDown) {
-                player.indexMap += 28;
-                if (mapGame[player.indexMap] !== 1 && mapGame[player.indexMap] !== 6) {
+                if (mapGame[player.indexMap + 28] !== 1 && mapGame[player.indexMap + 28] !== 6) {
+                    player.indexMap += 28;
                     player.posY += 30;
                 }
             }
@@ -499,27 +660,33 @@ const step = () => {
                     obj.pacman_mouth.style.transform = player.transX;
                     obj.pacman.style.transform = `translate3d(${player.posX}px, ${player.posY}px, 0)`;
                 }
-
-
                 // props.grid.children[player.indexMap+1].children[0].className='' // transform translate new pos, change class ?
-            }
-// console.log(player.indexMap , ghosts.redGhost.basePos)
-            if (player.indexMap === ghosts.redGhost.basePos && player.killGhost) {
-                //goHome() ghost
-                player.score += 200
-                console.log('go kill ghost, ghost return base')
-            }
 
-             if (player.indexMap === ghosts.redGhost.basePos && !player.killGhost) {
-    console.log('pacman go  base, life-=1')
-  player.life--;
-             }
+                //loop ghsot check || condition ? || func
+                if (player.indexMap === ghosts.redGhost.basePos && player.canKill) {
+                    //goHome() ghost
+                    player.score += 200
+                    console.log('go kill ghost, ghost return base')
+                        //set posX, posY, direction - def
+                }
+
+                if (player.indexMap === ghosts.redGhost.basePos && !player.canKill) {
+                    console.log('pacman go  base, life-=1')
+                    player.life--;
+                }
+
+            }
 
             player.cool = 6;
             //speed * 16.7 each 100ms raf  check inside if cond
             //show scoreboard
             props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
+
+
         }
+
+
+
         player.rafId = requestAnimationFrame(step);
     }
 };

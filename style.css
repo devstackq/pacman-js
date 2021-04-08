@@ -24,7 +24,7 @@ body {
     /* transition: transform .2s ease; */
     will-change: transform;
     -moz-will-change: transform;
-    display: none;
+    /* display: none; */
     z-index: 2;
     position: absolute;
 }
@@ -116,18 +116,16 @@ body {
 
 .pink {
     background: pink;
- -moz-will-change: transform;
+    -moz-will-change: transform;
     will-change: transform;
     transform: translate3d(360px, 420px, 0px);
-
 }
 
 .orange {
     background: orange;
     will-change: transform;
-     -moz-will-change: transform;
+    -moz-will-change: transform;
     transform: translate3d(390px, 420px, 0px);
-
 }
 
 .red {
@@ -139,11 +137,9 @@ body {
 
 .cyan {
     background: cyan;
-
     -moz-will-change: transform;
     will-change: transform;
     transform: translate3d(450px, 420px, 0px);
-
 }
 
 .left_eye {
