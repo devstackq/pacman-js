@@ -300,12 +300,12 @@ const killGhost = (time) => {
 // fix - if pacamn pos -> doorEnemy
 // layout, paint ngc,
 // each ghost - use webworker, pacman
-//audit webpage
-//create bot center Map
+
+//audit webpage lighthouse
 //add sounds
-//DRY, SR, 
-//delete comment
-//    //loop ghsot check || condition ? || func - ghost == pacman
+//DRY, SR
+//delete no need comment
+//loop ghsot check || condition ? || func - ghost == pacman
 
 const turnNow = (curr) => {
     let dir = ghost.redGhost.direct;
@@ -342,13 +342,52 @@ let directsY = ["up", "down"];
 
 //case currDir = left, if nextPost ==1, and downDirect nextPos == 1, gotoUp
 
-const outerPerimeter = (direct, typeGhost, typePerimetr) => {
+const findAndDestroy = (direct, typeGhost, typePerimetr) => {
 
     let randomNumber = Math.floor(Math.random() * 2);
 
     ghosts[typeGhost].basePos = Math.floor(
         (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
     );
+
+    if (typePerimetr == 'square') {
+
+        if (!ghosts[typeGhost].goOutBox && ghosts[typeGhost].basePos === 377 || ghosts[typeGhost].basePos === 378) {
+            ghosts[typeGhost].direct = 'up'
+            ghosts[typeGhost].goOutBox = false
+        }
+
+        if ((ghosts[typeGhost].direct === 'left') && (ghosts[typeGhost].basePos - 1 === 146 || ghosts[typeGhost].basePos - 1 === 653)) {
+            ghosts[typeGhost].direct = 'down'
+        }
+
+        if ((ghosts[typeGhost].direct === 'left') && (ghosts[typeGhost].basePos - 1 === 824 || ghosts[typeGhost].basePos - 1 === 650)) {
+            ghosts[typeGhost].direct = 'up'
+        }
+
+        if ((ghosts[typeGhost].direct === 'right') && (ghosts[typeGhost].basePos + 1 === 827 || ghosts[typeGhost].basePos + 1 === 665)) {
+            ghosts[typeGhost].direct = 'up'
+        }
+
+        if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 161 || ghosts[typeGhost].basePos + 1 === 662)) {
+            ghosts[typeGhost].direct = 'down'
+        }
+
+        if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 161)) {
+            ghosts[typeGhost].direct = 'left'
+        }
+
+        if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 146)) {
+            ghosts[typeGhost].direct = 'right'
+        }
+
+        if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos + 28 === 665)) {
+            ghosts[typeGhost].direct = 'left'
+        }
+        if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos + 28 === 650)) {
+            ghosts[typeGhost].direct = 'right'
+        }
+    }
 
     //turnNow()
     if (direct === "left") {
@@ -399,41 +438,28 @@ const intravenousPerimeter = (direct, typeGhost) => {
         (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
     );
     //go out box
-
     if (!ghosts[typeGhost].goOutBox && ghosts[typeGhost].basePos === 377 || ghosts[typeGhost].basePos === 378) {
         ghosts[typeGhost].direct = 'up'
         ghosts[typeGhost].goOutBox = false
     }
     //set bound
-    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 320)) {
+    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 320 || ghosts[typeGhost].basePos - 1 === 569)) {
         ghosts[typeGhost].direct = 'up'
     }
-    if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 323)) {
-        ghosts[typeGhost].direct = 'up'
-    }
-    if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 494)) {
-        ghosts[typeGhost].direct = 'left'
-    }
-    if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos + 28 === 485)) {
+    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 392)) {
         ghosts[typeGhost].direct = 'right'
     }
-    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 569)) {
+    if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 323 || ghosts[typeGhost].basePos + 1 === 578)) {
         ghosts[typeGhost].direct = 'up'
     }
-    if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 578)) {
-        ghosts[typeGhost].direct = 'up'
-    }
-    if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 401)) {
+    if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 494 || ghosts[typeGhost].basePos - 28 === 401)) {
         ghosts[typeGhost].direct = 'left'
     }
-    if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos + 28 === 410)) {
+    if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos + 28 === 485 || ghosts[typeGhost].basePos + 28 === 410)) {
         ghosts[typeGhost].direct = 'right'
     }
     if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 419)) {
         ghosts[typeGhost].direct = 'left'
-    }
-    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 392)) {
-        ghosts[typeGhost].direct = 'right'
     }
     //turnNow()
     if (direct === "left") {
@@ -475,73 +501,6 @@ const intravenousPerimeter = (direct, typeGhost) => {
     }
 }
 
-const squarePerimeter = (direct, typeGhost) => {
-
-    let randomNumber = Math.floor(Math.random() * 2);
-
-    ghosts[typeGhost].basePos = Math.floor(
-        (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
-    );
-
-
-    if ((ghosts[typeGhost].direct === 'left') && (ghosts[typeGhost].basePos - 1 === 146 || ghosts[typeGhost].basePos - 1 === 662)) {
-        ghosts[typeGhost].direct = 'down'
-    }
-
-    if (ghosts[typeGhost].direct === 'left' && (ghosts[typeGhost].basePos - 1 === 650)) {
-        ghosts[typeGhost].direct = 'up'
-    }
-
-    if (ghosts[typeGhost].direct === 'right' && (ghosts[typeGhost].basePos + 1 === 161 || ghosts[typeGhost].basePos + 1 === 653)) {
-        ghosts[typeGhost].direct = 'down'
-    }
-    if (ghosts[typeGhost].direct === 'up' && (ghosts[typeGhost].basePos - 28 === 161)) {
-        ghosts[typeGhost].direct = 'left'
-    }
-
-    if (ghosts[typeGhost].direct === 'down' && (ghosts[typeGhost].basePos - 28 === 665)) {
-        ghosts[typeGhost].direct = 'left'
-    }
-
-    //turnNow()
-    if (direct === "left") {
-        // if not wall, != another ghost || equal pacman
-        if (mapGame[ghosts[typeGhost].basePos - 1] !== 1) {
-            ghosts[typeGhost].basePos -= 1
-            ghosts[typeGhost].posX -= 30;
-        } else {
-            ghosts[typeGhost].direct = directsY[randomNumber];
-            // recutsive iCanGo('right', curr)
-        }
-    }
-    if (direct === "right") {
-        if (mapGame[ghosts[typeGhost].basePos + 1] !== 1) {
-            ghosts[typeGhost].basePos += 1
-            ghosts[typeGhost].posX += 30;
-        } else {
-            ghosts[typeGhost].direct = directsY[randomNumber];
-        }
-    }
-
-    if (direct === "up") {
-
-        if (mapGame[ghosts[typeGhost].basePos - 28] !== 1) {
-            ghosts[typeGhost].posY -= 30;
-            ghosts[typeGhost].basePos -= 28
-        } else {
-            ghosts[typeGhost].direct = directsX[randomNumber];
-        }
-    }
-
-    if (direct === "down") {
-        if (mapGame[ghosts[typeGhost].basePos + 28] !== 1) {
-            ghosts[typeGhost].posY += 30;
-            ghosts[typeGhost].basePos += 28
-        } else {
-            ghosts[typeGhost].direct = directsX[randomNumber];
-        }
-    }
-}
 
 const step = () => {
 
@@ -551,11 +510,11 @@ const step = () => {
 
         if (ghosts.cool < 0) {
 
-            outerPerimeter(ghosts.redGhost.direct, 'redGhost');
-            outerPerimeter(ghosts.orangeGhost.direct, 'orangeGhost');
+            findAndDestroy(ghosts.redGhost.direct, 'redGhost', 'perimeter');
+            findAndDestroy(ghosts.orangeGhost.direct, 'orangeGhost', 'perimeter');
 
             intravenousPerimeter(ghosts.cyanGhost.direct, 'cyanGhost')
-            squarePerimeter(ghosts.pinkGhost.direct, 'pinkGhost')
+            findAndDestroy(ghosts.pinkGhost.direct, 'pinkGhost', 'square')
                 //another algo
             ghosts.cool = 5;
             //render, change pos
@@ -669,7 +628,6 @@ const step = () => {
                     console.log('go kill ghost, ghost return base')
                         //set posX, posY, direction - def
                 }
-
                 if (player.indexMap === ghosts.redGhost.basePos && !player.canKill) {
                     console.log('pacman go  base, life-=1')
                     player.life--;
@@ -681,12 +639,7 @@ const step = () => {
             //speed * 16.7 each 100ms raf  check inside if cond
             //show scoreboard
             props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
-
-
         }
-
-
-
         player.rafId = requestAnimationFrame(step);
     }
 };
