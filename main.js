@@ -1,4 +1,4 @@
-import {mapGame} from './helpers.js'
+import { mapGame } from "./helpers.js";
 //1 wall, 0 coin, 4 cookie, 8 teleport, 3 -empty, 9 freepath
 
 //for work - another thread calculate hard func
@@ -22,7 +22,7 @@ const obj = {};
 //clear interval - when temeout 10sec
 let interval;
 let killTimer;
-let arrGhosts = []
+let arrGhosts = [];
 
 const props = {
   x: "", // for grid row - first render items in Dom - set grid style
@@ -52,50 +52,63 @@ const player = {
   killTime: 10000,
   transX: "", // change mouse pos
   currentPos: 0,
-  nick:'pacman',
+  nick: "pacman",
 };
 //ghost objects - for manipualte game
 const ghosts = {
   pinkGhost: {
-  nick:'pinkGhost',
+    nick: "pinkGhost",
     name: "Pinkī",
     posX: 360,
     posY: 420,
     basePos: 404,
     direct: "right",
     color: "pink",
+    freeze: false,
+    base: false,
   },
   orangeGhost: {
-    nick:'orangeGhost',
+    nick: "orangeGhost",
     name: "Guzuta",
     posX: 390,
     posY: 420,
     basePos: 405,
     direct: "up",
     color: "orange",
+    freeze: false,
+    base: false,
   },
   redGhost: {
-    nick:'redGhost',
+    nick: "redGhost",
     name: "Akabei",
     posX: 420,
     posY: 420,
     basePos: 406,
     direct: "up",
     color: "red",
+    freeze: false,
+    base: false,
   },
   cyanGhost: {
-    nick:'cyanGhost',
+    nick: "cyanGhost",
     name: "Aosuke",
     posX: 450,
     posY: 420,
     basePos: 407,
     direct: "left",
     color: "cyan",
+    freeze: false,
+    base: false,
   },
   cool: 0,
 };
 //pushed all ghost(object) in array
-arrGhosts.push( ghosts.cyanGhost, ghosts.redGhost, ghosts.orangeGhost,  ghosts.pinkGhost)
+arrGhosts.push(
+  ghosts.cyanGhost,
+  ghosts.redGhost,
+  ghosts.orangeGhost,
+  ghosts.pinkGhost
+);
 
 //dom onladed -> get grid elem, -> append - block, then manipulate this dom object, etc
 document.URL.includes("play.html")
@@ -135,20 +148,23 @@ const startTime = () => {
 };
 
 document.addEventListener("keydown", (e) => {
-  
-  
   if (e.code in keys) {
     keys[e.code] = true;
   }
-  if(e.code === 'ArrowLeft' || e.code === 'ArrowRight' || e.code === 'ArrowDown' || e.code === 'ArrowUp' ) {
-  if (!props.inPlay) {
-    props.notify.style.display = "none";
-    props.inPlay = true;
-    player.rafId = requestAnimationFrame(step);
-    //time
-    startTime();
+  if (
+    e.code === "ArrowLeft" ||
+    e.code === "ArrowRight" ||
+    e.code === "ArrowDown" ||
+    e.code === "ArrowUp"
+  ) {
+    if (!props.inPlay) {
+      props.notify.style.display = "none";
+      props.inPlay = true;
+      player.rafId = requestAnimationFrame(step);
+      //time
+      startTime();
+    }
   }
-}
   //esc keydown - show modal page
   if (e.code === "Escape") {
     props.modal.style.display = "flex";
@@ -179,9 +195,11 @@ document.addEventListener("keydown", (e) => {
 //transform translate each item - change posit 0 in Dom
 const render = (...args) => {
   args.forEach((el, i) => {
-    obj[el.nick].style.transform = `translate3d(${el.posX}px, ${el.posY}px, 0px)`;
-  })
-}
+    obj[
+      el.nick
+    ].style.transform = `translate3d(${el.posX}px, ${el.posY}px, 0px)`;
+  });
+};
 const restart = (type) => {
   //set default values
   props.inPlay = false;
@@ -191,18 +209,11 @@ const restart = (type) => {
   player.countCoin = 0;
   player.time.min = 0;
   player.time.sec = 0;
-  ghosts.orangeGhost.basePos = 405;
-  ghosts.pinkGhost.basePos = 404;
-  ghosts.redGhost.basePos = 406;
-  ghosts.cyanGhost.basePos = 407;
-  ghosts.pinkGhost.posX = 360
-  ghosts.pinkGhost.posY = 420
-  ghosts.orangeGhost.posX = 390
-  ghosts.orangeGhost.posY = 420
-  ghosts.cyanGhost.posX = 450
-  ghosts.cyanGhost.posY = 420
-  ghosts.redGhost.posX = 420;
-  ghosts.redGhost.posY = 420;
+
+  ghosts.pinkGhost.base = true;
+  ghosts.redGhost.base = true;
+  ghosts.orangeGhost.base = true;
+  ghosts.cyanGhost.base = true;
 
   if (type == "tryAgain") {
     player.life == 0 ? (player.score = 0) : player.score;
@@ -214,7 +225,7 @@ const restart = (type) => {
     player.life = 5;
     player.score = 0;
   }
-//show notify
+  //show notify
   props.notify.style.display = "block";
   //update time
   clearInterval(interval);
@@ -231,24 +242,27 @@ const restart = (type) => {
       }
     }
   }
-  //render def pos
-  render(player, ghosts.orangeGhost, ghosts.cyanGhost, ghosts.pinkGhost, ghosts.redGhost )
-//start Raf func
-  player.rafId = requestAnimationFrame(step);
 };
 
-const endGame = () => {
+const endGame = (type) => {
   //show notify - you win
-  props.modal.children[0].textContent = `Congrats, Yeap!  Your Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec} s`;
+  let msg = "";
+  if (type == "win") {
+    msg = "Congrats, Yeap! You Win!";
+  } else {
+    msg = "Game over..";
+  }
+
+  props.modal.children[0].textContent = `${msg} Your Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec} s`;
   props.modal.style.display = "flex";
   player.pause = true;
 
   props.modal.children[0].style.display = "block";
   props.modal.children[2].style.display = "block";
   props.modal.children[3].style.display = "block";
-//restart btn
+  //restart btn
   props.modal.children[2].onclick = (e) => {
-    restart();
+    restart("restart");
   };
   //main menu
   props.modal.children[3].onclick = (e) => {
@@ -258,7 +272,6 @@ const endGame = () => {
 };
 //if pacman eat cookie - canKill ghost
 const killGhost = (time) => {
-
   if (player.canKill) {
     obj.pacman.style.backgroundColor = "red";
     //ghost change color
@@ -266,67 +279,86 @@ const killGhost = (time) => {
       player.canKill = false;
       obj.pacman.style.backgroundColor = "#fff";
 
+      ghosts.pinkGhost.base = false;
+      ghosts.redGhost.base = false;
+      ghosts.orangeGhost.base = false;
+      ghosts.cyanGhost.base = false;
+
       // manageGhosts("goAway"); //set default color ghost
     }, time); //10sec
   }
 };
 
-// chrome - audit- show realtime fps - beacuse layer Work, work - will cahnge
+// chrome - audit- show realtime fps - beacuse layer Work, work - will change - web worker
 //testGame, show audit github
+//worker for pacman
 
 //TODO
-  //fix update page - restore all props -> fix - mozila browser bug?
-// add audio
-//optimize worker.js file
+fix - when pacman goTOGhost -> must be death,
 //change bg ghosts
+// add audio,
 //add keyframe - when pacman death
+
+//test project - for crash, audit check github
+
+//optimize code Best practice
 //obj - refactor - write  data in props.pacman , etc - chec fps
 
-//worker for pacman
-// worker.port.postMessage([keys]}
-
-
-// if pacman == ghost & pacman.canKill == true, ghostGoHOme
-const goHomeGhost = (ghost) => {
-  ghost.basePos = 405;
-  arrGhosts.forEach((ghost, idx)=>{})
-};
-
-// if pacman == ghost & pacman.canKill == false, pacmanGoHOme
 const goHome = () => {
   player.life--;
   player.posX = 425;
   player.posY = 695;
   player.indexMap = 658;
-  render(player)
+  render(player);
 };
 
 const step = () => {
-
   if (props.inPlay) {
     ghosts.cool--;
     if (ghosts.cool < 0) {
       //send data - in  worker
+
       worker.port.postMessage([
-        { dir: ghosts.cyanGhost.direct, ghost: "cyanGhost" },
-        { dir: ghosts.redGhost.direct, ghost: "redGhost", type: "perimeter" },
+        {
+          dir: ghosts.cyanGhost.direct,
+          ghost: "cyanGhost",
+          base: ghosts.cyanGhost.base,
+        },
+        {
+          dir: ghosts.redGhost.direct,
+          ghost: "redGhost",
+          type: "perimeter",
+          base: ghosts.redGhost.base,
+        },
         {
           dir: ghosts.orangeGhost.direct,
           ghost: "orangeGhost",
           type: "perimeter",
+          base: ghosts.orangeGhost.base,
         },
-        { dir: ghosts.pinkGhost.direct, ghost: "pinkGhost", type: "square" },
+        {
+          dir: ghosts.pinkGhost.direct,
+          ghost: "pinkGhost",
+          type: "square",
+          base: ghosts.pinkGhost.base,
+        },
       ]);
       //get calculated data from worker, -> set updated value -> render items
       worker.port.onmessage = (e) => {
-        arrGhosts.forEach((ghost, idx)=>{
-          ghost.direct= e.data[idx][0];
+        arrGhosts.forEach((ghost, idx) => {
+          ghost.direct = e.data[idx][0];
           ghost.basePos = e.data[idx][1];
           ghost.posX = e.data[idx][2];
           ghost.posY = e.data[idx][3];
-        })
+        });
       };
-      render(ghosts.cyanGhost, ghosts.redGhost, ghosts.orangeGhost, ghosts.pinkGhost)
+
+      render(
+        ghosts.cyanGhost,
+        ghosts.redGhost,
+        ghosts.orangeGhost,
+        ghosts.pinkGhost
+      );
       ghosts.cool = 6;
     }
     player.cool--;
@@ -337,7 +369,7 @@ const step = () => {
       player.indexMap = Math.floor(
         ((player.posY - 5) / 30) * 28 + (player.posX - 5) / 30
       );
-    //check if key press equal  Right, nextPos in mapGame != 1, update value, goToRight
+      //check if key press equal  Right, nextPos in mapGame != 1, update value, goToRight
       if (keys.ArrowLeft) {
         if (mapGame[player.indexMap - 1] !== 1) {
           player.posX -= 30;
@@ -364,7 +396,7 @@ const step = () => {
           player.posY += 30;
         }
       }
-//if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
+      //if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
       if (mapGame[player.indexMap] !== 1) {
         if (mapGame[player.indexMap] === 0 || mapGame[player.indexMap] === 4) {
           if (mapGame[player.indexMap] === 0) {
@@ -374,13 +406,13 @@ const step = () => {
           if (mapGame[player.indexMap] === 4) {
             player.score += 50;
             player.canKill = true;
-//set timeout 10s - for kill ghost
+            //set timeout 10s - for kill ghost
             clearTimeout(killTimer);
             killGhost(player.killTime);
             player.countCoin++; // count coin for - check win game
           }
           mapGame[player.indexMap] = 9;
-//check posPacman - isTeleport?
+          //check posPacman - isTeleport?
           if (mapGame[player.indexMap] === 8) {
             if (keys.ArrowLeft) {
               player.posX += 840;
@@ -390,15 +422,13 @@ const step = () => {
           }
           //reload game
           if (player.countCoin === 244 && player.life > 0) {
-            restart("tryAgain");
-            window.cancelAnimationFrame(player.rafId);
+            endGame("win");
+          } else if (player.life === 0) {
+            endGame("lost");
           }
+          // restart("tryAgain");
+          window.cancelAnimationFrame(player.rafId);
           //win state, show modal window with stats
-          if (player.countCoin === 244 && player.life === 0) {
-            // console.log("win");
-            endGame();
-            window.cancelAnimationFrame(player.rafId);
-          }
         }
         //if teleport - update posX
         if (mapGame[player.indexMap] === 8) {
@@ -417,29 +447,41 @@ const step = () => {
         ) {
           //change opacity - coin
           mapItemsInDom[player.indexMap].children[0].style.opacity = 0;
-         //change mouth - pacman
+          //change mouth - pacman
           obj.pacman_mouth.style.transform = player.transX;
-          render(player)
+          render(player);
         }
-        
-//canKill false -> goHomePacman
-if(!player.canKill) {
-        if (player.indexMap === ghosts.redGhost.basePos || player.indexMap === ghosts.cyanGhost.basePos || player.indexMap === ghosts.pinkGhost.basePos || player.indexMap === ghosts.orangeGhost.basePos ) {
-          goHome();
-          player.life--;
+        //canKill false -> goHomePacman
+        if (!player.canKill) {
+          if (
+            player.indexMap === ghosts.redGhost.basePos ||
+            player.indexMap === ghosts.cyanGhost.basePos ||
+            player.indexMap === ghosts.pinkGhost.basePos ||
+            player.indexMap === ghosts.orangeGhost.basePos
+          ) {
+            goHome();
+          }
         }
-      }else {
-        if (player.indexMap === ghosts.redGhost.basePos || player.indexMap === ghosts.cyanGhost.basePos || player.indexMap === ghosts.pinkGhost.basePos || player.indexMap === ghosts.orangeGhost.basePos ) {
-          player.score += 200;
-          // console.log("go kill ghost, ghost return base");
-          for each ?
-          goHomeGhost(ghosts.redGhost.basePos);
+        if (player.canKill) {
+          if (ghosts.orangeGhost.basePos === player.indexMap) {
+            player.score += 200;
+            ghosts.orangeGhost.base = true;
+          } else if (ghosts.redGhost.basePos === player.indexMap) {
+            player.score += 200;
+            ghosts.redGhost.base = true;
+          } else if (ghosts.cyanGhost.basePos === player.indexMap) {
+            player.score += 200;
+            ghosts.cyanGhost.base = true;
+          } else if (ghosts.pinkGhost.basePos === player.indexMap) {
+            player.score += 200;
+            ghosts.pinkGhost.base = true;
+          }
         }
-      }
       }
       player.cool = 6;
       //updated value - render scoreboard
       props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
+      render(player);
     }
     player.rafId = requestAnimationFrame(step);
   }
