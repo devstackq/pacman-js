@@ -319,6 +319,7 @@ const killGhost = (time) => {
 //worker for pacman
 
 //TODO
+//refactor - if cookie, just 10 sec - don kill pacman и все
 //change bg ghosts
 // add audio,
 //add keyframe - when pacman death
@@ -345,31 +346,23 @@ const step = () => {
         {
           dir: ghosts.cyanGhost.direct,
           ghost: "cyanGhost",
-          base: ghosts.cyanGhost.base,
-          posX: ghosts.cyanGhost.posX,
-          posY: ghosts.cyanGhost.posY,
-          basePos: ghosts.cyanGhost.basePos,
         },
         {
           dir: ghosts.redGhost.direct,
           ghost: "redGhost",
           type: "perimeter",
-          base: ghosts.redGhost.base,
         },
         {
           dir: ghosts.orangeGhost.direct,
           ghost: "orangeGhost",
           type: "perimeter",
-          base: ghosts.orangeGhost.base,
         },
         {
           dir: ghosts.pinkGhost.direct,
           ghost: "pinkGhost",
           type: "square",
-          base: ghosts.pinkGhost.base,
         },
       ]);
-      console.log(1);
       //get calculated data from worker, -> set updated value -> render items
       worker.port.onmessage = (e) => {
         arrGhosts.forEach((ghost, idx) => {
@@ -378,11 +371,34 @@ const step = () => {
           ghost.posX = e.data[idx][2];
           ghost.posY = e.data[idx][3];
         });
-        console.log(e.data);
       };
+
+      // if (player.canKill) {
+      //   if (ghosts.orangeGhost.basePos === player.indexMap) {
+      //     player.score += 200;
+      //     ghosts.orangeGhost.base = true;
+      //   } else if (ghosts.redGhost.basePos === player.indexMap) {
+      //     player.score += 200;
+      //     ghosts.redGhost.base = true;
+      //   } else if (ghosts.cyanGhost.basePos === player.indexMap) {
+      //     player.score += 200;
+      //     ghosts.cyanGhost.base = true;
+      //   } else if (ghosts.pinkGhost.basePos === player.indexMap) {
+      //     player.score += 200;
+      //     ghosts.pinkGhost.base = true;
+      //   }
+      // }
+
+      render(
+        ghosts.cyanGhost,
+        ghosts.redGhost,
+        ghosts.orangeGhost,
+        ghosts.pinkGhost
+      );
+
       ghosts.cool = 6;
     }
-
+    //worker ?
     player.cool--;
     if (player.cool < 0) {
       //get index - by formula, posX, posY - index for mapGame
@@ -441,12 +457,10 @@ const step = () => {
               player.posX -= 840;
             }
           }
-          //reload game
           //win state, show modal window with stats
           if (player.countCoin === 244 && player.life > 0) {
             endGame("win");
           }
-          // restart("tryAgain");
         }
         //if teleport - update posX
         if (mapGame[player.indexMap] === 8) {
@@ -483,36 +497,12 @@ const step = () => {
             }
           }
         }
-        if (player.canKill) {
-          if (ghosts.orangeGhost.basePos === player.indexMap) {
-            player.score += 200;
-            ghosts.orangeGhost.base = true;
-          } else if (ghosts.redGhost.basePos === player.indexMap) {
-            player.score += 200;
-            ghosts.redGhost.base = true;
-          } else if (ghosts.cyanGhost.basePos === player.indexMap) {
-            player.score += 200;
-            ghosts.cyanGhost.base = true;
-          } else if (ghosts.pinkGhost.basePos === player.indexMap) {
-            player.score += 200;
-            ghosts.pinkGhost.base = true;
-          }
-        }
       }
-
       //updated value - render scoreboard
       props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
-      // render(player);
-
-      player.cool = 5;
+      render(player);
+      player.cool = 6;
     }
-    render(
-      ghosts.cyanGhost,
-      ghosts.redGhost,
-      ghosts.orangeGhost,
-      ghosts.pinkGhost,
-      player
-    );
 
     player.rafId = requestAnimationFrame(step);
   }
