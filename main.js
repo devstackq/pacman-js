@@ -168,9 +168,7 @@ document.addEventListener("keydown", (e) => {
       startTime();
     }
   }
-  // if (player.pause) {
-  //   window.cancelAnimationFrame(player.rafId);
-  // }
+
   //esc keydown - show modal page
   if (e.code === "Escape") {
     props.modal.style.display = "flex";
@@ -207,8 +205,8 @@ const render = (...args) => {
   });
 };
 const restart = (e) => {
-  //ebat nahoi, kek
-  location.reload();
+
+  window.location.reload();
 
   //set default values
   props.inPlay = false;
@@ -297,22 +295,11 @@ const killGhost = (time) => {
     }, time); //10sec
   }
 };
-//hint
-// chrome - audit- show realtime fps - beacuse layer Work, work - will change - web worker, - use - transition
-//check without restart
-
-//testGame, show audit github
-//worker for pacman
 
 //TODO
-//change bg ghosts
 // add audio,
+//worker for pacman
 //add keyframe - when pacman death
-
-//test project - for crash, audit check github
-
-//optimize code Best practice
-//obj - refactor - write  data in props.pacman , etc - chec fps
 
 const step = () => {
   if (props.inPlay) {
@@ -350,7 +337,6 @@ const step = () => {
           ghost.posY = e.data[idx][3];
         });
       };
-
       //get index - by formula, posX, posY - index for mapGame
       // formula = y / 30 * 28 + x / 30
       player.indexMap = Math.floor(
@@ -421,19 +407,6 @@ const step = () => {
             player.posX -= 840;
           }
         }
-        //if indexPacman != doorEnemy & teleport -> render
-        if (
-          player.indexMap !== 391 &&
-          player.indexMap !== 420 &&
-          player.indexMap !== 350 &&
-          player.indexMap !== 349
-        ) {
-          //change opacity - coin
-          mapItemsInDom[player.indexMap].children[0].style.opacity = 0;
-
-          //change mouth - pacman
-          // render(player);
-        }
         //canKill false -> goHomePacman
         if (!player.canKill) {
           if (
@@ -448,10 +421,21 @@ const step = () => {
             player.posY = 695;
             player.indexMap = 658;
           }
-          if (player.life === 4) {
+          if (player.life === 0) {
             endGame("lost");
           }
         }
+             //if indexPacman != doorEnemy & teleport -> render
+             if (
+              player.indexMap !== 391 &&
+              player.indexMap !== 420 &&
+              player.indexMap !== 350 &&
+              player.indexMap !== 349
+            ) {
+              //change opacity - coin
+              mapItemsInDom[player.indexMap].children[0].style.opacity = 0;
+            }
+          //change mouth - pacman
         obj.pacman_mouth.style.transform = player.transX;
         obj.pacman.style.transform = `translate3d(${player.posX}px, ${player.posY}px, 0px)`;
       }
