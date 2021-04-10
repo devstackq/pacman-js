@@ -135,7 +135,9 @@ document.URL.includes("play.html")
 document.addEventListener("keyup", (e) => {
   if (e.code in keys) {
     keys[e.code] = false;
-    player;
+  }
+  if (player.pause) {
+    window.cancelAnimationFrame(player.rafId);
   }
 });
 
@@ -166,9 +168,9 @@ document.addEventListener("keydown", (e) => {
       startTime();
     }
   }
-  if (player.pause) {
-    window.cancelAnimationFrame(player.rafId);
-  }
+  // if (player.pause) {
+  //   window.cancelAnimationFrame(player.rafId);
+  // }
   //esc keydown - show modal page
   if (e.code === "Escape") {
     props.modal.style.display = "flex";
@@ -230,18 +232,8 @@ const restart = (e) => {
   ghosts.redGhost.posX = 420;
   ghosts.redGhost.posY = 420;
 
-  ghosts.pinkGhost.base = true;
-  ghosts.redGhost.base = true;
-  ghosts.orangeGhost.base = true;
-  ghosts.cyanGhost.base = true;
-
   ghosts.cool = 0;
-
   // if (type == "tryAgain") {
-  //   player.life == 0 ? (player.score = 0) : player.score;
-  //   ghosts.cool = 0;
-  // }
-
   player.cool = 0;
   player.life = 5;
   player.score = 0;
@@ -269,13 +261,10 @@ const endGame = (type) => {
   //show notify - you win
   let msg = "";
   if (type == "win") {
-    player.pause = true;
     msg = "Congrats, Yeap! You Win!";
   } else {
-    player.pause = true;
     msg = "Game over..";
   }
-  player.pause = true;
 
   props.modal.children[0].textContent = `${msg} Your Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec} s`;
   props.modal.style.display = "flex";
@@ -284,6 +273,7 @@ const endGame = (type) => {
   props.modal.children[0].style.display = "block";
   props.modal.children[2].style.display = "block";
   props.modal.children[3].style.display = "block";
+
   //restart btn
   props.modal.children[2].onclick = (e) => {
     e.preventDefault();
@@ -295,6 +285,7 @@ const endGame = (type) => {
     window.location.href = "http://localhost:8000/";
   };
 };
+
 //if pacman eat cookie - canKill ghost
 const killGhost = (time) => {
   if (player.canKill) {
@@ -303,11 +294,6 @@ const killGhost = (time) => {
     killTimer = setTimeout(() => {
       player.canKill = false;
       obj.pacman.style.backgroundColor = "#fff";
-
-      ghosts.pinkGhost.base = false;
-      ghosts.redGhost.base = false;
-      ghosts.orangeGhost.base = false;
-      ghosts.cyanGhost.base = false;
     }, time); //10sec
   }
 };
@@ -319,7 +305,6 @@ const killGhost = (time) => {
 //worker for pacman
 
 //TODO
-//refactor - if cookie, just 10 sec - don kill pacman и все
 //change bg ghosts
 // add audio,
 //add keyframe - when pacman death
@@ -329,18 +314,11 @@ const killGhost = (time) => {
 //optimize code Best practice
 //obj - refactor - write  data in props.pacman , etc - chec fps
 
-const goHome = () => {
-  player.life--;
-  player.posX = 425;
-  player.posY = 695;
-  player.indexMap = 658;
-  render(player);
-};
-
 const step = () => {
   if (props.inPlay) {
-    ghosts.cool--;
-    if (ghosts.cool < 0) {
+    //worker ?
+    player.cool--;
+    if (player.cool < 0) {
       //send data - in  worker
       worker.port.postMessage([
         {
@@ -373,34 +351,6 @@ const step = () => {
         });
       };
 
-      // if (player.canKill) {
-      //   if (ghosts.orangeGhost.basePos === player.indexMap) {
-      //     player.score += 200;
-      //     ghosts.orangeGhost.base = true;
-      //   } else if (ghosts.redGhost.basePos === player.indexMap) {
-      //     player.score += 200;
-      //     ghosts.redGhost.base = true;
-      //   } else if (ghosts.cyanGhost.basePos === player.indexMap) {
-      //     player.score += 200;
-      //     ghosts.cyanGhost.base = true;
-      //   } else if (ghosts.pinkGhost.basePos === player.indexMap) {
-      //     player.score += 200;
-      //     ghosts.pinkGhost.base = true;
-      //   }
-      // }
-
-      render(
-        ghosts.cyanGhost,
-        ghosts.redGhost,
-        ghosts.orangeGhost,
-        ghosts.pinkGhost
-      );
-
-      ghosts.cool = 6;
-    }
-    //worker ?
-    player.cool--;
-    if (player.cool < 0) {
       //get index - by formula, posX, posY - index for mapGame
       // formula = y / 30 * 28 + x / 30
       player.indexMap = Math.floor(
@@ -440,10 +390,11 @@ const step = () => {
             player.score += 10;
             player.countCoin++;
           }
+          //neuyazvimost pacman 10 sec
           if (mapGame[player.indexMap] === 4) {
             player.score += 50;
             player.canKill = true;
-            //set timeout 10s - for kill ghost
+
             clearTimeout(killTimer);
             killGhost(player.killTime);
             player.countCoin++; // count coin for - check win game
@@ -479,9 +430,9 @@ const step = () => {
         ) {
           //change opacity - coin
           mapItemsInDom[player.indexMap].children[0].style.opacity = 0;
+
           //change mouth - pacman
-          obj.pacman_mouth.style.transform = player.transX;
-          render(player);
+          // render(player);
         }
         //canKill false -> goHomePacman
         if (!player.canKill) {
@@ -491,19 +442,30 @@ const step = () => {
             player.indexMap === ghosts.pinkGhost.basePos ||
             player.indexMap === ghosts.orangeGhost.basePos
           ) {
-            goHome();
-            if (player.life === 0) {
-              endGame("lost");
-            }
+            //goHomePacman
+            player.life--;
+            player.posX = 425;
+            player.posY = 695;
+            player.indexMap = 658;
+          }
+          if (player.life === 4) {
+            endGame("lost");
           }
         }
+        obj.pacman_mouth.style.transform = player.transX;
+        obj.pacman.style.transform = `translate3d(${player.posX}px, ${player.posY}px, 0px)`;
       }
+      render(
+        ghosts.redGhost,
+        ghosts.orangeGhost,
+        ghosts.cyanGhost,
+        ghosts.pinkGhost
+      );
       //updated value - render scoreboard
       props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
-      render(player);
+      // render(player);
       player.cool = 6;
     }
-
     player.rafId = requestAnimationFrame(step);
   }
 };
