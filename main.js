@@ -47,6 +47,7 @@ const keys = {
     ArrowUp: false,
     ArrowDown: false,
 };
+let rafId =0
 
 //manage dom elems - coin opacity
 const mapItemsInDom = [];
@@ -86,6 +87,10 @@ const player = {
     transX: "", // change mouse pos
     currentPos: 0,
     nick: "pacman",
+    showMenu : false,
+    gameState : '',
+    goGoHome : false,
+    direct : '',
 };
 //ghost objects - for manipualte game
 
@@ -144,6 +149,7 @@ arrGhosts.push(
     ghosts.pinkGhost
 );
 
+
 //dom onladed -> get grid elem, -> append - block, then manipulate this dom object, etc
 document.URL.includes("play.html") ?
     document.addEventListener("DOMContentLoaded", () => {
@@ -157,11 +163,10 @@ document.URL.includes("play.html") ?
         //set default pos in Dom
         obj.pacman.style.transform = `translate3d(425px, 695px,0)`;
         obj.redGhost = document.querySelector("div.red");
-        obj.orangeGhost = document.querySelector("div.orange");
+        obj.redGhost = document.querySelector("div.red");obj.orangeGhost = document.querySelector("div.orange");
         obj.pinkGhost = document.querySelector("div.pink");
         obj.cyanGhost = document.querySelector("div.cyan");
         createBoard();
-        // console.log(props.grid.children.length, temp.length);
     }) :
     null;
 
@@ -170,7 +175,8 @@ document.addEventListener("keyup", (e) => {
         keys[e.code] = false;
     }
     if (player.pause) {
-        window.cancelAnimationFrame(player.rafId);
+        window.cancelAnimationFrame(rafId);
+        clearInterval(interval);
     }
 });
 
@@ -178,14 +184,17 @@ const startTime = () => {
     interval = setInterval(() => {
         player.time.sec += 1;
         player.time.sec === 60 ?
-            ((player.time.sec = 0), (player.time.min += 1)) :
-            0;
+            ((player.time.sec = 0), (player.time.min += 1)) : 0;
     }, 1000);
 };
 
 document.addEventListener("keydown", (e) => {
     if (e.code in keys) {
         keys[e.code] = true;
+    }
+    if (player.pause) {
+        clearInterval(interval);
+        window.cancelAnimationFrame(rafId);
     }
     if (
         e.code === "ArrowLeft" ||
@@ -196,37 +205,14 @@ document.addEventListener("keydown", (e) => {
         if (!props.inPlay) {
             props.notify.style.display = "none";
             props.inPlay = true;
-            player.rafId = requestAnimationFrame(step);
+            rafId = requestAnimationFrame(step);
             //time
             startTime();
         }
     }
-
-    //esc keydown - show modal page
-    if (e.code === "Escape") {
-        props.modal.style.display = "flex";
-        // continue
-        props.modal.children[1].style.display = "block";
-        player.pause = true;
-        window.cancelAnimationFrame(player.rafId);
-        clearInterval(interval);
-        //continue btn
-        props.modal.children[1].onclick = (e) => {
-            player.play = requestAnimationFrame(step);
-            player.pause = false;
-            props.inPlay = true;
-            props.modal.style.display = "none";
-            startTime();
-        };
-        //restart btn
-        props.modal.children[2].onclick = (e) => {
-            //set def value
-            props.modal.style.display = "none";
-            restart();
-        };
-        props.modal.children[3].onclick = (e) => {
-            window.location.href = "http://localhost:5500/";
-        };
+    //esc || showModal keydown - show modal page
+    if (e.code === "Escape" ||  player.showMenu !== false ) {
+        endGame()
     }
 });
 //transform translate each item - change posit 0 in Dom
@@ -237,8 +223,10 @@ const render = (...args) => {
         ].style.transform = `translate3d(${el.posX}px, ${el.posY}px, 0px)`;
     });
 };
-const restart = (e) => {
-
+ 
+const restart = () => {
+    
+    window.cancelAnimationFrame(rafId)
     window.location.reload();
 
     //set default values
@@ -288,33 +276,46 @@ const restart = (e) => {
     props.modal.style.display = "none";
 };
 
-const endGame = (type) => {
+const endGame = () => {
+
     //show notify - you win
-    let msg = "";
-    if (type == "win") {
-        msg = "Congrats, Yeap! You Win!";
-    } else {
-        msg = "Game over..";
-    }
-
-    props.modal.children[0].textContent = `${msg} Your Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec} s`;
     props.modal.style.display = "flex";
-    player.pause = true;
+    if(player.showMenu) {
 
-    props.modal.children[0].style.display = "block";
-    props.modal.children[2].style.display = "block";
-    props.modal.children[3].style.display = "block";
+            let msg = "";
+            if (player.gameState === "win") {
+                msg = "Congrats, Yeap! You Win!";
+            } else {
+                msg = "Game over..";
+            }
+            props.modal.children[0].style.display = 'block'
+            props.modal.children[0].textContent = `${msg} Your Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec} s`;
+        }else {
+            if(player.life > 0) {
+    // continue
+    props.modal.children[1].style.display = "block";
+    }
+    }
+            //continue btn
+            props.modal.children[1].onclick = (e) => {
+                rafId = requestAnimationFrame(step);
+                player.pause = false;
+                props.inPlay = true;
+                props.modal.style.display = "none";
+                startTime();
+            };
+            //restart btn
+            props.modal.children[2].onclick = (e) => {
+                //set def value
+                props.modal.style.display = "none";
+                restart();
+            };
+            props.modal.children[3].onclick = (e) => {
+                window.location.href = "http://localhost:5500/";
+            };
+            window.cancelAnimationFrame(rafId);
+            clearInterval(interval);
 
-    //restart btn
-    props.modal.children[2].onclick = (e) => {
-        e.preventDefault();
-        restart(e);
-    };
-    //main menu
-    props.modal.children[3].onclick = (e) => {
-        e.preventDefault();
-        window.location.href = "http://localhost:5500/";
-    };
 };
 
 //if pacman eat cookie - canKill ghost
@@ -333,42 +334,68 @@ const killGhost = (time) => {
 // add audio,
 //worker for pacman
 //add keyframe - when pacman death
+//1 object by refer send - worker and main thread
+//start project -> History || scorebaord
+
+//if next+1 ? check go pacman ?
+//|| pacman direct == ghost direct ? check
+
+       //try realize 1 main therad ghost algo -> and check intersection, then check Fps
+
+                    //bot stay an d thinking, timing bot & ghost  other
+            //here change, || bgThread fastly then main thread ?, off setInterval check, ghost data - firstly ?
+            //  console.log(player.indexMap, 'pacman',  ghosts.redGhost.basePos, 'red', ghosts.cyanGhost.basePos,  ghosts.cyanGhost.direct, 'cyan',  ghosts.pinkGhost.basePos, 'pink',ghosts.orangeGhost.basePos, 'orange'  )
+            
+            // if(player.direct =='up') {
+            //     if(player.indexMap+28  === ghosts.pinkGhost.basePos) {
+            //         player.goGoHome = true
+            //     }
+            // }
+cookie, interesct
+            //stupid bot v 3, refactor with current commit, - without worker, add cookie -> killGhost
+            // || refactor send Data in worker, object - by refer, ghost, player obj, check inside/, check inside worker
+            //if pacmanIndex == ghost.index, comapere two objects -> send result condition - main thread, if intersect - pacmanGohome
 
 const step = () => {
+
     if (props.inPlay) {
         //worker ?
         player.cool--;
         if (player.cool < 0) {
-            //send data - in  worker
-            worker.port.postMessage([{
-                    dir: ghosts.cyanGhost.direct,
-                    ghost: "cyanGhost",
-                },
-                {
-                    dir: ghosts.redGhost.direct,
-                    ghost: "redGhost",
-                    type: "perimeter",
-                },
-                {
-                    dir: ghosts.orangeGhost.direct,
-                    ghost: "orangeGhost",
-                    type: "perimeter",
-                },
-                {
-                    dir: ghosts.pinkGhost.direct,
-                    ghost: "pinkGhost",
-                    type: "square",
-                },
-            ]);
-            //get calculated data from worker, -> set updated value -> render items
-            worker.port.onmessage = (e) => {
-                arrGhosts.forEach((ghost, idx) => {
-                    ghost.direct = e.data[idx][0];
-                    ghost.basePos = e.data[idx][1];
-                    ghost.posX = e.data[idx][2];
-                    ghost.posY = e.data[idx][3];
-                });
-            };
+ 
+   
+                //send data - in  worker
+                worker.port.postMessage([
+                    {dir: ghosts.cyanGhost.direct, ghost: "cyanGhost"},
+                    {dir: ghosts.redGhost.direct,   ghost: "redGhost", type: "perimeter"},
+                    {dir: ghosts.orangeGhost.direct,   ghost: "orangeGhost", type: "perimeter"},
+                    {dir: ghosts.pinkGhost.direct, ghost: "pinkGhost", type: "square"},
+                ]);
+                //get calculated data from worker, -> set updated value -> render items
+                worker.port.onmessage = (e) => {
+                //not use forEach
+                    ghosts.cyanGhost.direct = e.data[0][0]
+                    ghosts.cyanGhost.basePos = e.data[0][1]
+                    ghosts.cyanGhost.posX = e.data[0][2]
+                    ghosts.cyanGhost.posY = e.data[0][3]
+    
+                    ghosts.redGhost.direct = e.data[1][0]
+                    ghosts.redGhost.basePos = e.data[1][1]
+                    ghosts.redGhost.posX = e.data[1][2]
+                    ghosts.redGhost.posY = e.data[1][3]
+    
+                    ghosts.orangeGhost.direct = e.data[2][0]
+                    ghosts.orangeGhost.basePos = e.data[2][1]
+                    ghosts.orangeGhost.posX = e.data[2][2]
+                    ghosts.orangeGhost.posY = e.data[2][3]
+    
+                    ghosts.pinkGhost.direct = e.data[3][0]
+                    ghosts.pinkGhost.basePos = e.data[3][1]
+                    ghosts.pinkGhost.posX = e.data[3][2]
+                    ghosts.pinkGhost.posY = e.data[3][3]
+
+                }
+
             //get index - by formula, posX, posY - index for mapGame
             // formula = y / 30 * 28 + x / 30
             player.indexMap = Math.floor(
@@ -401,6 +428,26 @@ const step = () => {
                     player.posY += 30;
                 }
             }
+
+            if (!player.canKill) {
+                if(player.indexMap === ghosts.redGhost.basePos || player.indexMap === ghosts.cyanGhost.basePos
+                    || player.indexMap === ghosts.pinkGhost.basePos ||player.indexMap === ghosts.orangeGhost.basePos) {
+
+                   console.log(player.indexMap)
+                    player.life--;
+                    player.posX = 425;
+                    player.posY = 695;
+                    player.indexMap = 658;
+                    
+                    if (player.life === 0) {
+                        player.gameState = 'lose'
+                        player.pause = true
+                        player.showMenu = true
+                        endGame()
+                    }
+                }
+            }
+
             //if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
             if (mapGame[player.indexMap] !== 1) {
                 if (mapGame[player.indexMap] === 0 || mapGame[player.indexMap] === 4) {
@@ -408,7 +455,7 @@ const step = () => {
                         player.score += 10;
                         player.countCoin++;
                     }
-                    //neuyazvimost pacman 10 sec
+                    //Invulnerable pacman 10 sec
                     if (mapGame[player.indexMap] === 4) {
                         player.score += 50;
                         player.canKill = true;
@@ -428,7 +475,10 @@ const step = () => {
                     }
                     //win state, show modal window with stats
                     if (player.countCoin === 244 && player.life > 0) {
-                        endGame("win");
+                        player.showMenu = true
+                        player.pause = true
+                        player.gameState = 'win'
+                        endGame()
                     }
                 }
                 //if teleport - update posX
@@ -440,23 +490,6 @@ const step = () => {
                     }
                 }
                 //canKill false -> goHomePacman
-                if (!player.canKill) {
-                    if (
-                        player.indexMap === ghosts.redGhost.basePos ||
-                        player.indexMap === ghosts.cyanGhost.basePos ||
-                        player.indexMap === ghosts.pinkGhost.basePos ||
-                        player.indexMap === ghosts.orangeGhost.basePos
-                    ) {
-                        //goHomePacman
-                        player.life--;
-                        player.posX = 425;
-                        player.posY = 695;
-                        player.indexMap = 658;
-                    }
-                    if (player.life === 0) {
-                        endGame("lost");
-                    }
-                }
                 //if indexPacman != doorEnemy & teleport -> render
                 if (
                     player.indexMap !== 391 &&
@@ -469,20 +502,26 @@ const step = () => {
                 }
                 //change mouth - pacman
                 obj.pacman_mouth.style.transform = player.transX;
-                obj.pacman.style.transform = `translate3d(${player.posX}px, ${player.posY}px, 0px)`;
             }
-            render(
-                ghosts.redGhost,
-                ghosts.orangeGhost,
-                ghosts.cyanGhost,
-                ghosts.pinkGhost
-            );
+     
+
+            //not use loop
+            obj.pacman.style.transform = `translate3d(${player.posX}px, ${player.posY}px, 0px)`;
+           
+            obj.redGhost.style.transform = `translate3d(${ ghosts.redGhost.posX}px, ${ ghosts.redGhost.posY}px, 0px)`;
+            obj.orangeGhost.style.transform = `translate3d(${ ghosts.orangeGhost.posX}px, ${ ghosts.orangeGhost.posY}px, 0px)`;
+            obj.cyanGhost.style.transform = `translate3d(${ ghosts.cyanGhost.posX}px, ${ ghosts.cyanGhost.posY}px, 0px)`;
+            obj.pinkGhost.style.transform = `translate3d(${ ghosts.pinkGhost.posX}px, ${ ghosts.pinkGhost.posY}px, 0px)`;
+
             //updated value - render scoreboard
             props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
             // render(player);
             player.cool = 6;
         }
-        player.rafId = requestAnimationFrame(step);
+        rafId = requestAnimationFrame(step);
+        if (player.pause) {
+            window.cancelAnimationFrame(rafId);
+        }
     }
 };
 
