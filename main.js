@@ -351,10 +351,13 @@ const killGhost = (time) => {
             //         player.goGoHome = true
             //     }
             // }
+<<<<<<< HEAD
 cookie, interesct
             //stupid bot v 3, refactor with current commit, - without worker, add cookie -> killGhost
             // || refactor send Data in worker, object - by refer, ghost, player obj, check inside/, check inside worker
             //if pacmanIndex == ghost.index, comapere two objects -> send result condition - main thread, if intersect - pacmanGohome
+=======
+>>>>>>> 27d2dc93bcf7de1b17dee293172270dc1b8d2272
 
 const step = () => {
 
@@ -503,6 +506,10 @@ const step = () => {
                 //change mouth - pacman
                 obj.pacman_mouth.style.transform = player.transX;
             }
+<<<<<<< HEAD
+=======
+
+>>>>>>> 27d2dc93bcf7de1b17dee293172270dc1b8d2272
      
 
             //not use loop
