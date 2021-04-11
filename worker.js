@@ -1,4 +1,4 @@
- const mapGame = [
+const mapGame = [
   1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
   1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
   1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
@@ -78,13 +78,7 @@ const intravenousPerimeter = (direct, typeGhost) => {
     (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
   );
   //go out box
-  // if (ghosts.cyanGhost.baseState) {
-  //   ghosts.cyanGhost.direct = "left";
-  //   ghosts.cyanGhost.posX = 450;
-  //   ghosts.cyanGhost.posY = 420;
-  //   ghosts.cyanGhost.basePos = 407;
-  //   // ghosts.cyanGhost.baseState = false;
-  // }
+
   if (
     (!ghosts[typeGhost].goOutBox && ghosts[typeGhost].basePos === 377) ||
     ghosts[typeGhost].basePos === 378
@@ -193,25 +187,7 @@ const intravenousPerimeter = (direct, typeGhost) => {
 const findAndDestroy = (direct, typeGhost, typePerimetr) => {
   let randomNumber = Math.floor(Math.random() * 2);
 
-  // if (typeGhost == "pinkGhost" && ghosts.pinkGhost.baseState) {
-  //   ghosts.pinkGhost.direct = "right";
-  //   ghosts.pinkGhost.posX = 360;
-  //   ghosts.pinkGhost.posY = 420;
-  //   ghosts.pinkGhost.basePos = 404;
-  //   ghosts.pinkGhost.baseState = false;
-  // } else if (typeGhost == "orangeGhost" && ghosts.orangeGhost.baseState) {
-  //   ghosts.orangeGhost.direct = "up";
-  //   ghosts.orangeGhost.posX = 390;
-  //   ghosts.orangeGhost.posY = 420;
-  //   ghosts.orangeGhost.basePos = 405;
-  //   ghosts.orangeGhost.baseState = false;
-  // } else if (typeGhost == "redGhost" && ghosts.redGhost.baseState) {
-  //   ghosts.redGhost.direct = "up";
-  //   ghosts.redGhost.posX = 420;
-  //   ghosts.redGhost.posY = 420;
-  //   ghosts.redGhost.basePos = 406;
-  //   ghosts.redGhost.baseState = false;
-  // }
+
 
   ghosts[typeGhost].basePos = Math.floor(
     (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
@@ -332,10 +308,6 @@ self.onconnect = (e) => {
     let obj3 = e.data[2];
     let obj4 = e.data[3];
     //get state - goTOBase, if true -> set def value -> freeze 10sec, -> start boxGhost pos
-    // ghosts.cyanGhost.baseState = obj1["base"];
-    // ghosts.redGhost.baseState = obj2["base"];
-    // ghosts.orangeGhost.baseState = obj3["base"];
-    // ghosts.pinkGhost.baseState = obj4["base"];
 
     //if all true -> return all data
 
