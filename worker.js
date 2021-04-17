@@ -1,321 +1,1288 @@
 const mapGame = [
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-  1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-  1, 4, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 4, 1,
-  1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-  1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-  1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-  1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-  1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-  3, 3, 3, 3, 3, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-  3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-  3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 6, 6, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-  1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 9, 9, 9, 9, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 8,
-  9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 1, 1, 2, 2, 2, 2, 1, 1, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9,
-  8, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-  3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-  3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-  3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-  1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-  1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-  1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-  1, 4, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 4, 1,
-  1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-  1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-  1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-  1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-  1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-  1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-  1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-]
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  4,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  4,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  6,
+  6,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  9,
+  9,
+  9,
+  9,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  8,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  0,
+  9,
+  9,
+  9,
+  1,
+  1,
+  2,
+  2,
+  2,
+  2,
+  1,
+  1,
+  9,
+  9,
+  9,
+  0,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  8,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  3,
+  3,
+  3,
+  3,
+  3,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  9,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  9,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  4,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  9,
+  9,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  4,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  0,
+  1,
+  1,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  0,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+  1,
+];
 //1 wall, 0 coin, 4 cookie, 8 teleport, 3 -empty, 9 freepath
 
+const directsX = ["left", "right"];
+const directsY = ["up", "down"];
+let killTimer = null;
 
-let directsX = ["left", "right"];
-let directsY = ["up", "down"];
+const keys = {
+  ArrowLeft: false,
+  ArrowRight: false,
+  ArrowUp: false,
+  ArrowDown: false,
+};
 
-const ghosts = {
+const units = {
   pinkGhost: {
-    goOutBox: false,
+    nick: "pinkGhost",
+    name: "Pinkī",
     posX: 360,
     posY: 420,
     basePos: 404,
     direct: "right",
-    baseState: false,
+    color: "pink",
+    freeze: false,
+    base: false,
+    type: "square",
+    intersect: false,
   },
   orangeGhost: {
-    goOutBox: false,
+    nick: "orangeGhost",
+    name: "Guzuta",
     posX: 390,
     posY: 420,
     basePos: 405,
     direct: "up",
-    baseState: false,
+    color: "orange",
+    freeze: false,
+    base: false,
+    type: "perimeter",
+    intersect: false,
   },
   redGhost: {
-    goOutBox: false,
+    nick: "redGhost",
+    name: "Akabei",
     posX: 420,
     posY: 420,
     basePos: 406,
     direct: "up",
-    baseState: false,
+    color: "red",
+    freeze: false,
+    base: false,
+    type: "perimeter",
+    intersect: false,
   },
   cyanGhost: {
-    goOutBox: false,
+    nick: "cyanGhost",
+    name: "Aosuke",
     posX: 450,
     posY: 420,
     basePos: 407,
     direct: "left",
-    baseState: false,
+    color: "cyan",
+    freeze: false,
+    base: false,
+    type: "",
+    intersect: false,
   },
+  pacman: {
+    posX: 425, //def posX - transform translate
+    posY: 695,
+    score: 0,
+    life: 5,
+    indexMap: 658, // index for work []MapGame
+    canKill: false, // coin eate
+    countCoin: 0,
+    killTime: 100000,
+    transX: "", // change mouse pos
+    direct: undefined,
+  },
+  cool: 0,
 };
 
-const intravenousPerimeter = (direct, typeGhost) => {
-  let randomNumber = Math.floor(Math.random() * 2);
-  ghosts[typeGhost].basePos = Math.floor(
-    (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
-  );
-  //go out box
+//if pacman eat cookie - canKill ghost
+const killGhost = (time) => {
+  if (units.pacman.canKill) {
+    // obj.pacman.style.backgroundColor = "red";
+    killTimer = setTimeout(() => {
+      units.pacman.canKill = false;
+      // obj.pacman.style.backgroundColor = "#fff";
+    }, time); //10sec
+  }
+};
 
-  if (
-    (!ghosts[typeGhost].goOutBox && ghosts[typeGhost].basePos === 377) ||
-    ghosts[typeGhost].basePos === 378
-  ) {
-    ghosts[typeGhost].direct = "up";
-    ghosts[typeGhost].goOutBox = false;
-  }
-  //set bound
-  if (
-    ghosts[typeGhost].direct === "left" &&
-    (ghosts[typeGhost].basePos - 1 === 320 ||
-      ghosts[typeGhost].basePos - 1 === 569)
-  ) {
-    ghosts[typeGhost].direct = "up";
-  }
-  if (
-    ghosts[typeGhost].direct === "left" &&
-    ghosts[typeGhost].basePos - 1 === 392
-  ) {
-    ghosts[typeGhost].direct = "right";
-  }
-  if (
-    ghosts[typeGhost].direct === "right" &&
-    (ghosts[typeGhost].basePos + 1 === 323 ||
-      ghosts[typeGhost].basePos + 1 === 578)
-  ) {
-    ghosts[typeGhost].direct = "up";
-  }
-  if (
-    ghosts[typeGhost].direct === "up" &&
-    (ghosts[typeGhost].basePos - 28 === 494 ||
-      ghosts[typeGhost].basePos - 28 === 401)
-  ) {
-    ghosts[typeGhost].direct = "left";
-  }
-  if (
-    ghosts[typeGhost].direct === "down" &&
-    (ghosts[typeGhost].basePos + 28 === 485 ||
-      ghosts[typeGhost].basePos + 28 === 410)
-  ) {
-    ghosts[typeGhost].direct = "right";
-  }
-  if (
-    ghosts[typeGhost].direct === "right" &&
-    ghosts[typeGhost].basePos + 1 === 419
-  ) {
-    ghosts[typeGhost].direct = "left";
+const intravenousPerimeter = (ghost) => {
+  const randomNumber = Math.floor(Math.random() * 2);
+  ghost.basePos = Math.floor((ghost.posY / 30) * 28 + ghost.posX / 30);
+  //go out box
+  if ((!ghost.goOutBox && ghost.basePos === 377) || ghost.basePos === 378) {
+    ghost.direct = "up";
+    ghost.goOutBox = false;
   }
   //turnNow()
-  if (direct === "left") {
+  if (ghost.direct === "left") {
     // if not wall, != another ghost || equal pacman
-    if (
-      mapGame[ghosts[typeGhost].basePos - 1] !== 1 &&
-      ghosts[typeGhost].basePos - 1 !== 567
-    ) {
-      ghosts[typeGhost].basePos -= 1;
-      ghosts[typeGhost].posX -= 30;
+    if (mapGame[ghost.basePos - 1] !== 1 && ghost.basePos - 1 !== 567) {
+      if (ghost.basePos - 1 === 323 || ghost.basePos - 1 === 569) {
+        ghost.direct = "up";
+      }
+      //teleport case
+      if (ghost.basePos - 1 === 392) {
+        ghost.direct = "right";
+      }
+      ghost.basePos -= 1;
+      ghost.posX -= 30;
     } else {
-      ghosts[typeGhost].direct = directsY[randomNumber];
-      // recutsive iCanGo('right', curr)
+      ghost.direct = directsY[randomNumber];
+    }
+  } else if (ghost.direct === "right") {
+    if (mapGame[ghost.basePos + 1] !== 1 && ghost.basePos + 1 !== 581) {
+      if (ghost.basePos + 1 === 321 || ghost.basePos + 1 === 578) {
+        ghost.direct = "up";
+      }
+      //teleport
+      if (ghost.basePos + 1 === 419) {
+        ghost.direct = "left";
+      }
+      ghost.basePos += 1;
+      ghost.posX += 30;
+    } else {
+      ghost.direct = directsY[randomNumber];
+    }
+  } else if (ghost.direct === "up") {
+    if (
+      mapGame[ghost.basePos - 28] !== 1 &&
+      ghost.basePos - 28 !== 149 &&
+      ghost.basePos - 28 !== 158
+    ) {
+      //ghost.basePos - 28 === 494 ||
+      if (ghost.basePos - 28 === 401) {
+        ghost.direct = "left";
+      }
+      if (ghost.basePos - 28 === 410) {
+        ghost.direct = "right";
+      }
+      ghost.posY -= 30;
+      ghost.basePos -= 28;
+    } else {
+      ghost.direct = directsX[randomNumber];
+    }
+  } else if (ghost.direct === "down") {
+    if (
+      mapGame[ghost.basePos + 28] !== 1 &&
+      ghost.basePos + 28 !== 656 &&
+      ghost.basePos + 28 !== 659
+    ) {
+      if (ghost.basePos + 28 === 485) {
+        ghost.direct = "right";
+      }
+      ghost.posY += 30;
+      ghost.basePos += 28;
+    } else {
+      ghost.direct = directsX[randomNumber];
     }
   }
-  if (direct === "right") {
-    if (
-      mapGame[ghosts[typeGhost].basePos + 1] !== 1 &&
-      ghosts[typeGhost].basePos + 1 !== 580
-    ) {
-      ghosts[typeGhost].basePos += 1;
-      ghosts[typeGhost].posX += 30;
-    } else {
-      ghosts[typeGhost].direct = directsY[randomNumber];
-    }
-  }
-  if (direct === "up") {
-    if (
-      mapGame[ghosts[typeGhost].basePos - 28] !== 1 &&
-      ghosts[typeGhost].basePos - 28 !== 177 &&
-      ghosts[typeGhost].basePos - 28 !== 186
-    ) {
-      ghosts[typeGhost].posY -= 30;
-      ghosts[typeGhost].basePos -= 28;
-    } else {
-      ghosts[typeGhost].direct = directsX[randomNumber];
-    }
-  }
-  if (direct === "down") {
-    if (
-      mapGame[ghosts[typeGhost].basePos + 28] !== 1 &&
-      ghosts[typeGhost].basePos + 28 !== 628 &&
-      ghosts[typeGhost].basePos + 28 !== 631
-    ) {
-      ghosts[typeGhost].posY += 30;
-      ghosts[typeGhost].basePos += 28;
-    } else {
-      ghosts[typeGhost].direct = directsX[randomNumber];
-    }
-  }
-  return [
-    ghosts[typeGhost].direct,
-    ghosts[typeGhost].basePos,
-    ghosts[typeGhost].posX,
-    ghosts[typeGhost].posY,
-  ];
 };
-//DRY, SR
-const findAndDestroy = (direct, typeGhost, typePerimetr) => {
+
+const findAndDestroy = (ghost) => {
   let randomNumber = Math.floor(Math.random() * 2);
 
+  ghost.basePos = Math.floor((ghost.posY / 30) * 28 + ghost.posX / 30);
 
-
-  ghosts[typeGhost].basePos = Math.floor(
-    (ghosts[typeGhost].posY / 30) * 28 + ghosts[typeGhost].posX / 30
-  );
-
-  if (typePerimetr == "square") {
-    if (
-      (!ghosts[typeGhost].goOutBox && ghosts[typeGhost].basePos === 377) ||
-      ghosts[typeGhost].basePos === 378
-    ) {
-      ghosts[typeGhost].direct = "up";
-      ghosts[typeGhost].goOutBox = false;
-    }
-    if (
-      ghosts[typeGhost].direct === "left" &&
-      (ghosts[typeGhost].basePos - 1 === 146 ||
-        ghosts[typeGhost].basePos - 1 === 653)
-    ) {
-      ghosts[typeGhost].direct = "down";
-    }
-    if (
-      ghosts[typeGhost].direct === "left" &&
-      (ghosts[typeGhost].basePos - 1 === 824 ||
-        ghosts[typeGhost].basePos - 1 === 650)
-    ) {
-      ghosts[typeGhost].direct = "up";
-    }
-    if (
-      ghosts[typeGhost].direct === "right" &&
-      (ghosts[typeGhost].basePos + 1 === 827 ||
-        ghosts[typeGhost].basePos + 1 === 665)
-    ) {
-      ghosts[typeGhost].direct = "up";
-    }
-    if (
-      ghosts[typeGhost].direct === "right" &&
-      (ghosts[typeGhost].basePos + 1 === 161 ||
-        ghosts[typeGhost].basePos + 1 === 662)
-    ) {
-      ghosts[typeGhost].direct = "down";
-    }
-    if (
-      ghosts[typeGhost].direct === "up" &&
-      ghosts[typeGhost].basePos - 28 === 161
-    ) {
-      ghosts[typeGhost].direct = "left";
-    }
-    if (
-      ghosts[typeGhost].direct === "up" &&
-      ghosts[typeGhost].basePos - 28 === 146
-    ) {
-      ghosts[typeGhost].direct = "right";
-    }
-    if (
-      ghosts[typeGhost].direct === "down" &&
-      ghosts[typeGhost].basePos + 28 === 665
-    ) {
-      ghosts[typeGhost].direct = "left";
-    }
-    if (
-      ghosts[typeGhost].direct === "down" &&
-      ghosts[typeGhost].basePos + 28 === 650
-    ) {
-      ghosts[typeGhost].direct = "right";
+  if (ghost.type === "square") {
+    if ((!ghost.goOutBox && ghost.basePos === 377) || ghost.basePos === 378) {
+      ghost.direct = "up";
+      ghost.goOutBox = false;
     }
   }
+
+  if (ghost.direct === "left") {
+    if (mapGame[ghost.basePos - 1] !== 1) {
+      if (ghost.type == "square") {
+        if (ghost.direct === "left") {
+          if (ghost.basePos - 1 === 146 || ghost.basePos - 1 === 653) {
+            ghost.direct = "down";
+          }
+          if (ghost.basePos - 1 === 824 || ghost.basePos - 1 === 650) {
+            ghost.direct = "up";
+          }
+        }
+      }
+      ghost.basePos -= 1;
+      ghost.posX -= 30;
+    } else {
+      ghost.direct = directsY[randomNumber];
+    }
+  } else if (ghost.direct === "right") {
+    if (mapGame[ghost.basePos + 1] !== 1) {
+      if (ghost.type === "square") {
+        if (ghost.direct === "right") {
+          if (ghost.basePos + 1 === 827 || ghost.basePos + 1 === 665) {
+            ghost.direct = "up";
+          }
+          if (ghost.basePos + 1 === 161 || ghost.basePos + 1 === 662) {
+            ghost.direct = "down";
+          }
+        }
+      }
+      ghost.basePos += 1;
+      ghost.posX += 30;
+    } else {
+      ghost.direct = directsY[randomNumber];
+    }
+  } else if (ghost.direct === "up") {
+    if (mapGame[ghost.basePos - 28] !== 1) {
+      if (ghost.type === "square") {
+        if (ghost.direct === "up") {
+          if (ghost.basePos - 28 === 161) {
+            ghost.direct = "left";
+          }
+          if (ghost.basePos - 28 === 146) {
+            ghost.direct = "right";
+          }
+        }
+      }
+      ghost.posY -= 30;
+      ghost.basePos -= 28;
+    } else {
+      ghost.direct = directsX[randomNumber];
+    }
+  } else if (ghost.direct === "down") {
+    if (mapGame[ghost.basePos + 28] !== 1) {
+      if (ghost.type === "square") {
+        if (ghost.direct === "down") {
+          if (ghost.basePos + 28 === 665) {
+            ghost.direct = "left";
+          }
+          if (ghost.basePos + 28 === 650) {
+            ghost.direct = "right";
+          }
+        }
+      }
+      ghost.posY += 30;
+      ghost.basePos += 28;
+    } else {
+      ghost.direct = directsX[randomNumber];
+    }
+  }
+};
+
+const killPacman = (direct, type) => {
+  let second = units.pacman.indexMap;
+
   if (direct === "left") {
-    if (mapGame[ghosts[typeGhost].basePos - 1] !== 1) {
-      ghosts[typeGhost].basePos -= 1;
-      ghosts[typeGhost].posX -= 30;
-    } else {
-      ghosts[typeGhost].direct = directsY[randomNumber];
+    second -= 1;
+  } else if (direct === "right") {
+    second += 1;
+  } else if (direct === "up") {
+    second -= 28;
+  } else if (direct === "down") {
+    second += 28;
+  }
+  // console.log(second, units.pacman.indexMap, direct);
+  if (second === units.redGhost.basePos) {
+    units.redGhost.intersect = true;
+  } else if (second === units.cyanGhost.basePos) {
+    units.cyanGhost.intersect = true;
+  } else if (second === units.pinkGhost.basePos) {
+    units.pinkGhost.intersect = true;
+  } else if (second === units.orangeGhost.basePos) {
+    units.orangeGhost.intersect = true;
+  }
+  if (units.pacman.indexMap === units.redGhost.basePos) {
+    units.redGhost.intersect = true;
+  } else if (units.pacman.indexMap === units.cyanGhost.basePos) {
+    units.cyanGhost.intersect = true;
+  } else if (units.pacman.indexMap === units.pinkGhost.basePos) {
+    units.pinkGhost.intersect = true;
+  } else if (units.pacman.indexMap === units.orangeGhost.basePos) {
+    units.orangeGhost.intersect = true;
+  }
+
+  if (type === "pacman") {
+    if (
+      units.redGhost.intersect ||
+      units.cyanGhost.intersect ||
+      units.pinkGhost.intersect ||
+      units.orangeGhost.intersect
+    ) {
+      units.pacman.life--;
+      units.pacman.posX = 425;
+      units.pacman.posY = 695;
+      units.pacman.indexMap = 658;
     }
   }
-  if (direct === "right") {
-    if (mapGame[ghosts[typeGhost].basePos + 1] !== 1) {
-      ghosts[typeGhost].basePos += 1;
-      ghosts[typeGhost].posX += 30;
-    } else {
-      ghosts[typeGhost].direct = directsY[randomNumber];
+
+  if (type === "ghost") {
+    if (units.redGhost.intersect) {
+      units.redGhost.direct = "up";
+      units.redGhost.intersect = false;
+      units.redGhost.posX = 420;
+      units.redGhost.posY = 420;
+      units.redGhost.basePos = 406;
+      units.pacman.score += 200;
+    }
+    if (units.orangeGhost.intersect) {
+      units.orangeGhost.direct = "up";
+      units.orangeGhost.intersect = false;
+      units.orangeGhost.posX = 390;
+      units.orangeGhost.posY = 420;
+      units.orangeGhost.basePos = 405;
+      units.pacman.score += 200;
+    }
+    if (units.pinkGhost.intersect) {
+      units.pinkGhost.direct = "right";
+      units.pinkGhost.intersect = false;
+      units.pinkGhost.posX = 360;
+      units.pinkGhost.posY = 420;
+      units.pinkGhost.basePos = 404;
+      units.pacman.score += 200;
+    }
+    if (units.cyanGhost.intersect) {
+      units.cyanGhost.direct = "left";
+      units.cyanGhost.intersect = false;
+      units.cyanGhost.posX = 450;
+      units.cyanGhost.posY = 420;
+      units.cyanGhost.basePos = 407;
+      units.pacman.score += 200;
     }
   }
-  if (direct === "up") {
-    if (mapGame[ghosts[typeGhost].basePos - 28] !== 1) {
-      ghosts[typeGhost].posY -= 30;
-      ghosts[typeGhost].basePos -= 28;
-    } else {
-      ghosts[typeGhost].direct = directsX[randomNumber];
+};
+
+const pacmanMove = (keys) => {
+  units.pacman.indexMap = Math.floor(
+    ((units.pacman.posY - 5) / 30) * 28 + (units.pacman.posX - 5) / 30
+  );
+  //check if key press equal  Right, nextPos in mapGame != 1, update value, goToRight
+  if (keys.ArrowLeft) {
+    units.pacman.direct = "left";
+    if (mapGame[units.pacman.indexMap - 1] !== 1) {
+      units.pacman.posX -= 30;
+      units.pacman.indexMap -= 1;
+      units.pacman.transX = "translateX(0%)";
+      //check tele
+      if (mapGame[units.pacman.indexMap] === 8) {
+        units.pacman.posX += 840;
+      }
+    }
+  } else if (keys.ArrowRight) {
+    units.pacman.direct = "right";
+    if (mapGame[units.pacman.indexMap + 1] !== 1) {
+      //canKill - and intersect -> -life
+
+      units.pacman.indexMap += 1;
+      units.pacman.posX += 30;
+      units.pacman.transX = "translateX(100%)";
+
+      if (mapGame[units.pacman.indexMap] === 8) {
+        units.pacman.posX -= 840;
+      }
+    }
+  } else if (keys.ArrowUp) {
+    units.pacman.direct = "up";
+    if (mapGame[units.pacman.indexMap - 28] !== 1) {
+      units.pacman.indexMap -= 28;
+      units.pacman.posY -= 30;
+    }
+  } else if (keys.ArrowDown) {
+    units.pacman.direct = "down";
+    if (
+      mapGame[units.pacman.indexMap + 28] !== 1 &&
+      mapGame[units.pacman.indexMap + 28] !== 6
+    ) {
+      units.pacman.indexMap += 28;
+      units.pacman.posY += 30;
     }
   }
-  if (direct === "down") {
-    if (mapGame[ghosts[typeGhost].basePos + 28] !== 1) {
-      ghosts[typeGhost].posY += 30;
-      ghosts[typeGhost].basePos += 28;
-    } else {
-      ghosts[typeGhost].direct = directsX[randomNumber];
-    }
+  //if pacman stay 1 position, check interect
+  if (!units.pacman.canKill) {
+    killPacman(units.pacman.direct, "pacman");
   }
-  return [
-    ghosts[typeGhost].direct,
-    ghosts[typeGhost].basePos,
-    ghosts[typeGhost].posX,
-    ghosts[typeGhost].posY,
-  ];
+  if (units.pacman.canKill) {
+    killPacman(units.pacman.direct, "ghost");
+  }
+
+  // if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
+  if (mapGame[units.pacman.indexMap] !== 1) {
+    if (mapGame[units.pacman.indexMap] === 0) {
+      units.pacman.score += 10;
+      units.pacman.countCoin++;
+    }
+    //Invulnerable pacman 10 sec
+    if (mapGame[units.pacman.indexMap] === 4) {
+      units.pacman.score += 50;
+      units.pacman.canKill = true;
+      clearTimeout(killTimer);
+      killGhost(units.pacman.killTime);
+      units.pacman.countCoin++; // count coin for - check win game
+    }
+    mapGame[units.pacman.indexMap] = 9;
+  }
 };
 //connetc -> receive data - call func - send main thread calcualted data
 self.onconnect = (e) => {
   const port = e.ports[0];
-
-  let first = [];
-  let second = [];
-  let third = [];
-  let four = [];
-
   port.onmessage = function (e) {
-    let obj1 = e.data[0];
-    let obj2 = e.data[1];
-    let obj3 = e.data[2];
-    let obj4 = e.data[3];
     //get state - goTOBase, if true -> set def value -> freeze 10sec, -> start boxGhost pos
 
-    //if all true -> return all data
+    findAndDestroy(units.redGhost);
+    findAndDestroy(units.orangeGhost);
+    findAndDestroy(units.pinkGhost);
 
-    first = intravenousPerimeter(obj1["dir"], obj1["ghost"]);
-    second = findAndDestroy(obj2["dir"], obj2["ghost"], obj2["type"]);
-    third = findAndDestroy(obj3["dir"], obj3["ghost"], obj3["type"]);
-    four = findAndDestroy(obj4["dir"], obj4["ghost"], obj4["type"]);
+    intravenousPerimeter(units.cyanGhost);
 
-    port.postMessage([first, second, third, four]);
+    pacmanMove(e.data.key);
+    //send ghost, and pacman.data
+    //pacman send trasnX value, posX, posY, unit.pacman
+    port.postMessage(units);
   };
 };
