@@ -883,6 +883,7 @@ const keys = {
   ArrowRight: false,
   ArrowUp: false,
   ArrowDown: false,
+  restart: false,
 };
 
 let rafId = 0;
@@ -971,6 +972,7 @@ let unitsMT = {
     canKill: false,
     gameState: "",
     showMenu: false,
+    pause: false,
   },
   cool: 0,
 };
@@ -988,7 +990,7 @@ document.URL.includes("play.html")
       //set default pos in Dom
       obj.pacman.style.transform = `translate(425px, 695px,0)`;
       obj.redGhost = document.querySelector("div.red");
-      obj.redGhost = document.querySelector("div.red");
+
       obj.orangeGhost = document.querySelector("div.orange");
       obj.pinkGhost = document.querySelector("div.pink");
       obj.cyanGhost = document.querySelector("div.cyan");
@@ -1000,7 +1002,7 @@ document.addEventListener("keyup", (e) => {
   if (e.code in keys) {
     keys[e.code] = false;
   }
-  if (player.pause) {
+  if (unitsMT.pacman.pause) {
     window.cancelAnimationFrame(rafId);
     clearInterval(interval);
   }
@@ -1017,21 +1019,26 @@ document.addEventListener("keydown", (e) => {
   if (e.code in keys) {
     keys[e.code] = true;
   }
-  if (player.pause) {
-    clearInterval(interval);
-    window.cancelAnimationFrame(rafId);
-  }
+
   if (
     e.code === "ArrowLeft" ||
     e.code === "ArrowRight" ||
     e.code === "ArrowDown" ||
     e.code === "ArrowUp"
   ) {
+    //cahnge bg pacman & ghost if canKill
     if (unitsMT.pacman.canKill) {
-      console.log("i can kill");
-      //change bg
+      obj.pacman.style.background = "red";
+      obj.redGhost.style.opacity = ".4";
+      obj.orangeGhost.style.opacity = ".4";
+      obj.pinkGhost.style.opacity = ".4";
+      obj.cyanGhost.style.opacity = ".4";
     } else {
-      console.log("thats all");
+      obj.pacman.style.background = "yellow";
+      obj.redGhost.style.opacity = "1";
+      obj.orangeGhost.style.opacity = "1";
+      obj.pinkGhost.style.opacity = "1";
+      obj.cyanGhost.style.opacity = "1";
     }
     if (!props.inPlay) {
       props.notify.style.display = "none";
@@ -1042,8 +1049,9 @@ document.addEventListener("keydown", (e) => {
     }
   }
   //esc || showModal keydown - show modal page
-  if (e.code === "Escape" || player.showMenu !== false) {
-    endGame();
+  //|| unitsMT.pacman.showMenu !== false
+  if (e.code === "Escape") {
+    endGame("escape");
   }
 });
 //transform translate each item - change posit 0 in Dom
@@ -1054,41 +1062,20 @@ const render = (...args) => {
 };
 
 const restart = () => {
-  window.cancelAnimationFrame(rafId);
-  window.location.reload();
-
+  // window.cancelAnimationFrame(rafId);
+  // window.location.reload();
+  keys.restart = true;
   //set default values
   props.inPlay = false;
-  player.pause = false;
-  player.posX = 425;
-  player.posY = 695;
-  player.countCoin = 0;
-  player.time.min = 0;
-  player.time.sec = 0;
+  unitsMT.pacman.pause = false;
+  props.time.min = 0;
+  props.time.sec = 0;
 
-  // ghosts.orangeGhost.basePos = 405;
-  // ghosts.pinkGhost.basePos = 404;
-  // ghosts.redGhost.basePos = 406;
-  // ghosts.cyanGhost.basePos = 407;
-  // ghosts.pinkGhost.posX = 360;
-  // ghosts.pinkGhost.posY = 420;
-  // ghosts.orangeGhost.posX = 390;
-  // ghosts.orangeGhost.posY = 420;
-  // ghosts.cyanGhost.posX = 450;
-  // ghosts.cyanGhost.posY = 420;
-  // ghosts.redGhost.posX = 420;
-  // ghosts.redGhost.posY = 420;
-
-  // ghosts.cool = 0;
-  // if (type == "tryAgain") {
-  player.cool = 0;
-  player.life = 5;
-  player.score = 0;
   //show notify
   props.notify.style.display = "block";
   //update time
   clearInterval(interval);
-  props.scoreBoard.children[0].textContent = `Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec}s`;
+  props.modal.children[0].textContent = ` Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
 
   //return opacity coin elem
   for (let i = 0; i <= 868; i++) {
@@ -1104,28 +1091,40 @@ const restart = () => {
   props.modal.style.display = "none";
 };
 
-const endGame = () => {
+const endGame = (type) => {
   //show notify - you win
   props.modal.style.display = "flex";
-  if (player.showMenu) {
+  unitsMT.pacman.pause = true;
+
+  // console.log("res", unitsMT.pacman.score, unitsMT.pacman.gameState);
+  if (type === "escape") {
+    //show with Continue
+  }
+  if (type === "win") {
+  }
+  if (type === "lose") {
+  }
+
+  if (unitsMT.pacman.showMenu) {
     let msg = "";
-    if (player.gameState === "win") {
+    if (unitsMT.pacman.gameState === "win") {
       msg = "Congrats, Yeap! You Win!";
     } else {
       msg = "Game over..";
     }
-    props.modal.children[0].style.display = "block";
-    props.modal.children[0].textContent = `${msg} Your Score ${player.score} Lives ${player.life}  Time: ${player.time.min}m:${player.time.sec} s`;
+    // props.modal.children[0].style.display = "block";
+    props.modal.children[0].textContent = `${msg} Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
   } else {
-    if (player.life > 0) {
+    if (unitsMT.pacman.life > 0) {
       // continue
       props.modal.children[1].style.display = "block";
     }
   }
+
   //continue btn
   props.modal.children[1].onclick = (e) => {
     rafId = requestAnimationFrame(step);
-    player.pause = false;
+    unitsMT.pacman.pause = false;
     props.inPlay = true;
     props.modal.style.display = "none";
     startTime();
@@ -1134,13 +1133,13 @@ const endGame = () => {
   props.modal.children[2].onclick = (e) => {
     //set def value
     props.modal.style.display = "none";
+    unitsMT.pacman.pause = false;
+    props.inPlay = false;
     restart();
   };
   props.modal.children[3].onclick = (e) => {
     window.location.href = "http://localhost:5500/";
   };
-  window.cancelAnimationFrame(rafId);
-  clearInterval(interval);
 };
 
 //TODO
@@ -1150,13 +1149,12 @@ const endGame = () => {
 //ref class component
 
 //start project -> History || scorebaord
-//add my sound history  & text -> button - skip
-//add instruction page - ho to playe game
+//add my sound history  & text -> button - skip button
+//add instruction modal window  - how to play game
+//menu -> toggle - from - key - not use Mouse
+// check data - countCoin ==244, - show Modal; life ==0 -> show modal gameOver - fix
 
-//// if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
-check data - countCoin ==244, - show Modal; life ==0 -> show modal gameOver
-if canCKill - change bg pacman & ghosts
-
+// window.onload = focus();
 const step = () => {
   if (props.inPlay) {
     //worker ?
@@ -1186,6 +1184,7 @@ const step = () => {
         unitsMT.pacman.life = e.data.pacman.life;
         unitsMT.pacman.countCoin = e.data.pacman.countCoin;
         unitsMT.pacman.canKill = e.data.pacman.canKill;
+        keys.restart = e.data.pacman.restart;
       };
 
       //get index - by formula, posX, posY - index for mapGame
@@ -1207,17 +1206,15 @@ const step = () => {
       }
 
       if (unitsMT.pacman.life > 0) {
-        if (unitsMT.pacman.countCoin === 244) {
+        if (unitsMT.pacman.countCoin === 4) {
           unitsMT.pacman.showMenu = true;
-          unitsMT.pacman.pause = true;
           unitsMT.pacman.gameState = "win";
-          endGame();
+          endGame("win");
         }
       } else {
-        unitsMT.pacman.pause = true;
         unitsMT.pacman.showMenu = true;
         unitsMT.pacman.gameState = "lose";
-        endGame();
+        endGame("lose");
       }
 
       //not use loop
@@ -1231,10 +1228,10 @@ const step = () => {
       //updated value - render scoreboard
       props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec}s`;
       //cooldwon, 5 * 16.7 -> reaction each 83ms
-      unitsMT.cool = 5;
+      unitsMT.cool = 6;
     }
     rafId = requestAnimationFrame(step);
-    if (player.pause) {
+    if (unitsMT.pacman.pause) {
       window.cancelAnimationFrame(rafId);
     }
   }

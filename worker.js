@@ -942,9 +942,10 @@ const units = {
     indexMap: 658, // index for work []MapGame
     canKill: false, // coin eate
     countCoin: 0,
-    killTime: 100000,
+    killTime: 10000,
     transX: "", // change mouse pos
     direct: undefined,
+    restart: false,
   },
   cool: 0,
 };
@@ -1115,10 +1116,10 @@ const findAndDestroy = (ghost) => {
     }
   }
 };
-
+//DRY, clean arch
 const killPacman = (direct, type) => {
   let second = units.pacman.indexMap;
-
+  //currentPos & nextPos byDirect pacman - check if interesct any ghost
   if (direct === "left") {
     second -= 1;
   } else if (direct === "right") {
@@ -1155,10 +1156,15 @@ const killPacman = (direct, type) => {
       units.pinkGhost.intersect ||
       units.orangeGhost.intersect
     ) {
+      console.log("called");
       units.pacman.life--;
       units.pacman.posX = 425;
       units.pacman.posY = 695;
       units.pacman.indexMap = 658;
+      units.redGhost.intersect = false;
+      units.orangeGhost.intersect = false;
+      units.pinkGhost.intersect = false;
+      units.cyanGhost.intersect = false;
     }
   }
 
@@ -1199,9 +1205,35 @@ const killPacman = (direct, type) => {
 };
 
 const pacmanMove = (keys) => {
+  units.pacman.restart = keys.restart;
   units.pacman.indexMap = Math.floor(
     ((units.pacman.posY - 5) / 30) * 28 + (units.pacman.posX - 5) / 30
   );
+  if (units.pacman.restart) {
+    units.pacman.posX = 425;
+    units.pacman.posY = 695;
+    units.pacman.countCoin = 0;
+
+    units.orangeGhost.basePos = 405;
+    units.pinkGhost.basePos = 404;
+    units.redGhost.basePos = 406;
+    units.cyanGhost.basePos = 407;
+    units.pinkGhost.posX = 360;
+    units.pinkGhost.posY = 420;
+    units.orangeGhost.posX = 390;
+    units.orangeGhost.posY = 420;
+    units.cyanGhost.posX = 450;
+    units.cyanGhost.posY = 420;
+    units.redGhost.posX = 420;
+    units.redGhost.posY = 420;
+
+    // ghosts.cool = 0;
+    // if (type == "tryAgain") {
+    units.pacman.cool = 0;
+    units.pacman.life = 5;
+    units.pacman.score = 0;
+    units.pacman.restart = false;
+  }
   //check if key press equal  Right, nextPos in mapGame != 1, update value, goToRight
   if (keys.ArrowLeft) {
     units.pacman.direct = "left";
@@ -1265,7 +1297,9 @@ const pacmanMove = (keys) => {
       killGhost(units.pacman.killTime);
       units.pacman.countCoin++; // count coin for - check win game
     }
-    mapGame[units.pacman.indexMap] = 9;
+    if (units.pacman.indexMap !== 420 && units.pacman.indexMap !== 391) {
+      mapGame[units.pacman.indexMap] = 9;
+    }
   }
 };
 //connetc -> receive data - call func - send main thread calcualted data
