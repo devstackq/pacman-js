@@ -23,6 +23,7 @@ body {
   background-color: yellow;
   transition: transform 0.2s ease;
   will-change: transform;
+  transform: translate(425px, 695px);
   z-index: 2;
   position: absolute;
   display: block;

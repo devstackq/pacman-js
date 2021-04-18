@@ -946,6 +946,7 @@ const units = {
     transX: "", // change mouse pos
     direct: undefined,
     restart: false,
+    lastIndex: 0,
   },
   cool: 0,
 };
@@ -1208,6 +1209,8 @@ const pacmanMove = (keys) => {
     ((units.pacman.posY - 5) / 30) * 28 + (units.pacman.posX - 5) / 30
   );
   if (units.pacman.restart) {
+    units.pacman.lastIndex = units.pacman.indexMap;
+    // console.log(units.pacman.indexMap);
     units.pacman.posX = 425;
     units.pacman.posY = 695;
     units.pacman.countCoin = 0;
@@ -1225,8 +1228,6 @@ const pacmanMove = (keys) => {
     units.redGhost.posX = 420;
     units.redGhost.posY = 420;
 
-    // ghosts.cool = 0;
-    // if (type == "tryAgain") {
     units.pacman.cool = 0;
     units.pacman.life = 5;
     units.pacman.score = 0;

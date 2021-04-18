@@ -943,6 +943,7 @@ let unitsMT = {
     canKill: false,
     gameState: "",
     pause: false,
+    lastIndex: 0,
   },
   cool: 0,
 };
@@ -958,9 +959,7 @@ document.URL.includes("play.html")
       obj.pacman = document.querySelector("div.pacman");
       obj.pacman_mouth = document.querySelector("div.pacman_mouth");
       //set default pos in Dom
-      obj.pacman.style.transform = `translate(425px, 695px)`;
       obj.redGhost = document.querySelector("div.red");
-
       obj.orangeGhost = document.querySelector("div.orange");
       obj.pinkGhost = document.querySelector("div.pink");
       obj.cyanGhost = document.querySelector("div.cyan");
@@ -985,43 +984,69 @@ const startTime = () => {
   }, 1000);
 };
 
-document.addEventListener("keydown", (e) => {
-  if (e.code in keys) {
-    keys[e.code] = true;
-  }
+if (document.URL.includes("index.html")) {
+  let start = 0;
+  let links = document.getElementsByClassName("links")[0];
+  document.addEventListener("keydown", (e) => {
+    if (e.code === "ArrowDown") {
+      if (start < 3) {
+        links.children[start].style.color = "#fff";
+        start++;
+        links.children[start].style.color = "red";
+      }
+    }
+    if (e.code === "ArrowUp") {
+      if (start > 0) {
+        links.children[start].style.color = "#fff";
+        start--;
+        links.children[start].style.color = "red";
+      }
+    }
+    if (e.code === "Enter") {
+      links.children[start].click();
+    }
+  });
+}
 
-  if (
-    e.code === "ArrowLeft" ||
-    e.code === "ArrowRight" ||
-    e.code === "ArrowDown" ||
-    e.code === "ArrowUp"
-  ) {
-    //cahnge bg pacman & ghost if canKill
-    if (unitsMT.pacman.canKill) {
-      obj.pacman.style.background = "red";
-      obj.redGhost.style.opacity = ".4";
-      obj.orangeGhost.style.opacity = ".4";
-      obj.pinkGhost.style.opacity = ".4";
-      obj.cyanGhost.style.opacity = ".4";
-    } else {
-      obj.pacman.style.background = "yellow";
-      obj.redGhost.style.opacity = "1";
-      obj.orangeGhost.style.opacity = "1";
-      obj.pinkGhost.style.opacity = "1";
-      obj.cyanGhost.style.opacity = "1";
+if (document.URL.includes("play.html")) {
+  document.addEventListener("keydown", (e) => {
+    if (e.code in keys) {
+      keys[e.code] = true;
     }
-    if (!props.inPlay) {
-      props.notify.style.display = "none";
-      props.inPlay = true;
-      rafId = requestAnimationFrame(step);
-      //time
-      startTime();
+
+    if (
+      e.code === "ArrowLeft" ||
+      e.code === "ArrowRight" ||
+      e.code === "ArrowDown" ||
+      e.code === "ArrowUp"
+    ) {
+      //cahnge bg pacman & ghost if canKill
+      if (unitsMT.pacman.canKill) {
+        obj.pacman.style.background = "red";
+        obj.redGhost.style.opacity = ".4";
+        obj.orangeGhost.style.opacity = ".4";
+        obj.pinkGhost.style.opacity = ".4";
+        obj.cyanGhost.style.opacity = ".4";
+      } else {
+        obj.pacman.style.background = "yellow";
+        obj.redGhost.style.opacity = "1";
+        obj.orangeGhost.style.opacity = "1";
+        obj.pinkGhost.style.opacity = "1";
+        obj.cyanGhost.style.opacity = "1";
+      }
+      if (!props.inPlay) {
+        props.notify.style.display = "none";
+        props.inPlay = true;
+        rafId = requestAnimationFrame(step);
+        //time
+        startTime();
+      }
     }
-  }
-  if (e.code === "Escape") {
-    endGame("escape");
-  }
-});
+    if (e.code === "Escape") {
+      endGame("escape");
+    }
+  });
+}
 //transform translate each item - change posit 0 in Dom
 const render = (...args) => {
   args.forEach((el, i) => {
@@ -1036,8 +1061,8 @@ const restart = () => {
   unitsMT.pacman.pause = false;
   props.time.min = 0;
   props.time.sec = 0;
-  unitsMT.pacman.life = 5;
   unitsMT.pacman.score = 0;
+  unitsMT.pacman.life = 5;
   //show notify
   props.notify.style.display = "block";
   //update time
@@ -1045,7 +1070,7 @@ const restart = () => {
   props.modal.children[0].textContent = ` Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
 
   //return opacity coin elem
-  for (let i = 0; i <= 868; i++) {
+  for (let i = 0; i <= 869; i++) {
     if (props.grid.children[i].children[0] !== undefined) {
       if (
         props.grid.children[i].children[0].className === "coin" ||
@@ -1055,14 +1080,18 @@ const restart = () => {
       }
     }
   }
+
   props.modal.style.display = "none";
 };
 
 const endGame = (type) => {
+  let size = 0;
+  size = 2;
   //show notify - you win
   props.modal.style.display = "flex";
   unitsMT.pacman.pause = true;
   if (type === "escape") {
+    size = 3;
     props.modal.children[0].textContent = "";
     props.modal.children[1].style.display = "block";
     //continue btn
@@ -1074,6 +1103,30 @@ const endGame = (type) => {
       startTime();
     };
   }
+
+  let links = document.getElementsByClassName("modal")[0];
+  let start = 0;
+
+  document.addEventListener("keydown", (e) => {
+    if (e.keyCode === 38) {
+      if (start > 0) {
+        links.children[start].style.color = "#000";
+        start--;
+        links.children[start].style.color = "red";
+      }
+    }
+    if (e.keyCode === 40) {
+      if (start < size) {
+        links.children[start].style.color = "#000";
+        start++;
+        links.children[start].style.color = "red";
+      }
+    }
+    if (e.code === "Enter") {
+      links.children[start].click();
+    }
+  });
+
   if (type === "win") {
     props.modal.children[0].textContent = `Congrats, Yeap! You Win! Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
   }
@@ -1089,7 +1142,7 @@ const endGame = (type) => {
     restart();
   };
   props.modal.children[3].onclick = (e) => {
-    window.location.href = "http://localhost:5500/";
+    window.location.href = "http://localhost:5500/index.html";
   };
 };
 
@@ -1103,9 +1156,11 @@ const endGame = (type) => {
 //start project -> History || scorebaord
 //add my sound history  & text -> button - skip button
 //menu -> toggle - from - key - not use Mouse
+//coin -> picture -> coronavirus, ghost - mouse fly
 
-//pacman - change mouse position,
 //add keyframe - when pacman death
+fix bug -> restart -> last coin, where pacman position -> restore ||
+location.reload();
 
 const step = () => {
   if (props.inPlay) {
@@ -1133,6 +1188,8 @@ const step = () => {
         unitsMT.pacman.life = e.data.pacman.life;
         unitsMT.pacman.countCoin = e.data.pacman.countCoin;
         unitsMT.pacman.canKill = e.data.pacman.canKill;
+        unitsMT.pacman.lastIndex = e.data.pacman.lastIndex;
+        // console.log(unitsMT.pacman.lastIndex);
         keys.restart = e.data.pacman.restart;
       };
 
@@ -1153,7 +1210,7 @@ const step = () => {
         //change mouth - pacman
         obj.pacman_mouth.style.transform = unitsMT.pacman.transX;
       }
-      console.log(unitsMT.pacman.countCoin, "coin");
+      // console.log(unitsMT.pacman.countCoin, "coin");
       if (unitsMT.pacman.life > 0) {
         if (unitsMT.pacman.countCoin === 244) {
           unitsMT.pacman.gameState = "win";
