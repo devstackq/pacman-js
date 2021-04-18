@@ -23,9 +23,14 @@ body {
   background-color: yellow;
   transition: transform 0.2s ease;
   will-change: transform;
-
   z-index: 2;
   position: absolute;
+  display: block;
+}
+.instruction {
+  display: none;
+  color: red;
+  font-size: 24px;
 }
 
 .pacman_eye {
@@ -106,21 +111,21 @@ body {
   will-change: opacity;
   background: pink;
   will-change: transform;
-  transform: translate3d(360px, 420px, 0px);
+  transform: translate(360px, 420px);
   transition: transform 0.2s;
 }
 .orange {
   will-change: opacity;
   background: orange;
   will-change: transform;
-  transform: translate3d(390px, 420px, 0px);
+  transform: translate(390px, 420px);
   transition: transform 0.2s;
 }
 
 .red {
   will-change: opacity;
   background: red;
-  transform: translate3d(420px, 420px, 0px);
+  transform: translate(420px, 420px);
   transition: transform 0.2s ease;
 }
 
@@ -128,7 +133,7 @@ body {
   will-change: opacity;
   background: cyan;
   will-change: transform;
-  transform: translate3d(450px, 420px, 0px);
+  transform: translate(450px, 420px);
   transition: transform 0.2s;
 }
 

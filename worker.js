@@ -1039,11 +1039,10 @@ const findAndDestroy = (ghost) => {
 
   ghost.basePos = Math.floor((ghost.posY / 30) * 28 + ghost.posX / 30);
 
-  if (ghost.type === "square") {
-    if ((!ghost.goOutBox && ghost.basePos === 377) || ghost.basePos === 378) {
-      ghost.direct = "up";
-      ghost.goOutBox = false;
-    }
+  // if (ghost.type === "square") {
+  if ((!ghost.goOutBox && ghost.basePos === 377) || ghost.basePos === 378) {
+    ghost.direct = "up";
+    ghost.goOutBox = false;
   }
 
   if (ghost.direct === "left") {
@@ -1129,7 +1128,7 @@ const killPacman = (direct, type) => {
   } else if (direct === "down") {
     second += 28;
   }
-  // console.log(second, units.pacman.indexMap, direct);
+
   if (second === units.redGhost.basePos) {
     units.redGhost.intersect = true;
   } else if (second === units.cyanGhost.basePos) {
@@ -1156,7 +1155,6 @@ const killPacman = (direct, type) => {
       units.pinkGhost.intersect ||
       units.orangeGhost.intersect
     ) {
-      console.log("called");
       units.pacman.life--;
       units.pacman.posX = 425;
       units.pacman.posY = 695;
@@ -1307,16 +1305,12 @@ self.onconnect = (e) => {
   const port = e.ports[0];
   port.onmessage = function (e) {
     //get state - goTOBase, if true -> set def value -> freeze 10sec, -> start boxGhost pos
-
     findAndDestroy(units.redGhost);
     findAndDestroy(units.orangeGhost);
     findAndDestroy(units.pinkGhost);
-
     intravenousPerimeter(units.cyanGhost);
-
     pacmanMove(e.data.key);
     //send ghost, and pacman.data
-    //pacman send trasnX value, posX, posY, unit.pacman
     port.postMessage(units);
   };
 };

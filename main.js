@@ -894,8 +894,6 @@ const mapItemsInDom = [];
 const obj = {};
 //clear interval - when temeout 10sec
 let interval;
-// let killTimer;
-let arrGhosts = [];
 
 const props = {
   x: "", // for grid row - first render items in Dom - set grid style
@@ -909,34 +907,7 @@ const props = {
   },
 };
 
-//pacman object
-const player = {
-  posX: 425, //def posX - transform translate
-  posY: 695,
-  score: 0,
-  life: 5,
-  indexMap: 658, // index for work []MapGame
-  cool: 0,
-  speed: 5, //for Raf, 16.7 * 5 = 83ms
-  canKill: false, // coin eate
-  time: {
-    sec: 0,
-    min: 0,
-  },
-  countCoin: 0,
-  rafId: 0, // start, stop raf
-  pause: false,
-  killTime: 10000,
-  transX: "", // change mouse pos
-  currentPos: 0,
-  nick: "pacman",
-  showMenu: false,
-  gameState: "",
-  direct: "",
-};
-
-//ghost objects - for manipualte game
-
+//unit objects - for manipualte game
 let unitsMT = {
   pinkGhost: {
     posX: 360,
@@ -971,7 +942,6 @@ let unitsMT = {
     countCoin: 0,
     canKill: false,
     gameState: "",
-    showMenu: false,
     pause: false,
   },
   cool: 0,
@@ -988,7 +958,7 @@ document.URL.includes("play.html")
       obj.pacman = document.querySelector("div.pacman");
       obj.pacman_mouth = document.querySelector("div.pacman_mouth");
       //set default pos in Dom
-      obj.pacman.style.transform = `translate(425px, 695px,0)`;
+      obj.pacman.style.transform = `translate(425px, 695px)`;
       obj.redGhost = document.querySelector("div.red");
 
       obj.orangeGhost = document.querySelector("div.orange");
@@ -1048,8 +1018,6 @@ document.addEventListener("keydown", (e) => {
       startTime();
     }
   }
-  //esc || showModal keydown - show modal page
-  //|| unitsMT.pacman.showMenu !== false
   if (e.code === "Escape") {
     endGame("escape");
   }
@@ -1062,15 +1030,14 @@ const render = (...args) => {
 };
 
 const restart = () => {
-  // window.cancelAnimationFrame(rafId);
-  // window.location.reload();
   keys.restart = true;
   //set default values
   props.inPlay = false;
   unitsMT.pacman.pause = false;
   props.time.min = 0;
   props.time.sec = 0;
-
+  unitsMT.pacman.life = 5;
+  unitsMT.pacman.score = 0;
   //show notify
   props.notify.style.display = "block";
   //update time
@@ -1095,40 +1062,24 @@ const endGame = (type) => {
   //show notify - you win
   props.modal.style.display = "flex";
   unitsMT.pacman.pause = true;
-
-  // console.log("res", unitsMT.pacman.score, unitsMT.pacman.gameState);
   if (type === "escape") {
-    //show with Continue
+    props.modal.children[0].textContent = "";
+    props.modal.children[1].style.display = "block";
+    //continue btn
+    props.modal.children[1].onclick = (e) => {
+      rafId = requestAnimationFrame(step);
+      unitsMT.pacman.pause = false;
+      props.inPlay = true;
+      props.modal.style.display = "none";
+      startTime();
+    };
   }
   if (type === "win") {
+    props.modal.children[0].textContent = `Congrats, Yeap! You Win! Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
   }
   if (type === "lose") {
+    props.modal.children[0].textContent = `Game over. Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
   }
-
-  if (unitsMT.pacman.showMenu) {
-    let msg = "";
-    if (unitsMT.pacman.gameState === "win") {
-      msg = "Congrats, Yeap! You Win!";
-    } else {
-      msg = "Game over..";
-    }
-    // props.modal.children[0].style.display = "block";
-    props.modal.children[0].textContent = `${msg} Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
-  } else {
-    if (unitsMT.pacman.life > 0) {
-      // continue
-      props.modal.children[1].style.display = "block";
-    }
-  }
-
-  //continue btn
-  props.modal.children[1].onclick = (e) => {
-    rafId = requestAnimationFrame(step);
-    unitsMT.pacman.pause = false;
-    props.inPlay = true;
-    props.modal.style.display = "none";
-    startTime();
-  };
   //restart btn
   props.modal.children[2].onclick = (e) => {
     //set def value
@@ -1143,27 +1094,25 @@ const endGame = (type) => {
 };
 
 //TODO
+//if frame drop, trans off, off timer
 //check fps google
 // add audio,
-//add keyframe - when pacman death
 //ref class component
 
+//add instruction modal window  - how to play game
 //start project -> History || scorebaord
 //add my sound history  & text -> button - skip button
-//add instruction modal window  - how to play game
 //menu -> toggle - from - key - not use Mouse
-// check data - countCoin ==244, - show Modal; life ==0 -> show modal gameOver - fix
 
-// window.onload = focus();
+//pacman - change mouse position,
+//add keyframe - when pacman death
+
 const step = () => {
   if (props.inPlay) {
-    //worker ?
     unitsMT.cool--;
     if (unitsMT.cool < 0) {
-      // ghosts: JSON.stringify(ghosts),
       worker.port.postMessage({ key: keys }); //key state - pacman
-
-      //not use forEach
+      //not use forEach, receive data from bg thread - set updated data
       worker.port.onmessage = (e) => {
         unitsMT.cyanGhost.posX = e.data.cyanGhost.posX;
         unitsMT.cyanGhost.posY = e.data.cyanGhost.posY;
@@ -1204,27 +1153,23 @@ const step = () => {
         //change mouth - pacman
         obj.pacman_mouth.style.transform = unitsMT.pacman.transX;
       }
-
+      console.log(unitsMT.pacman.countCoin, "coin");
       if (unitsMT.pacman.life > 0) {
-        if (unitsMT.pacman.countCoin === 4) {
-          unitsMT.pacman.showMenu = true;
+        if (unitsMT.pacman.countCoin === 244) {
           unitsMT.pacman.gameState = "win";
           endGame("win");
         }
       } else {
-        unitsMT.pacman.showMenu = true;
         unitsMT.pacman.gameState = "lose";
         endGame("lose");
       }
 
-      //not use loop
+      //render
       obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
-
       obj.redGhost.style.transform = `translate(${unitsMT.redGhost.posX}px, ${unitsMT.redGhost.posY}px)`;
       obj.orangeGhost.style.transform = `translate(${unitsMT.orangeGhost.posX}px, ${unitsMT.orangeGhost.posY}px)`;
       obj.cyanGhost.style.transform = `translate(${unitsMT.cyanGhost.posX}px, ${unitsMT.cyanGhost.posY}px)`;
       obj.pinkGhost.style.transform = `translate(${unitsMT.pinkGhost.posX}px, ${unitsMT.pinkGhost.posY}px)`;
-
       //updated value - render scoreboard
       props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec}s`;
       //cooldwon, 5 * 16.7 -> reaction each 83ms
