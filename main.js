@@ -884,6 +884,7 @@ const keys = {
   ArrowUp: false,
   ArrowDown: false,
   restart: false,
+  death: false,
 };
 
 let rafId = 0;
@@ -1034,6 +1035,11 @@ if (document.URL.includes("play.html")) {
         obj.pinkGhost.style.opacity = "1";
         obj.cyanGhost.style.opacity = "1";
       }
+      // if (unitsMT.pacman.death) {
+      //   keys.death = false;
+      //   // obj.pacman.classList.add("pacman-death");
+      // }
+
       if (!props.inPlay) {
         props.notify.style.display = "none";
         props.inPlay = true;
@@ -1055,6 +1061,9 @@ const render = (...args) => {
 };
 
 const restart = () => {
+  //lol
+  location.reload();
+
   keys.restart = true;
   //set default values
   props.inPlay = false;
@@ -1063,14 +1072,20 @@ const restart = () => {
   props.time.sec = 0;
   unitsMT.pacman.score = 0;
   unitsMT.pacman.life = 5;
+
+  unitsMT.pacman.posX = 695;
+  unitsMT.pacman.posY = 425;
+  // unitsMT.pacman.basePos = 658;
+
+  obj.pacman.style.transform = `translate(425px, 695px)`;
+
   //show notify
   props.notify.style.display = "block";
   //update time
   clearInterval(interval);
-  props.modal.children[0].textContent = ` Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
 
   //return opacity coin elem
-  for (let i = 0; i <= 869; i++) {
+  for (let i = 0; i < 869; i++) {
     if (props.grid.children[i].children[0] !== undefined) {
       if (
         props.grid.children[i].children[0].className === "coin" ||
@@ -1080,7 +1095,6 @@ const restart = () => {
       }
     }
   }
-
   props.modal.style.display = "none";
 };
 
@@ -1159,8 +1173,6 @@ const endGame = (type) => {
 //coin -> picture -> coronavirus, ghost - mouse fly
 
 //add keyframe - when pacman death
-fix bug -> restart -> last coin, where pacman position -> restore ||
-location.reload();
 
 const step = () => {
   if (props.inPlay) {
@@ -1188,8 +1200,9 @@ const step = () => {
         unitsMT.pacman.life = e.data.pacman.life;
         unitsMT.pacman.countCoin = e.data.pacman.countCoin;
         unitsMT.pacman.canKill = e.data.pacman.canKill;
-        unitsMT.pacman.lastIndex = e.data.pacman.lastIndex;
-        // console.log(unitsMT.pacman.lastIndex);
+        // unitsMT.pacman.lastIndex = e.data.pacman.lastIndex;
+        unitsMT.pacman.transX = e.data.pacman.transX;
+        unitsMT.pacman.death = e.data.pacman.death;
         keys.restart = e.data.pacman.restart;
       };
 

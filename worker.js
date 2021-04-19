@@ -947,6 +947,7 @@ const units = {
     direct: undefined,
     restart: false,
     lastIndex: 0,
+    death: false,
   },
   cool: 0,
 };
@@ -1118,6 +1119,8 @@ const findAndDestroy = (ghost) => {
 };
 //DRY, clean arch
 const killPacman = (direct, type) => {
+  //currentPos & nextPos byDirect pacman - check if interesct any ghost
+
   let second = units.pacman.indexMap;
   //currentPos & nextPos byDirect pacman - check if interesct any ghost
   if (direct === "left") {
@@ -1139,6 +1142,7 @@ const killPacman = (direct, type) => {
   } else if (second === units.orangeGhost.basePos) {
     units.orangeGhost.intersect = true;
   }
+
   if (units.pacman.indexMap === units.redGhost.basePos) {
     units.redGhost.intersect = true;
   } else if (units.pacman.indexMap === units.cyanGhost.basePos) {
@@ -1156,6 +1160,7 @@ const killPacman = (direct, type) => {
       units.pinkGhost.intersect ||
       units.orangeGhost.intersect
     ) {
+      units.pacman.death = true;
       units.pacman.life--;
       units.pacman.posX = 425;
       units.pacman.posY = 695;

@@ -28,6 +28,29 @@ body {
   position: absolute;
   display: block;
 }
+
+.pacman-death {
+  animation: mymove 1s;
+}
+
+@keyframes mymove {
+  0% {
+    width: 15px;
+    height: 15px;
+  }
+  25% {
+    width: 10px;
+    height: 10px;
+  }
+  75% {
+    width: 5px;
+    height: 5px;
+  }
+  100% {
+    width: 0px;
+    height: 0px;
+  }
+}
 .instruction {
   display: none;
   color: red;
