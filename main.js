@@ -879,10 +879,10 @@ const worker = new SharedWorker("worker.js", {
 
 //keys state, l/r/u/d
 const keys = {
-  ArrowLeft: false,
-  ArrowRight: false,
-  ArrowUp: false,
-  ArrowDown: false,
+  KeyA: false,
+  KeyD: false,
+  KeyW: false,
+  KeyS: false,
   restart: false,
   death: false,
 };
@@ -951,7 +951,7 @@ let unitsMT = {
 };
 
 const history = {
-  prologgue: [
+  prologue: [
     "В паралельной вселенной, есть такая планета Noveus2D, это двумерный мир со своими правилами и законами, ее наслеяют разные сказочные обитатели, от лилипутов-жирафов до розовых единорогов. Все они жили мирно счастливо, пока однажды не случилась беда...",
     "На планету упал астероид. Ученые начали выяснять, что это за объект. Проводя эксперементы и исследования, выяснялось что на этом астероиде находится мутирующий вирус...",
     "Он прибыл с другой планеты - Terra, но все это уже было поздно...",
@@ -973,14 +973,14 @@ const history = {
     "Ну ничего страшного, тяу тяу тяу. Местные верят в тебя и даруют тебе еще 1 жизнь, но помни, жизни ограничены...",
   lose: [
     "Все те жизни которые были даны Пакману, это души младецнов, ибо только их души способны даровать жизнь...",
-    "В  городе BloodyBoobs больше не осталось младенцов...(",
+    "В городе BloodyBoobs больше не осталось младенцов...(",
     "Обители BloodyBoobs остались без надежды и теперь они будут умирать долго и мучительно от поцелуя летучих подонков...",
     "Если только не придет новый чистильщик...",
   ],
   win: [
-    "Город очищен, местные счатасливы и начали плодиться еще больше, оставшихся зарженых вакцинировали и они обратились вновь в себя...",
+    "Город очищен, местные счастливы и начали плодиться еще больше, оставшихся зарженых вакцинировали и они обратились вновь в себя...",
     "Ты рискую своей жизнью, даришь новую жизнь этому BloodyBoobs и его жителям!",
-    " Тебя запомнят как великого и бесстрашного спасителя! И будут рассказывать своим внукам еще не 1 десяток лет...",
+    "Тебя запомнят как великого и бесстрашного спасителя! И будут рассказывать своим внукам еще не 1 десяток лет...",
     "Несколько дней продолжались гуляния на главной площади...",
     "Но вот что тревожило Пакмана, что есть еще кучу других городов и надо бы туда отправляться, отдохнув и набравшився сил, Пакман исчез с .",
   ],
@@ -1002,7 +1002,7 @@ document.URL.includes("play.html")
       obj.pinkGhost = document.querySelector("div.pink");
       obj.cyanGhost = document.querySelector("div.cyan");
       createBoard();
-      showPrologue();
+      beginParty("prologue");
     })
   : null;
 
@@ -1010,6 +1010,7 @@ document.addEventListener("keyup", (e) => {
   if (e.code in keys) {
     keys[e.code] = false;
   }
+
   if (unitsMT.pacman.pause) {
     window.cancelAnimationFrame(rafId);
     clearInterval(interval);
@@ -1022,6 +1023,19 @@ const startTime = () => {
     props.time.sec === 60 ? ((props.time.sec = 0), (props.time.min += 1)) : 0;
   }, 1000);
 };
+
+//TODO
+//if frame drop, trans off, off timer
+//check fps google
+// add audio,
+//ref class component
+
+//add instruction modal window  - how to play game
+//start project -> History || scorebaord
+//coin -> picture -> coronavirus, ghost - mouse fly
+
+//add keyframe - when pacman death
+
 //if win -> bg good, if lose - apocalipse image
 //pacman + - как крестоносец, монеты - ковид, призраки мыши
 //  ?/разный bg - на сцены
@@ -1044,63 +1058,108 @@ const startTime = () => {
 //inProcess game - if lost value, show 1 time - msg
 //if take medical - show 1 time msg
 
-// show restart & menu -> when click esc fix
 //add each picure - for context
 // audio - text -> выразителбно и четко записатьб
 //audio - for pacman - death - текст типа - ты умер, ну ничего страшного.. etc
 
-const showHide = () => {
+// prologue audio, 2 min -> ..
+// Nyctalgia
+// Current track: Nyctalgia- Time Changed Everything...Nyctalgia- Time Changed Everyt
+
+//add sound Maga, soundeffect - my
+// Across The Waves
+// Current track: A Gaze Into The HorizenA Gaze Into The Horizen
+//restart - coin fix, and score after restart
+//todo cookie, & lost life - message
+//show last message -> pacman stats
+
+const showHide = (type) => {
   if (props.skip) {
-    //hide children 5
+    unitsMT.pacman.pause = true;
+    props.modal.style.display = "flex";
+    props.modal.children[0].textContent = "";
+    props.modal.children[2].style.display = "block";
+    props.modal.children[3].style.display = "block";
+    props.modal.children[5].style.display = "none";
   }
-  if (props.escape) {
-    //show all menu
+  if (type === "final") {
+    props.modal.children[1].style.display = "none";
+    props.modal.children[2].style.display = "none";
+    props.modal.children[3].style.display = "none";
+    props.modal.children[5].style.display = "block";
   }
-  if (props.endGame) {
-    //show restart & menu
+  if (type === "escape" && props.skip) {
+    props.modal.children[1].style.display = "block";
+  }
+  if ((props.skip && type == "win") || type == "lose") {
+    props.modal.children[1].style.display = "none";
   }
 };
 
-// pacman medical - 5 photo
+const beginParty = (type) => {
+  let textPos = 0;
+  let lastPos = 0;
+  unitsMT.pacman.pause = true;
+  let text = history[type];
 
-const showPrologue = () => {
-  if (props.skip == false) {
-    let lastPos = history.prologue.length - 1;
-    let textPos = 0;
-    //show firstly
-    props.modal.style.display = "block";
-    props.modal.children[5].children[0].textContent = history.prologue[textPos];
+  if (props.skip && type === "win") {
+    showHide("final");
+    text.push(
+      `Congrats, Yeap! You Win! Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`
+    );
+    lastPos = text.length - 1;
+  }
+  console.log(text);
+  if (props.skip && type === "lose") {
+    lastPos = history.lose.length - 1;
+  }
+  if (props.skip && type === "killGhost") {
+  }
+  if (props.skip && type === "medical") {
+  }
 
-    // background-color black
-    let img = document.createElement("img");
-    document.addEventListener("keydown", (e) => {
-      if (e.key == "s" || e.key == "n" || e.key == "p") {
-        if (e.key === "p" && textPos > 0) {
-          textPos--;
-        }
-        if (e.key === "n" && textPos <= lastPos) {
-          textPos++;
-          if (textPos == lastPos) {
-            props.skip = true;
-            props.modal.style.display = "none";
-          }
-        }
-        props.modal.children[5].children[0].textContent =
-          history.prologue[textPos];
-        //palu/pasue -next prev
-        let audio = new Audio("./assets/text1.aac");
-        audio.play();
+  if (props.skip == false && type == "prologue") {
+    lastPos = text.length - 1;
+    unitsMT.pacman.pause = false;
+  }
+  //show first time
+  props.modal.style.display = "block";
+  let img = document.createElement("img");
+  //show hfirst page in History
 
-        img.src = `./assets/${textPos + 1}.png`;
-        props.modal.children[5].children[0].append(img);
-        if (e.key === "s") {
+  img.src = `./assets/${textPos + 1}.png`;
+  props.modal.children[5].children[0].textContent = text[textPos];
+  props.modal.children[5].children[0].append(img);
+
+  // background-color black
+  document.addEventListener("keydown", (e) => {
+    if (e.key === " " || e.key == "n" || e.key == "p") {
+      if (e.key === "p" && textPos > 0) {
+        textPos--;
+      }
+      if (e.key === "n" && textPos <= lastPos) {
+        textPos++;
+        if (textPos == lastPos) {
           props.skip = true;
           props.modal.style.display = "none";
         }
       }
-      // console.log(props.skip);
-    });
-  }
+      props.modal.children[5].children[0].textContent = text[textPos];
+      //play/pause -next prev
+      let audio = new Audio("./assets/text1.aac");
+      audio.play();
+
+      img.src = `./assets/${textPos + 1}.png`;
+      props.modal.children[5].children[0].append(img);
+      //skip case
+      if (e.key === " ") {
+        props.skip = true;
+        props.modal.style.display = "none";
+      }
+    }
+    // console.log(props.skip, type, lastPos, textPos);
+    console.log(text[textPos], type);
+  });
 };
 
 if (document.URL.includes("index.html")) {
@@ -1132,12 +1191,12 @@ if (document.URL.includes("play.html")) {
     if (e.code in keys) {
       keys[e.code] = true;
     }
-
+    // console.log(e.code);
     if (
-      e.code === "ArrowLeft" ||
-      e.code === "ArrowRight" ||
-      e.code === "ArrowDown" ||
-      e.code === "ArrowUp"
+      e.code === "KeyA" ||
+      e.code === "KeyD" ||
+      e.code === "KeyS" ||
+      e.code === "KeyW"
     ) {
       //cahnge bg pacman & ghost if canKill
       if (unitsMT.pacman.canKill) {
@@ -1165,8 +1224,7 @@ if (document.URL.includes("play.html")) {
         //time
         startTime();
       }
-    }
-    if (e.code === "Escape") {
+    } else if (e.code === "Escape") {
       endGame("escape");
     }
   });
@@ -1180,8 +1238,9 @@ const render = (...args) => {
 
 const restart = () => {
   //lol
-  location.reload();
+  // location.reload();
 
+  props.skip = true;
   keys.restart = true;
   //set default values
   props.inPlay = false;
@@ -1194,15 +1253,27 @@ const restart = () => {
   unitsMT.pacman.posX = 695;
   unitsMT.pacman.posY = 425;
   // unitsMT.pacman.basePos = 658;
-
   obj.pacman.style.transform = `translate(425px, 695px)`;
-
   //show notify
   props.notify.style.display = "block";
   //update time
   clearInterval(interval);
 
-  //return opacity coin elem
+  // //return opacity coin elem
+  // for (let i = 0; i < 869; i++) {
+  //   if (props.grid.children[i].children[0] !== undefined) {
+  //     if (
+  //       props.grid.children[i].children[0].className === "coin" ||
+  //       props.grid.children[i].children[0].className === "cookie"
+  //     ) {
+  //       props.grid.children[i].children[0].style.opacity = 1;
+  //     }
+  //   }
+  // }
+  restoreCoin();
+  props.modal.style.display = "none";
+};
+const restoreCoin = () => {
   for (let i = 0; i < 869; i++) {
     if (props.grid.children[i].children[0] !== undefined) {
       if (
@@ -1213,19 +1284,14 @@ const restart = () => {
       }
     }
   }
-  props.modal.style.display = "none";
 };
-
 const endGame = (type) => {
   let size = 0;
   size = 2;
-  //show notify - you win
-  props.modal.style.display = "flex";
-  unitsMT.pacman.pause = true;
+  //show hide menu items
+  showHide(type);
   if (type === "escape") {
     size = 3;
-    props.modal.children[0].textContent = "";
-    props.modal.children[1].style.display = "block";
     //continue btn
     props.modal.children[1].onclick = (e) => {
       rafId = requestAnimationFrame(step);
@@ -1235,23 +1301,33 @@ const endGame = (type) => {
       startTime();
     };
   }
+  //show notify - you win
+  if (type === "win") {
+    beginParty("win");
+    // props.modal.children[0].textContent = `Congrats, Yeap! You Win! Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
+  }
+  if (type === "lose") {
+    beginParty("lose");
+    props.modal.children[0].textContent = `Game over. Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
+  }
 
   let links = document.getElementsByClassName("modal")[0];
   let start = 0;
 
+  //keydown menu
   document.addEventListener("keydown", (e) => {
     if (e.keyCode === 38) {
       if (start > 0) {
         links.children[start].style.color = "#000";
         start--;
-        links.children[start].style.color = "red";
+        links.children[start].style.color = "cyan";
       }
     }
     if (e.keyCode === 40) {
       if (start < size) {
         links.children[start].style.color = "#000";
         start++;
-        links.children[start].style.color = "red";
+        links.children[start].style.color = "cyan";
       }
     }
     if (e.code === "Enter") {
@@ -1259,12 +1335,7 @@ const endGame = (type) => {
     }
   });
 
-  if (type === "win") {
-    props.modal.children[0].textContent = `Congrats, Yeap! You Win! Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
-  }
-  if (type === "lose") {
-    props.modal.children[0].textContent = `Game over. Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
-  }
+  //onclick menu
   //restart btn
   props.modal.children[2].onclick = (e) => {
     //set def value
@@ -1277,18 +1348,6 @@ const endGame = (type) => {
     window.location.href = "http://localhost:5500/index.html";
   };
 };
-
-//TODO
-//if frame drop, trans off, off timer
-//check fps google
-// add audio,
-//ref class component
-
-//add instruction modal window  - how to play game
-//start project -> History || scorebaord
-//coin -> picture -> coronavirus, ghost - mouse fly
-
-//add keyframe - when pacman death
 
 const step = () => {
   if (props.inPlay) {
@@ -1341,12 +1400,10 @@ const step = () => {
       }
       // console.log(unitsMT.pacman.countCoin, "coin");
       if (unitsMT.pacman.life > 0) {
-        if (unitsMT.pacman.countCoin === 244) {
-          unitsMT.pacman.gameState = "win";
+        if (unitsMT.pacman.countCoin === 4) {
           endGame("win");
         }
       } else {
-        unitsMT.pacman.gameState = "lose";
         endGame("lose");
       }
 

@@ -875,10 +875,10 @@ const directsY = ["up", "down"];
 let killTimer = null;
 
 const keys = {
-  ArrowLeft: false,
-  ArrowRight: false,
-  ArrowUp: false,
-  ArrowDown: false,
+  KeyA: false,
+  KeyD: false,
+  KeyW: false,
+  KeyS: false,
 };
 
 const units = {
@@ -1118,7 +1118,7 @@ const findAndDestroy = (ghost) => {
   }
 };
 //DRY, clean arch
-const killPacman = (direct, type) => {
+const isIntersect = (direct, type) => {
   //currentPos & nextPos byDirect pacman - check if interesct any ghost
 
   let second = units.pacman.indexMap;
@@ -1239,7 +1239,7 @@ const pacmanMove = (keys) => {
     units.pacman.restart = false;
   }
   //check if key press equal  Right, nextPos in mapGame != 1, update value, goToRight
-  if (keys.ArrowLeft) {
+  if (keys.KeyA) {
     units.pacman.direct = "left";
     if (mapGame[units.pacman.indexMap - 1] !== 1) {
       units.pacman.posX -= 30;
@@ -1250,7 +1250,7 @@ const pacmanMove = (keys) => {
         units.pacman.posX += 840;
       }
     }
-  } else if (keys.ArrowRight) {
+  } else if (keys.KeyD) {
     units.pacman.direct = "right";
     if (mapGame[units.pacman.indexMap + 1] !== 1) {
       //canKill - and intersect -> -life
@@ -1263,13 +1263,13 @@ const pacmanMove = (keys) => {
         units.pacman.posX -= 840;
       }
     }
-  } else if (keys.ArrowUp) {
+  } else if (keys.KeyW) {
     units.pacman.direct = "up";
     if (mapGame[units.pacman.indexMap - 28] !== 1) {
       units.pacman.indexMap -= 28;
       units.pacman.posY -= 30;
     }
-  } else if (keys.ArrowDown) {
+  } else if (keys.KeyS) {
     units.pacman.direct = "down";
     if (
       mapGame[units.pacman.indexMap + 28] !== 1 &&
@@ -1281,10 +1281,10 @@ const pacmanMove = (keys) => {
   }
   //if pacman stay 1 position, check interect
   if (!units.pacman.canKill) {
-    killPacman(units.pacman.direct, "pacman");
+    isIntersect(units.pacman.direct, "pacman");
   }
   if (units.pacman.canKill) {
-    killPacman(units.pacman.direct, "ghost");
+    isIntersect(units.pacman.direct, "ghost");
   }
 
   // if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
