@@ -969,7 +969,7 @@ const history = {
   ],
   takeMedical:
     "Вы нашли ящик с вакционой Спутник V, теперь вы можете лечить зараженых, не боясь заразиться, т.к летечие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничен... Имейте ввиду, леча одного появится обязательно новые зараженные, которые будут патрулировать город",
-  lostLife:
+  death:
     "Ну ничего страшного, тяу тяу тяу. Местные верят в тебя и даруют тебе еще 1 жизнь, но помни, жизни ограничены...",
   lose: [
     "Все те жизни которые были даны Пакману, это души младецнов, ибо только их души способны даровать жизнь...",
@@ -982,7 +982,7 @@ const history = {
     "Ты рискуя своей жизнью, даришь новую жизнь этому городу BloodyBoobs и его жителям!",
     "Тебя запомнят как великого и бесстрашного спасителя! И будут рассказывать своим внукам еще не 1 десяток лет...",
     "Несколько дней продолжались гуляния на главной площади...",
-    "Но вот что тревожило Пакмана, что есть еще кучу других городов и надо бы туда отправляться, отдохнув и набравшився сил, Пакман исчез с .",
+    "Но вот что тревожило Пакмана, что есть еще кучу других городов и надо бы туда отправляться, отдохнув и набравшився сил, Пакман исчез...",
   ],
 };
 
@@ -1070,10 +1070,13 @@ const startTime = () => {
 //minus add -> with sound Maga
 // Across The Waves
 // Current track: A Gaze Into The HorizenA Gaze Into The Horizen
+
 //restart - coin fix, and score after restart
 //todo cookie, & lost life - message
-//show last message -> pacman stats
+
 //if pacman - death -> todo effect || notify
+
+//death state fix -show onnly 1 message
 
 const showHide = (type) => {
   if (props.skip) {
@@ -1099,30 +1102,41 @@ const showHide = (type) => {
 };
 
 const beginParty = (type) => {
+
   let textPos = 0;
   let lastPos = 0;
   unitsMT.pacman.pause = true;
   let text = history[type];
+  let msg = ''
 
-  if (props.skip && type === "win") {
+  if (type === "win") {
+    msg = 'Congrats, Yeap! You Win! Your Score '
+  }
+  if ( type === "lose") {
+    msg =  'Game over lol. Your Score '
+  }
+
+  if ( type === "lose" || type === 'win') {
     showHide("final");
-    text.push(
-      `Congrats, Yeap! You Win! Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`
-    );
-    lastPos = text.length - 1;
+    msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}months:${props.time.sec} days`
+    text.push(msg);
+    lastPos = text.length;
   }
-  console.log(text);
-  if (props.skip && type === "lose") {
-    lastPos = history.lose.length - 1;
+  // console.log(text, type, props.skip)
+
+  if (type === "death" && props.skip) {
+    showHide("final");
+    props.modal.children[5].children[0].textContent = text
+    return
+    // lastPos = text.length;
   }
-  if (props.skip && type === "killGhost") {
-  }
-  if (props.skip && type === "medical") {
+  if (type === "medical") {
   }
 
-  if (props.skip == false && type == "prologue") {
+  if (props.skip === false && type === "prologue") {
     lastPos = text.length - 1;
     unitsMT.pacman.pause = false;
+    props.skip = true
   }
   //show first time
   props.modal.style.display = "block";
@@ -1159,8 +1173,7 @@ const beginParty = (type) => {
         props.modal.style.display = "none";
       }
     }
-    // console.log(props.skip, type, lastPos, textPos);
-    console.log(text[textPos], type);
+    // console.log(props.skip, type, lastPos, textPos, text.length);
   });
 };
 
@@ -1218,11 +1231,13 @@ if (document.URL.includes("play.html")) {
       //   keys.death = false;
       //   // obj.pacman.classList.add("pacman-death");
       // }
-
+       console.log(unitsMT.pacman.death, 'death state')
+    
       if (!props.inPlay && props.skip) {
         props.notify.style.display = "none";
         props.inPlay = true;
-        rafId = requestAnimationFrame(step);
+        
+        props.rafId = requestAnimationFrame(step);
         //time
         startTime();
       }
@@ -1303,15 +1318,8 @@ const endGame = (type) => {
       startTime();
     };
   }
-  //show notify - you win
-  if (type === "win") {
-    beginParty("win");
-    // props.modal.children[0].textContent = `Congrats, Yeap! You Win! Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
-  }
-  if (type === "lose") {
-    beginParty("lose");
-    props.modal.children[0].textContent = `Game over. Your Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec} s`;
-  }
+  //show notify - you win || lose
+    beginParty(type);
 
   let links = document.getElementsByClassName("modal")[0];
   let start = 0;
@@ -1337,8 +1345,7 @@ const endGame = (type) => {
     }
   });
 
-  //onclick menu
-  //restart btn
+  //onclick menu  //restart btn
   props.modal.children[2].onclick = (e) => {
     //set def value
     props.modal.style.display = "none";
@@ -1408,6 +1415,9 @@ const step = () => {
       } else {
         endGame("lose");
       }
+      if(unitsMT.pacman.death) {
+        beginParty('death')
+        }
 
       //render
       obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
@@ -1416,7 +1426,7 @@ const step = () => {
       obj.cyanGhost.style.transform = `translate(${unitsMT.cyanGhost.posX}px, ${unitsMT.cyanGhost.posY}px)`;
       obj.pinkGhost.style.transform = `translate(${unitsMT.pinkGhost.posX}px, ${unitsMT.pinkGhost.posY}px)`;
       //updated value - render scoreboard
-      props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}m:${props.time.sec}s`;
+      props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}months:${props.time.sec}days`;
       //cooldwon, 5 * 16.7 -> reaction each 83ms
       unitsMT.cool = 6;
     }
