@@ -868,6 +868,7 @@ const mapGame = [
   1,
   1,
 ];
+
 //1 wall, 0 coin, 4 cookie, 8 teleport, 3 -empty, 9 freepath
 
 const directsX = ["left", "right"];
@@ -1207,23 +1208,29 @@ const isIntersect = (direct, type) => {
     }
   }
 };
+let replaced = [];
+let cookie = [85, 110, 645, 870];
 
 const pacmanMove = (keys) => {
   units.pacman.restart = keys.restart;
+  //get index - by formula, posX, posY - index for mapGame // formula = y / 30 * 28 + x / 30
   units.pacman.indexMap = Math.floor(
     ((units.pacman.posY - 5) / 30) * 28 + (units.pacman.posX - 5) / 30
   );
+  // units.pacman.lastIndex = units.pacman.indexMap;
   if (units.pacman.restart) {
-    units.pacman.lastIndex = units.pacman.indexMap;
-    // console.log(units.pacman.indexMap);
-    units.pacman.posX = 425;
-    units.pacman.posY = 695;
-    units.pacman.countCoin = 0;
-
-    units.orangeGhost.basePos = 405;
+    //restore in array map value
+    for (let i = 0; i < replaced.length; i++) {
+      mapGame[replaced[i]] = 0;
+    }
+    for (let i = 0; i < cookie.length; i++) {
+      mapGame[cookie[i]] = 4;
+    }
     units.pinkGhost.basePos = 404;
+    units.orangeGhost.basePos = 405;
     units.redGhost.basePos = 406;
     units.cyanGhost.basePos = 407;
+
     units.pinkGhost.posX = 360;
     units.pinkGhost.posY = 420;
     units.orangeGhost.posX = 390;
@@ -1233,9 +1240,14 @@ const pacmanMove = (keys) => {
     units.redGhost.posX = 420;
     units.redGhost.posY = 420;
 
-    units.pacman.cool = 0;
+    units.pacman.posX = 425;
+    units.pacman.posY = 695;
+    units.pacman.countCoin = 0;
     units.pacman.life = 5;
     units.pacman.score = 0;
+    units.pacman.indexMap = 658;
+    //set def value in array Map
+
     units.pacman.restart = false;
   }
   //check if key press equal  Right, nextPos in mapGame != 1, update value, goToRight
@@ -1254,7 +1266,6 @@ const pacmanMove = (keys) => {
     units.pacman.direct = "right";
     if (mapGame[units.pacman.indexMap + 1] !== 1) {
       //canKill - and intersect -> -life
-
       units.pacman.indexMap += 1;
       units.pacman.posX += 30;
       units.pacman.transX = "translateX(100%)";
@@ -1286,12 +1297,14 @@ const pacmanMove = (keys) => {
   if (units.pacman.canKill) {
     isIntersect(units.pacman.direct, "ghost");
   }
-
+  console.log(mapGame[units.pacman.indexMap]);
   // if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
   if (mapGame[units.pacman.indexMap] !== 1) {
     if (mapGame[units.pacman.indexMap] === 0) {
       units.pacman.score += 10;
       units.pacman.countCoin++;
+      //remember index, then restore mapGame array by index
+      replaced.push(units.pacman.indexMap);
     }
     //Invulnerable pacman 10 sec
     if (mapGame[units.pacman.indexMap] === 4) {
@@ -1301,6 +1314,7 @@ const pacmanMove = (keys) => {
       killGhost(units.pacman.killTime);
       units.pacman.countCoin++; // count coin for - check win game
     }
+
     if (units.pacman.indexMap !== 420 && units.pacman.indexMap !== 391) {
       mapGame[units.pacman.indexMap] = 9;
     }

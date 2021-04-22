@@ -907,6 +907,7 @@ const props = {
     min: 0,
   },
   skip: false,
+  sceneType: "prologue",
 };
 
 //unit objects - for manipualte game
@@ -934,9 +935,9 @@ let unitsMT = {
     direct: "up",
   },
   pacman: {
-    posX: 450,
-    posY: 420,
-    basePos: 407,
+    posX: 425,
+    posY: 695,
+    basePos: 658,
     transX: "",
     indexMap: 0,
     life: 5,
@@ -961,10 +962,12 @@ const history = {
     "В мире их осталось не так много, но те что остались,  идут от города к городу рискуя своей жизнью, что бы очистить этот грязный город BloodyBoobs и вакцинировать зараженных...",
     "Если повезет...",
     "Вирус превращал из любого кто попадался ему на пути - в огромную и сильную летучую мышь, помимо физиологической деформации, вирус также завладевал разумом, что теперь зараженый становился рабом вируса и выполнял функцию распространителя...",
-    "Те же кто уже заразился - местные называли их летучими подонками...",
-    "Зараженые интуитивно искали своих здоровых  собратьев, обхватив их крыльями они крепко держали жертву  и целовали его в засос, так вирус и передовался, процесс был долгим и  мучительным...",
+    "Те же кто уже заразился? местные называли их - летучими подонками...",
+    "Зараженые интуитивно искали своих здоровых собратьев, обхватив их крыльями они крепко держали жертву  и целовали его в засос, так вирус и передовался, процесс был долгим и  мучительным...",
     "Вирус заполонил многие города, некоторые вовсе исчахли...",
     "Жители города BloodyBoobs надеются на Пакмана и помогают им даруя жизни и пропитание...",
+    "Находи ящики с вакционой Sugar V, с их помощью ты можешь лечить зараженых, не боясь заразиться, т.к летечие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничен...",
+    "Имей ввиду, леча одного появится, обязательно новые зараженные, которые будут патрулировать город",
     "Теперь все в твоих руках... В бой юный подован!",
   ],
   takeMedical:
@@ -1009,11 +1012,6 @@ document.URL.includes("play.html")
 document.addEventListener("keyup", (e) => {
   if (e.code in keys) {
     keys[e.code] = false;
-  }
-
-  if (unitsMT.pacman.pause) {
-    window.cancelAnimationFrame(rafId);
-    clearInterval(interval);
   }
 });
 
@@ -1072,11 +1070,14 @@ const startTime = () => {
 // Current track: A Gaze Into The HorizenA Gaze Into The Horizen
 
 //restart - coin fix, and score after restart
-//todo cookie, & lost life - message
-
 //if pacman - death -> todo effect || notify
 
-//death state fix -show onnly 1 message
+// option - on/off - sound,
+//after lose || win -> show menu - restart/ go main menu
+//if lose || win || prologu add prefix for image
+//aduio fix play pause
+// fix keydown manipulate menu
+//if play game - not use space n, p button
 
 const showHide = (type) => {
   if (props.skip) {
@@ -1092,88 +1093,90 @@ const showHide = (type) => {
     props.modal.children[2].style.display = "none";
     props.modal.children[3].style.display = "none";
     props.modal.children[5].style.display = "block";
+    props.modal.children[5].children[1].style.display = "none";
   }
   if (type === "escape" && props.skip) {
     props.modal.children[1].style.display = "block";
   }
-  if ((props.skip && type == "win") || type == "lose") {
-    props.modal.children[1].style.display = "none";
-  }
 };
 
 const beginParty = (type) => {
-
+  // console.log("work", type);
   let textPos = 0;
   let lastPos = 0;
   unitsMT.pacman.pause = true;
   let text = history[type];
-  let msg = ''
+  let msg = "";
 
   if (type === "win") {
-    msg = 'Congrats, Yeap! You Win! Your Score '
+    msg = "Congrats, Yeap! You Win! Your Score ";
   }
-  if ( type === "lose") {
-    msg =  'Game over lol. Your Score '
+  if (type === "lose") {
+    msg = "Game over lol. Your Score ";
   }
 
-  if ( type === "lose" || type === 'win') {
+  //show first time
+  props.modal.style.display = "block";
+  let img = document.createElement("img");
+  //show hfirst page in History
+  if (type === "lose" || type === "win") {
+    props.skip = false;
     showHide("final");
-    msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}months:${props.time.sec} days`
+    props.sceneType = "";
+    msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}months:${props.time.sec} days`;
     text.push(msg);
     lastPos = text.length;
-  }
-  // console.log(text, type, props.skip)
-
-  if (type === "death" && props.skip) {
-    showHide("final");
-    props.modal.children[5].children[0].textContent = text
-    return
-    // lastPos = text.length;
-  }
-  if (type === "medical") {
   }
 
   if (props.skip === false && type === "prologue") {
     lastPos = text.length - 1;
     unitsMT.pacman.pause = false;
-    props.skip = true
+    props.skip = true;
   }
-  //show first time
-  props.modal.style.display = "block";
-  let img = document.createElement("img");
-  //show hfirst page in History
-
+  //first image
   img.src = `./assets/${textPos + 1}.png`;
   props.modal.children[5].children[0].textContent = text[textPos];
   props.modal.children[5].children[0].append(img);
-
   // background-color black
   document.addEventListener("keydown", (e) => {
-    if (e.key === " " || e.key == "n" || e.key == "p") {
-      if (e.key === "p" && textPos > 0) {
-        textPos--;
-      }
-      if (e.key === "n" && textPos <= lastPos) {
-        textPos++;
-        if (textPos == lastPos) {
-          props.skip = true;
-          props.modal.style.display = "none";
+    if (e.keyCode !== 27) {
+      if (e.key === " " || e.key === "n" || e.key === "p") {
+        if (e.key === "p" && textPos > 0) {
+          textPos--;
+        }
+        if (e.key === "n" && textPos <= lastPos) {
+          textPos++;
+          if (textPos == lastPos) {
+            if (type == "win" || type == "lose") {
+              props.skip = true;
+              props.sceneType = "";
+              showHide();
+            } else {
+              props.modal.style.display = "none";
+            }
+            // unitsMT.pacman.pause = false;
+          }
+        }
+        props.modal.children[5].children[0].textContent = text[textPos];
+        //play/pause -next prev
+        let audio = new Audio("./assets/text1.aac");
+        audio.play();
+
+        img.src = `./assets/${textPos + 1}.png`;
+        props.modal.children[5].children[0].append(img);
+        //skip case
+        if (e.key === " ") {
+          if (type == "win" || type == "lose") {
+            props.skip = true;
+            props.sceneType = "";
+            showHide();
+          } else {
+            props.modal.style.display = "none";
+          }
+          // unitsMT.pacman.pause = false;
         }
       }
-      props.modal.children[5].children[0].textContent = text[textPos];
-      //play/pause -next prev
-      let audio = new Audio("./assets/text1.aac");
-      audio.play();
-
-      img.src = `./assets/${textPos + 1}.png`;
-      props.modal.children[5].children[0].append(img);
-      //skip case
-      if (e.key === " ") {
-        props.skip = true;
-        props.modal.style.display = "none";
-      }
     }
-    // console.log(props.skip, type, lastPos, textPos, text.length);
   });
 };
 
@@ -1206,7 +1209,6 @@ if (document.URL.includes("play.html")) {
     if (e.code in keys) {
       keys[e.code] = true;
     }
-    // console.log(e.code);
     if (
       e.code === "KeyA" ||
       e.code === "KeyD" ||
@@ -1231,12 +1233,10 @@ if (document.URL.includes("play.html")) {
       //   keys.death = false;
       //   // obj.pacman.classList.add("pacman-death");
       // }
-       console.log(unitsMT.pacman.death, 'death state')
-    
       if (!props.inPlay && props.skip) {
         props.notify.style.display = "none";
         props.inPlay = true;
-        
+
         props.rafId = requestAnimationFrame(step);
         //time
         startTime();
@@ -1254,43 +1254,29 @@ const render = (...args) => {
 };
 
 const restart = () => {
-  //lol
-  // location.reload();
-
+  //lol  location.reload();
   props.skip = true;
-  keys.restart = true;
   //set default values
   props.inPlay = false;
-  unitsMT.pacman.pause = false;
   props.time.min = 0;
   props.time.sec = 0;
-  unitsMT.pacman.score = 0;
-  unitsMT.pacman.life = 5;
 
-  unitsMT.pacman.posX = 695;
-  unitsMT.pacman.posY = 425;
-  // unitsMT.pacman.basePos = 658;
-  obj.pacman.style.transform = `translate(425px, 695px)`;
+  //set def value in main Thread
+  unitsMT.pacman.posX = 425;
+  unitsMT.pacman.posY = 695;
+  unitsMT.pacman.indexMap = 658;
+  unitsMT.pacman.life = 5;
+  unitsMT.pacman.countCoin = 0;
+  unitsMT.pacman.score = 0;
+
+  props.modal.style.display = "none";
+
+  obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
   //show notify
   props.notify.style.display = "block";
   //update time
   clearInterval(interval);
-
-  // //return opacity coin elem
-  // for (let i = 0; i < 869; i++) {
-  //   if (props.grid.children[i].children[0] !== undefined) {
-  //     if (
-  //       props.grid.children[i].children[0].className === "coin" ||
-  //       props.grid.children[i].children[0].className === "cookie"
-  //     ) {
-  //       props.grid.children[i].children[0].style.opacity = 1;
-  //     }
-  //   }
-  // }
-  restoreCoin();
-  props.modal.style.display = "none";
-};
-const restoreCoin = () => {
+  //return opacity coin elem, set timeout?
   for (let i = 0; i < 869; i++) {
     if (props.grid.children[i].children[0] !== undefined) {
       if (
@@ -1301,13 +1287,15 @@ const restoreCoin = () => {
       }
     }
   }
+  unitsMT.pacman.pause = false;
 };
+
 const endGame = (type) => {
   let size = 0;
   size = 2;
   //show hide menu items
-  showHide(type);
   if (type === "escape") {
+    showHide(type);
     size = 3;
     //continue btn
     props.modal.children[1].onclick = (e) => {
@@ -1319,7 +1307,13 @@ const endGame = (type) => {
     };
   }
   //show notify - you win || lose
-    beginParty(type);
+  if (
+    props.sceneType == "win" ||
+    props.sceneType == "lose" ||
+    props.sceneType == "prologue"
+  ) {
+    beginParty(props.sceneType);
+  }
 
   let links = document.getElementsByClassName("modal")[0];
   let start = 0;
@@ -1344,17 +1338,20 @@ const endGame = (type) => {
       links.children[start].click();
     }
   });
-
   //onclick menu  //restart btn
   props.modal.children[2].onclick = (e) => {
     //set def value
-    props.modal.style.display = "none";
-    unitsMT.pacman.pause = false;
+    props.sceneType = "";
     props.inPlay = false;
+    keys.restart = true;
     restart();
   };
   props.modal.children[3].onclick = (e) => {
-    window.location.href = "http://localhost:5500/index.html";
+    props.sceneType = "";
+    props.inPlay = false;
+    keys.restart = true;
+    restart();
+    window.location.href = "http://localhost:6969/index.html";
   };
 };
 
@@ -1384,15 +1381,28 @@ const step = () => {
         unitsMT.pacman.life = e.data.pacman.life;
         unitsMT.pacman.countCoin = e.data.pacman.countCoin;
         unitsMT.pacman.canKill = e.data.pacman.canKill;
-        // unitsMT.pacman.lastIndex = e.data.pacman.lastIndex;
         unitsMT.pacman.transX = e.data.pacman.transX;
         unitsMT.pacman.death = e.data.pacman.death;
         keys.restart = e.data.pacman.restart;
+
+        console.log(
+          unitsMT.pacman.indexMap,
+          e.data.pacman.indexMap,
+          "index",
+          unitsMT.pacman.score,
+          e.data.pacman.score,
+          "score",
+          unitsMT.pacman.life,
+          e.data.pacman.life,
+          "life",
+          unitsMT.pacman.countCoin,
+          e.data.pacman.countCoin,
+          "coin",
+          unitsMT.pacman.pause,
+          "pause",
+          props.sceneType
+        );
       };
-
-      //get index - by formula, posX, posY - index for mapGame
-      // formula = y / 30 * 28 + x / 30
-
       //if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
       if (mapGame[unitsMT.pacman.indexMap] !== 1) {
         if (
@@ -1407,18 +1417,15 @@ const step = () => {
         //change mouth - pacman
         obj.pacman_mouth.style.transform = unitsMT.pacman.transX;
       }
-      // console.log(unitsMT.pacman.countCoin, "coin");
       if (unitsMT.pacman.life > 0) {
         if (unitsMT.pacman.countCoin === 244) {
-          endGame("win");
+          props.sceneType = "win";
+          endGame();
         }
       } else {
-        endGame("lose");
+        props.sceneType = "lose";
+        endGame();
       }
-      if(unitsMT.pacman.death) {
-        beginParty('death')
-        }
-
       //render
       obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
       obj.redGhost.style.transform = `translate(${unitsMT.redGhost.posX}px, ${unitsMT.redGhost.posY}px)`;
