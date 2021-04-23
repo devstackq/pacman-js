@@ -8,6 +8,13 @@ body {
   background: #000;
   box-sizing: border-box;
 }
+.mainPage {
+  background: #000;
+  z-index: 5;
+  position: absolute;
+  top: 0px;
+  height: 100vh;
+}
 
 .grid {
   justify-content: center;
@@ -242,7 +249,7 @@ body {
 }
 
 .logo img {
-  width: 75%;
+  width: 50%;
   height: auto;
 }
 
@@ -270,7 +277,7 @@ body {
 }
 
 .menu img {
-  width: 50%;
+  width: 25%;
   height: auto;
 }
 

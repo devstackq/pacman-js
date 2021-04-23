@@ -908,6 +908,7 @@ const props = {
   },
   skip: false,
   sceneType: "prologue",
+  mainMenu: true,
 };
 
 //unit objects - for manipualte game
@@ -981,8 +982,10 @@ const history = {
     "Если только не придет новый чистильщик...",
   ],
   win: [
-    "Город очищен, местные счастливы и начали плодиться еще больше, оставшихся зарженых вакцинировали и они обратились вновь в себя...",
-    "Ты рискуя своей жизнью, даришь новую жизнь этому городу BloodyBoobs и его жителям!",
+    "Дни и ночи не покладая рук ты расчищал этот грязный город и теперь город очищен",
+    "+10 к ЧСВ, +10 к карме, местные благодарны и некотрые даже начали называть своих детей твоим именем",
+    "Оставшихся зарженых вакцинировали и они обратились вновь в себя...",
+    "Ты рискуя своей жизнью, даришь новую жизнь BloodyBoobs и его жителям!",
     "Тебя запомнят как великого и бесстрашного спасителя! И будут рассказывать своим внукам еще не 1 десяток лет...",
     "Несколько дней продолжались гуляния на главной площади...",
     "Но вот что тревожило Пакмана, что есть еще кучу других городов и надо бы туда отправляться, отдохнув и набравшився сил, Пакман исчез...",
@@ -990,24 +993,29 @@ const history = {
 };
 
 //dom onladed -> get grid elem, -> append - block, then manipulate this dom object, etc
-document.URL.includes("play.html")
-  ? document.addEventListener("DOMContentLoaded", () => {
-      //save cache dom in nodes - addres in Ram - > then change by pointer
-      props.grid = document.querySelector("div.grid");
-      props.modal = document.querySelector("div.modal");
-      props.notify = document.querySelector("div.notify");
-      props.scoreBoard = document.querySelector("div.scoreBoard");
-      obj.pacman = document.querySelector("div.pacman");
-      obj.pacman_mouth = document.querySelector("div.pacman_mouth");
-      //set default pos in Dom
-      obj.redGhost = document.querySelector("div.red");
-      obj.orangeGhost = document.querySelector("div.orange");
-      obj.pinkGhost = document.querySelector("div.pink");
-      obj.cyanGhost = document.querySelector("div.cyan");
-      createBoard();
-      beginParty("prologue");
-    })
-  : null;
+// document.URL.includes("index.html")
+document.addEventListener("DOMContentLoaded", () => {
+  //save cache dom in nodes - addres in Ram - > then change by pointer
+  props.grid = document.querySelector("div.grid");
+  props.modal = document.querySelector("div.modal");
+  props.notify = document.querySelector("div.notify");
+  props.scoreBoard = document.querySelector("div.scoreBoard");
+  obj.pacman = document.querySelector("div.pacman");
+  obj.pacman_mouth = document.querySelector("div.pacman_mouth");
+  //set default pos in Dom
+  obj.redGhost = document.querySelector("div.red");
+  obj.orangeGhost = document.querySelector("div.orange");
+  obj.pinkGhost = document.querySelector("div.pink");
+  obj.cyanGhost = document.querySelector("div.cyan");
+  createBoard();
+  //show main menu
+  showHide();
+  console.log(props.mainMenu, props.skip, 2);
+  if (!props.mainMenu && !props.skip) {
+    console.log("inside");
+    beginParty("prologue");
+  }
+});
 
 document.addEventListener("keyup", (e) => {
   if (e.code in keys) {
@@ -1078,8 +1086,27 @@ const startTime = () => {
 //aduio fix play pause
 // fix keydown manipulate menu
 //if play game - not use space n, p button
+//main menu -> fix, not work, set def values - like restart()
+//if first start game -> show modal - press button for start
+//block - keys -> asdw, -> when prologue
+
+//protet - incognito - cache - worker - null
 
 const showHide = (type) => {
+  //main menu
+  if (props.mainMenu) {
+    props.modal.style.display = "block";
+    props.modal.children[6].style.display = "block";
+    let links = document.getElementsByClassName("links")[0];
+    //if start game
+    links.children[0].addEventListener("click", function () {
+      props.modal.children[6].style.display = "none";
+      props.mainMenu = false; wtf ?
+    });
+    // props.mainMenu = false;
+    console.log(props.mainMenu, props.skip, 1);
+  }
+
   if (props.skip) {
     unitsMT.pacman.pause = true;
     props.modal.style.display = "flex";
@@ -1087,6 +1114,7 @@ const showHide = (type) => {
     props.modal.children[2].style.display = "block";
     props.modal.children[3].style.display = "block";
     props.modal.children[5].style.display = "none";
+    props.modal.children[6].style.display = "none";
   }
   if (type === "final") {
     props.modal.children[1].style.display = "none";
@@ -1101,7 +1129,7 @@ const showHide = (type) => {
 };
 
 const beginParty = (type) => {
-  // console.log("work", type);
+  console.log(type);
   let textPos = 0;
   let lastPos = 0;
   unitsMT.pacman.pause = true;
@@ -1123,7 +1151,7 @@ const beginParty = (type) => {
     props.skip = false;
     showHide("final");
     props.sceneType = "";
-    msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}months:${props.time.sec} days`;
+    msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days`;
     text.push(msg);
     lastPos = text.length;
   }
@@ -1180,72 +1208,71 @@ const beginParty = (type) => {
   });
 };
 
-if (document.URL.includes("index.html")) {
-  let start = 0;
-  let links = document.getElementsByClassName("links")[0];
-  document.addEventListener("keydown", (e) => {
-    if (e.code === "ArrowDown") {
-      if (start < 3) {
-        links.children[start].style.color = "#fff";
-        start++;
-        links.children[start].style.color = "red";
-      }
-    }
-    if (e.code === "ArrowUp") {
-      if (start > 0) {
-        links.children[start].style.color = "#fff";
-        start--;
-        links.children[start].style.color = "red";
-      }
-    }
-    if (e.code === "Enter") {
-      links.children[start].click();
-    }
-  });
-}
+// if (document.URL.includes("index.html")) {
+//   let start = 0;
+//   let links = document.getElementsByClassName("links")[0];
+//   document.addEventListener("keydown", (e) => {
+//     if (e.code === "ArrowDown") {
+//       if (start < 3) {
+//         links.children[start].style.color = "#fff";
+//         start++;
+//         links.children[start].style.color = "red";
+//       }
+//     }
+//     if (e.code === "ArrowUp") {
+//       if (start > 0) {
+//         links.children[start].style.color = "#fff";
+//         start--;
+//         links.children[start].style.color = "red";
+//       }
+//     }
+//     if (e.code === "Enter") {
+//       links.children[start].click();
+//     }
+//   });
+// }
 
-if (document.URL.includes("play.html")) {
-  document.addEventListener("keydown", (e) => {
-    if (e.code in keys) {
-      keys[e.code] = true;
+document.addEventListener("keydown", (e) => {
+  if (e.code in keys) {
+    keys[e.code] = true;
+  }
+  if (
+    e.code === "KeyA" ||
+    e.code === "KeyD" ||
+    e.code === "KeyS" ||
+    e.code === "KeyW"
+  ) {
+    //cahnge bg pacman & ghost if canKill
+    if (unitsMT.pacman.canKill) {
+      obj.pacman.style.background = "red";
+      obj.redGhost.style.opacity = ".4";
+      obj.orangeGhost.style.opacity = ".4";
+      obj.pinkGhost.style.opacity = ".4";
+      obj.cyanGhost.style.opacity = ".4";
+    } else {
+      obj.pacman.style.background = "yellow";
+      obj.redGhost.style.opacity = "1";
+      obj.orangeGhost.style.opacity = "1";
+      obj.pinkGhost.style.opacity = "1";
+      obj.cyanGhost.style.opacity = "1";
     }
-    if (
-      e.code === "KeyA" ||
-      e.code === "KeyD" ||
-      e.code === "KeyS" ||
-      e.code === "KeyW"
-    ) {
-      //cahnge bg pacman & ghost if canKill
-      if (unitsMT.pacman.canKill) {
-        obj.pacman.style.background = "red";
-        obj.redGhost.style.opacity = ".4";
-        obj.orangeGhost.style.opacity = ".4";
-        obj.pinkGhost.style.opacity = ".4";
-        obj.cyanGhost.style.opacity = ".4";
-      } else {
-        obj.pacman.style.background = "yellow";
-        obj.redGhost.style.opacity = "1";
-        obj.orangeGhost.style.opacity = "1";
-        obj.pinkGhost.style.opacity = "1";
-        obj.cyanGhost.style.opacity = "1";
-      }
-      // if (unitsMT.pacman.death) {
-      //   keys.death = false;
-      //   // obj.pacman.classList.add("pacman-death");
-      // }
-      if (!props.inPlay && props.skip) {
-        props.notify.style.display = "none";
-        props.inPlay = true;
+    // if (unitsMT.pacman.death) {
+    //   keys.death = false;
+    //   // obj.pacman.classList.add("pacman-death");
+    // }
+    if (!props.inPlay && props.skip) {
+      props.notify.style.display = "none";
+      props.inPlay = true;
 
-        props.rafId = requestAnimationFrame(step);
-        //time
-        startTime();
-      }
-    } else if (e.code === "Escape") {
-      endGame("escape");
+      props.rafId = requestAnimationFrame(step);
+      //time
+      startTime();
     }
-  });
-}
+  } else if (e.code === "Escape" && props.skip && !props.mainMenu) {
+    console.log("esc menu in game");
+    endGame("escape");
+  }
+});
 //transform translate each item - change posit 0 in Dom
 const render = (...args) => {
   args.forEach((el, i) => {
@@ -1260,7 +1287,7 @@ const restart = () => {
   props.inPlay = false;
   props.time.min = 0;
   props.time.sec = 0;
-
+  keys.restart = true;
   //set def value in main Thread
   unitsMT.pacman.posX = 425;
   unitsMT.pacman.posY = 695;
@@ -1270,7 +1297,6 @@ const restart = () => {
   unitsMT.pacman.score = 0;
 
   props.modal.style.display = "none";
-
   obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
   //show notify
   props.notify.style.display = "block";
@@ -1287,8 +1313,11 @@ const restart = () => {
       }
     }
   }
+
   unitsMT.pacman.pause = false;
 };
+
+//menu - modal window ?
 
 const endGame = (type) => {
   let size = 0;
@@ -1308,17 +1337,16 @@ const endGame = (type) => {
   }
   //show notify - you win || lose
   if (
-    props.sceneType == "win" ||
-    props.sceneType == "lose" ||
-    props.sceneType == "prologue"
+    props.sceneType === "win" ||
+    props.sceneType === "lose" ||
+    props.sceneType === "prologue"
   ) {
     beginParty(props.sceneType);
   }
-
+  //keydown menu
   let links = document.getElementsByClassName("modal")[0];
   let start = 0;
 
-  //keydown menu
   document.addEventListener("keydown", (e) => {
     if (e.keyCode === 38) {
       if (start > 0) {
@@ -1341,17 +1369,13 @@ const endGame = (type) => {
   //onclick menu  //restart btn
   props.modal.children[2].onclick = (e) => {
     //set def value
-    props.sceneType = "";
-    props.inPlay = false;
-    keys.restart = true;
     restart();
   };
   props.modal.children[3].onclick = (e) => {
-    props.sceneType = "";
-    props.inPlay = false;
-    keys.restart = true;
+    props.mainMenu = true;
     restart();
-    window.location.href = "http://localhost:6969/index.html";
+    showHide();
+    //show menu, another hide
   };
 };
 
@@ -1400,7 +1424,8 @@ const step = () => {
           "coin",
           unitsMT.pacman.pause,
           "pause",
-          props.sceneType
+          props.sceneType,
+          props.mainMenu
         );
       };
       //if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
@@ -1433,7 +1458,7 @@ const step = () => {
       obj.cyanGhost.style.transform = `translate(${unitsMT.cyanGhost.posX}px, ${unitsMT.cyanGhost.posY}px)`;
       obj.pinkGhost.style.transform = `translate(${unitsMT.pinkGhost.posX}px, ${unitsMT.pinkGhost.posY}px)`;
       //updated value - render scoreboard
-      props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  Time: ${props.time.min}months:${props.time.sec}days`;
+      props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  ${props.time.min} months ${props.time.sec} days`;
       //cooldwon, 5 * 16.7 -> reaction each 83ms
       unitsMT.cool = 6;
     }

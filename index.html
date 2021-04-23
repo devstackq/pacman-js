@@ -2,31 +2,90 @@
 <html>
 
 <head>
-    <title>Menu</title>
+    <title>Super Pacman</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" href="data:,">
     <meta charset="UTF-8">
 </head>
 
-<body class='mainPage'>
-    <div class='logo'>
-        <img src='assets/logo.png' />
-    </div>
+<body>
 
-    <div class='menu'>
-        <img src='assets/pachead.png' />
-        <div class='links'>
-            <a href='play.html'>start game</a>
-            <a href='score.html'>scoreboard</a>
-            <a href='option.html'>options</a>
-            <a href='about.html'>about</a>
+    <div id='notify' class='notify'> Click arrow key, for start game! </div>
+    <div class="scoreBoard">
+        <span id='score' class="score">Score: 0 Lives: 5 0 months days 0</span>
+    </div>
+    <div id='grid' class="grid">
+
+        <div id='pacman' class="pacman" type=7>
+            <div class="pacman_eye"></div>
+            <div class="pacman_mouth"></div>
+        </div>
+
+        <div class="ghost red">
+            <div class="left_eye"></div>
+            <div class="right_eye"></div>
+            <div class="mouth">
+            </div>
+        </div>
+
+        <div class="ghost pink">
+            <div class="left_eye"></div>
+            <div class="right_eye"></div>
+            <div class="mouth">
+            </div>
+        </div>
+        <div class="ghost orange">
+            <div class="left_eye"></div>
+            <div class="right_eye"></div>
+            <div class="mouth">
+            </div>
+
+        </div>
+        <div class="ghost cyan">
+            <div class="left_eye"></div>
+            <div class="right_eye"></div>
+            <div class="mouth">
+            </div>
         </div>
     </div>
+
+    <div class='modal' id='modal'>
+        <span id='stats'> </span>
+        <a id='continue' style='display:none'> Continue </a>
+        <a style='display:none'> Restart </a>
+        <a style='display:none'> Main menu </a>
+        <div id='addScoreId' style='display:none'>
+            <label>enter your name </label>
+            <input type='text'> </input>
+            <input type='submit' value='ok'> </input>
+        </div>
+
+        <div class="history-container">
+            <span></span>
+            <span class="faq"> Инструкция: N - далее, P - предыдущий, Space - Пропустить. Управление: Влево - A
+                Вправо - D Вверх - W Вниз - S, Меню - Esc</span>
+        </div>
+        <!-- //menu -->
+        <div class="mainPage">
+            <div class='logo'>
+                <img src='assets/logo.png' />
+            </div>
+
+            <div class='menu'>
+                <img src='assets/pachead.png' />
+                <div class='links'>
+                    <a>start game</a>
+                    <a href='score.html'>scoreboard</a>
+                    <a href='option.html'>options</a>
+                    <a href='about.html'>about</a>
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
 </body>
-<script>
-    let intro = new Audio("./assets/intro.wav");
-    intro.play()
-</script>
-<script src='./main.js' type="module"></script>
+<script type="module" src='./main.js'> </script>
 
 </html>
