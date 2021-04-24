@@ -281,6 +281,12 @@ body {
   height: auto;
 }
 
+.gameMenu {
+  display: none;
+}
+.history-container {
+  display: none;
+}
 .modal {
   display: none;
   color: #fff;
