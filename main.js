@@ -1010,11 +1010,11 @@ document.addEventListener("DOMContentLoaded", () => {
   createBoard();
   //show main menu
   showHide();
-  console.log(props.mainMenu, props.skip, 2);
-  if (!props.mainMenu && !props.skip) {
-    console.log("inside");
+  // && !props.skip
+  if (!props.mainMenu) {
     beginParty("prologue");
   }
+  console.log(props.mainMenu, props.skip);
 });
 
 document.addEventListener("keyup", (e) => {
@@ -1090,62 +1090,76 @@ const startTime = () => {
 //if first start game -> show modal - press button for start
 //block - keys -> asdw, -> when prologue
 
-//protet - incognito - cache - worker - null
-
 const showHide = (type) => {
+  if (!props.mainMenu) {
+    if (props.skip) {
+      unitsMT.pacman.pause = true;
+      props.modal.style.display = "flex";
+      props.modal.children[0].textContent = "";
+      props.modal.children[2].style.display = "block";
+      props.modal.children[3].style.display = "block";
+      props.modal.children[5].style.display = "none";
+      props.modal.children[6].style.display = "none";
+    }
+    if (type === "final") {
+      props.modal.children[1].style.display = "none";
+      props.modal.children[2].style.display = "none";
+      props.modal.children[3].style.display = "none";
+      props.modal.children[5].style.display = "block";
+      props.modal.children[5].children[1].style.display = "none";
+    }
+    if (type === "escape" && props.skip) {
+      props.modal.children[1].style.display = "block";
+    }
+  }
+
   //main menu
   if (props.mainMenu) {
+    //DRY
+    props.modal.style.background = "rgba(0, 0, 0, 0)";
     props.modal.style.display = "block";
-    props.modal.children[6].style.display = "block";
-    let links = document.getElementsByClassName("links")[0];
-    //if start game
-    links.children[0].addEventListener("click", function () {
-      props.modal.children[6].style.display = "none";
-      props.mainMenu = false; wtf ?
-    });
-    // props.mainMenu = false;
-    console.log(props.mainMenu, props.skip, 1);
-  }
-
-  if (props.skip) {
-    unitsMT.pacman.pause = true;
-    props.modal.style.display = "flex";
     props.modal.children[0].textContent = "";
-    props.modal.children[2].style.display = "block";
-    props.modal.children[3].style.display = "block";
-    props.modal.children[5].style.display = "none";
-    props.modal.children[6].style.display = "none";
-  }
-  if (type === "final") {
     props.modal.children[1].style.display = "none";
     props.modal.children[2].style.display = "none";
     props.modal.children[3].style.display = "none";
-    props.modal.children[5].style.display = "block";
-    props.modal.children[5].children[1].style.display = "none";
-  }
-  if (type === "escape" && props.skip) {
-    props.modal.children[1].style.display = "block";
+    props.modal.children[4].style.display = "none";
+    // props.modal.children[5].style.display = "none";
+    if (!props.skip) {
+      props.modal.children[6].style.display = "block";
+      let links = document.getElementsByClassName("links")[0];
+      //if start game,
+      links.children[0].addEventListener("click", function () {
+        props.modal.children[6].style.display = "none";
+        //each start -> restore data
+        restart();
+      });
+    } else if (props.skip) {
+      props.modal.children[6].style.display = "block";
+    }
+    props.mainMenu = false;
   }
 };
 
 const beginParty = (type) => {
-  console.log(type);
   let textPos = 0;
   let lastPos = 0;
   unitsMT.pacman.pause = true;
   let text = history[type];
   let msg = "";
-
+  let prefix = "";
   if (type === "win") {
+    prefix = "win";
     msg = "Congrats, Yeap! You Win! Your Score ";
   }
   if (type === "lose") {
+    prefix = "lose";
     msg = "Game over lol. Your Score ";
   }
 
   //show first time
   props.modal.style.display = "block";
   let img = document.createElement("img");
+
   //show hfirst page in History
   if (type === "lose" || type === "win") {
     props.skip = false;
@@ -1157,10 +1171,13 @@ const beginParty = (type) => {
   }
 
   if (props.skip === false && type === "prologue") {
+    prefix = "prologue";
     lastPos = text.length - 1;
-    unitsMT.pacman.pause = false;
+    // unitsMT.pacman.pause = false;
     props.skip = true;
   }
+  // img.src = `./assets/${prefix}${textPos + 1}.png`;
+
   //first image
   img.src = `./assets/${textPos + 1}.png`;
   props.modal.children[5].children[0].textContent = text[textPos];
@@ -1296,7 +1313,10 @@ const restart = () => {
   unitsMT.pacman.countCoin = 0;
   unitsMT.pacman.score = 0;
 
-  props.modal.style.display = "none";
+  if ((!props.skip && !props.mainMenu) || !props.skip) {
+    props.modal.style.display = "none";
+  }
+
   obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
   //show notify
   props.notify.style.display = "block";
@@ -1372,9 +1392,15 @@ const endGame = (type) => {
     restart();
   };
   props.modal.children[3].onclick = (e) => {
-    props.mainMenu = true;
     restart();
+    props.mainMenu = true;
+    fix - show prologue - each time
+    fix restart - hide menu 
+    // if (!props.mainMenu) {
+    beginParty("prologue");
+    // }
     showHide();
+
     //show menu, another hide
   };
 };
