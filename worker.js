@@ -1247,7 +1247,9 @@ const pacmanMove = (keys) => {
     units.pacman.score = 0;
     units.pacman.indexMap = 658;
     //set def value in array Map
-
+    units.pacman.canKill = false;
+    clearTimeout(killTimer);
+    console.log(killTimer, "in worker");
     units.pacman.restart = false;
   }
   //check if key press equal  Right, nextPos in mapGame != 1, update value, goToRight

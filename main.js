@@ -909,7 +909,7 @@ const props = {
   skip: false,
   sceneType: "prologue",
   mainMenu: true,
-  gameMenu: false,
+  finalState: false,
 };
 
 //unit objects - for manipualte game
@@ -964,12 +964,15 @@ const history = {
     "В мире их осталось не так много, но те что остались,  идут от города к городу рискуя своей жизнью, что бы очистить этот грязный город BloodyBoobs и вакцинировать зараженных...",
     "Если повезет...",
     "Вирус превращал из любого кто попадался ему на пути - в огромную и сильную летучую мышь, помимо физиологической деформации, вирус также завладевал разумом, что теперь зараженый становился рабом вируса и выполнял функцию распространителя...",
-    "Те же кто уже заразился? местные называли их - летучими подонками...",
-    "Зараженые интуитивно искали своих здоровых собратьев, обхватив их крыльями они крепко держали жертву  и целовали его в засос, так вирус и передовался, процесс был долгим и  мучительным...",
+    "Те же кто уже заразился, местные называли их - ",
+    "ЛЕТУЧИЕ ПОДОНКИ...",
+    "Зараженые интуитивно искали своих здоровых собратьев, обхватив их крыльями они крепко держали жертву  и целовали его в засос...",
+    "Так вирус и передовался, процесс был долгим и мучительным...",
     "Вирус заполонил многие города, некоторые вовсе исчахли...",
-    "Жители города BloodyBoobs надеются на Пакмана и помогают им даруя жизни и пропитание...",
+    "Единственная надежда жителей города BloodyBoobs, это Пакман",
+    "Если пакман появляется в городах, то все жители страраются помочь им, даруя жизни и пропитание...",
     "Находи ящики с вакционой Sugar V, с их помощью ты можешь лечить зараженых, не боясь заразиться, т.к летечие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничен...",
-    "Имей ввиду, леча одного появится, обязательно новые зараженные, которые будут патрулировать город",
+    "Имей ввиду, леча одного появится, обязательно появятся новые зараженные, которые будут патрулировать город",
     "Теперь все в твоих руках... В бой юный подован!",
   ],
   takeMedical:
@@ -979,17 +982,19 @@ const history = {
   lose: [
     "Все те жизни которые были даны Пакману, это души младецнов, ибо только их души способны даровать жизнь...",
     "В городе BloodyBoobs больше не осталось младенцов...(",
-    "Обители BloodyBoobs остались без надежды и теперь они будут умирать долго и мучительно от поцелуя летучих подонков...",
-    "Если только не придет новый чистильщик...",
+    "Местные остались без надежды и теперь они будут умирать долго и мучительно от поцелуев летучих подонков...",
+    "Если только не придет, новый чистильщик...",
   ],
   win: [
-    "Дни и ночи не покладая рук ты расчищал этот грязный город и теперь город очищен",
-    "+10 к ЧСВ, +10 к карме, местные благодарны и некотрые даже начали называть своих детей твоим именем",
-    "Оставшихся зарженых вакцинировали и они обратились вновь в себя...",
-    "Ты рискуя своей жизнью, даришь новую жизнь BloodyBoobs и его жителям!",
+    "Ты рискуя жизнью, даришь новую жизнь и надежду BloodyBoobs и его жителям!",
+    "Дни и ночи не покладая рук ты боролся с нечистью и теперь этот грязный город очищен...",
+    "+10 к ЧСВ, +10 к карме, Ты лучший!",
+    "Местные благодарны и некотрые даже начали называть своих детей твоим именем...",
+    "Оставшихся зараженых вакцинировали и они обратились вновь в себя...",
     "Тебя запомнят как великого и бесстрашного спасителя! И будут рассказывать своим внукам еще не 1 десяток лет...",
     "Несколько дней продолжались гуляния на главной площади...",
-    "Но вот что тревожило Пакмана, что есть еще кучу других городов и надо бы туда отправляться, отдохнув и набравшився сил, Пакман исчез...",
+    "Но вот что тревожило Пакмана, что есть еще кучу других городов и надо бы туда отправляться...",
+    "Отдохнув и набравшився сил, Пакман исчез из BloodyBoobs...",
   ],
 };
 
@@ -1013,6 +1018,7 @@ document.addEventListener("DOMContentLoaded", () => {
   console.log("loaded");
   showHide();
   if (!props.mainMenu) {
+    props.modal.children[3].style.display = "none";
     beginParty("prologue");
   }
 });
@@ -1096,41 +1102,31 @@ const startTime = () => {
 //restart func -> -> show hide - modal fix ?
 //todo - gameMenu show, func if gameMenu false -> mainMEnu true -> show mainMenu
 // img.src = `./assets/${prefix}${textPos + 1}.png`;
+//images -> in gameBoard -> coin -> coronavirus, ghost -> bat, pacman -> pacman, cookie - medical, live -> little count little baby
+//add 3 sound - in prologue/win/lose - then - add soundeffects in game, own sound chomp etc
+//add confetti - if win, if lose - blood confetti
 
-//restart - fix - clearInterval
+//some case - .gameMenu, props.modal.children[1] = none
+//if image not found -> not appedn in document
+
+fix - repaeted call func -> when prologue, fisx repeated picture, intersect with prev gameState and current//1 win, 2 prolog
+
+//show only parent, child elems - default -display - block
 
 const showHide = (type) => {
-  console.log("inside showHide");
+  console.log("inside showHide", props.skip);
 
   if (!props.mainMenu) {
-    if (props.skip) {
-      unitsMT.pacman.pause = true;
-      props.modal.style.display = "flex";
-      //stats info
-      props.modal.children[0].textContent = "";
-      props.modal.children[1].style.display = "block";
-      //restart
-      props.modal.children[1].children[1].style.display = "block";
-      //main menu
-      props.modal.children[1].children[2].style.display = "block";
-      //history hidden
-      props.modal.children[3].style.display = "none";
-      //mainMenu
-      props.modal.children[4].style.display = "none";
-    }
     if (type === "final") {
       props.modal.style.display = "block";
       //hide cont, restart, main menu
+      // .modal a {
       props.modal.children[1].style.display = "none";
       //hist
       props.modal.children[3].style.display = "block";
       //fqa hidden
       props.modal.children[3].children[1].style.display = "none";
     }
-    // if (type === "escape") {
-    //   //continue show,
-    //   props.modal.children[1].children[0].style.display = "block";
-    // }
   }
   //main menu
   if (props.mainMenu) {
@@ -1142,6 +1138,7 @@ const showHide = (type) => {
     props.modal.children[1].children[0].style.display = "none";
     props.modal.children[1].children[1].style.display = "none";
     props.modal.children[1].children[2].style.display = "none";
+    props.modal.children[3].style.display = "none";
     props.modal.children[2].style.display = "none";
     // props.modal.children[5].style.display = "none";
 
@@ -1151,6 +1148,7 @@ const showHide = (type) => {
       //if start game,
       links.children[0].addEventListener("click", function () {
         props.modal.children[4].style.display = "none";
+        props.modal.children[3].style.display = "block";
         //each start -> restore data
         props.mainMenu = false;
         restart();
@@ -1166,51 +1164,51 @@ const beginParty = (type) => {
   let textPos = 0;
   let lastPos = 0;
   // unitsMT.pacman.pause = true;
-  let text = history[type];
+  let text = [];
+  text = [...history[type]]; // copy array data, not change by reference
   let msg = "";
   let prefix = "";
   if (type === "win") {
     prefix = "win";
-    msg = "Congrats, Yeap! You Win! Your Score ";
+    msg = "Твое достижения останутся на скалах предков... \\n";
   }
   if (type === "lose") {
     prefix = "lose";
-    msg = "Game over lol. Your Score ";
+    msg = "Ты умер раз и навсегда... пока \n";
   }
-
   //show first time
   props.modal.style.display = "block";
-
+  // unitsMT.pacman.pause = true;
   let img = document.createElement("img");
-
+  img.style.maxWidth = "800px";
+  img.style.maxHeight = "600px";
   //show hfirst page in History
   if (type === "lose" || type === "win") {
-    props.skip = false;
+    //history show
+    props.modal.children[3].style.display = "block";
+    //hide menu
+    props.modal.children[1].style.display = "none";
     // props.sceneType = "";
     msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days`;
     text.push(msg);
-    lastPos = text.length;
-    unitsMT.pacman.pause = true;
+    lastPos = text.length - 1;
     props.sceneType = "";
+    unitsMT.pacman.pause = true;
     //show gameMenu
   }
-  // console.log(props.skip, 2, type);
   if (type === "prologue") {
-    props.modal.children[3].style.display = "block";
+    props.modal.children[1].style.display = "none";
     prefix = "prologue";
     props.sceneType = "";
     lastPos = text.length - 1;
-    unitsMT.pacman.pause = true;
   }
-  // img.src = `./assets/${prefix}${textPos + 1}.png`;
-
   //first image
-  img.src = `./assets/${textPos + 1}.png`;
+  img.src = `./assets/${prefix}${textPos + 1}.png`;
   props.modal.children[3].children[0].textContent = text[textPos];
   props.modal.children[3].children[0].append(img);
-  // background-color black
+
   document.addEventListener("keydown", (e) => {
-    if (e.keyCode !== 27) {
+    if (e.key !== 32) {
       if (e.key === " " || e.key === "n" || e.key === "p") {
         if (e.key === "p" && textPos > 0) {
           textPos--;
@@ -1218,33 +1216,36 @@ const beginParty = (type) => {
         if (e.key === "n" && textPos <= lastPos) {
           textPos++;
           if (textPos == lastPos) {
+            //prlogue case -> hide hide mainMenu, and
             if (type == "win" || type == "lose") {
-              props.skip = true;
               props.sceneType = "";
-              // props.modal.children[1].style.display = "block";
-
+              //hide history, show menu
               props.modal.style.display = "block";
-              props.modal.children[3].style.display = "none";
               props.modal.children[1].style.display = "block";
               props.modal.children[1].children[1].style.display = "block";
               props.modal.children[1].children[2].style.display = "block";
-
-              // showHide();
+              props.modal.children[3].style.display = "none";
             } else {
               props.modal.style.display = "none";
             }
+            textPos = 0;
+            text = "";
           }
         }
+
+        //if picture not foun - not append
         props.modal.children[3].children[0].textContent = text[textPos];
         //play/pause -next prev
         let audio = new Audio("./assets/text1.aac");
-        audio.play();
-
-        img.src = `./assets/${textPos + 1}.png`;
-        props.modal.children[3].children[0].append(img);
-        //skip case
+        // audio.play();
+        img.src = `./assets/${prefix}${textPos + 1}.png`;
+        console.log(img);
+        props.modal.children[3].children[1].append(img);
+        //skip case, after scene
         if (e.key === " ") {
+          //add case - > prlogue case -> hide hide mainMenu, and
           if (type == "win" || type == "lose") {
+            // case : win || lose -> show menu, else -> prologue -> hidden all
             props.modal.style.display = "block";
             props.modal.children[3].style.display = "none";
             props.modal.children[1].style.display = "block";
@@ -1252,13 +1253,25 @@ const beginParty = (type) => {
             props.modal.children[1].children[2].style.display = "block";
             props.skip = true;
             props.sceneType = "";
-            // showHide();
-            // props.modal.children[1].style.display = "block";
           } else {
             props.modal.style.display = "none";
           }
-          // unitsMT.pacman.pause = false;
+          textPos = 0;
+          text = "";
         }
+        //delete prev called ds
+        console.log(
+          textPos,
+          "pos picture",
+          text.length,
+          "len text arr",
+          type,
+          "type",
+          props.sceneType,
+          "type",
+          e.keyCode,
+          "code"
+        );
       }
     }
   });
@@ -1352,6 +1365,12 @@ const restart = () => {
   unitsMT.pacman.life = 5;
   unitsMT.pacman.countCoin = 0;
   unitsMT.pacman.score = 0;
+  console.log(props.sceneType);
+
+  // if (props.sceneType == "" && props.finalState) {
+  //   props.modal.children[3].style.display = "none";
+  // }
+
   // props.skip = true;
 
   obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
@@ -1414,15 +1433,6 @@ const endGame = (type) => {
   if (props.sceneType === "win" || props.sceneType === "lose") {
     // show only text
     beginParty(props.sceneType);
-
-    // if (!props.skip) {
-    //   props.skip = true;
-    //   props.modal.style.display = "block";
-    //   props.modal.children[1].style.display = "block";
-    //   props.modal.children[1].children[1].style.display = "block";
-    //   props.modal.children[1].children[2].style.display = "block";
-    // }
-    console.log(props.skip);
     // then show menu hide text
   }
   //keydown menu
@@ -1531,11 +1541,11 @@ const step = () => {
       if (unitsMT.pacman.life > 0) {
         if (unitsMT.pacman.countCoin === 4) {
           props.sceneType = "win";
-          endGame();
+          endGame("win");
         }
       } else {
         props.sceneType = "lose";
-        endGame();
+        endGame("lose");
       }
       //render
       obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
