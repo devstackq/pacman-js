@@ -1120,8 +1120,6 @@ const findAndDestroy = (ghost) => {
 };
 //DRY, clean arch
 const isIntersect = (direct, type) => {
-  //currentPos & nextPos byDirect pacman - check if interesct any ghost
-
   let second = units.pacman.indexMap;
   //currentPos & nextPos byDirect pacman - check if interesct any ghost
   if (direct === "left") {
@@ -1180,7 +1178,7 @@ const isIntersect = (direct, type) => {
       units.redGhost.posX = 420;
       units.redGhost.posY = 420;
       units.redGhost.basePos = 406;
-      units.pacman.score += 200;
+      units.pacman.score += 20;
     }
     if (units.orangeGhost.intersect) {
       units.orangeGhost.direct = "up";
@@ -1188,7 +1186,7 @@ const isIntersect = (direct, type) => {
       units.orangeGhost.posX = 390;
       units.orangeGhost.posY = 420;
       units.orangeGhost.basePos = 405;
-      units.pacman.score += 200;
+      units.pacman.score += 20;
     }
     if (units.pinkGhost.intersect) {
       units.pinkGhost.direct = "right";
@@ -1196,7 +1194,7 @@ const isIntersect = (direct, type) => {
       units.pinkGhost.posX = 360;
       units.pinkGhost.posY = 420;
       units.pinkGhost.basePos = 404;
-      units.pacman.score += 200;
+      units.pacman.score += 20;
     }
     if (units.cyanGhost.intersect) {
       units.cyanGhost.direct = "left";
@@ -1204,7 +1202,7 @@ const isIntersect = (direct, type) => {
       units.cyanGhost.posX = 450;
       units.cyanGhost.posY = 420;
       units.cyanGhost.basePos = 407;
-      units.pacman.score += 200;
+      units.pacman.score += 20;
     }
   }
 };
@@ -1303,20 +1301,19 @@ const pacmanMove = (keys) => {
   // if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
   if (mapGame[units.pacman.indexMap] !== 1) {
     if (mapGame[units.pacman.indexMap] === 0) {
-      units.pacman.score += 10;
+      units.pacman.score += 1;
       units.pacman.countCoin++;
       //remember index, then restore mapGame array by index
       replaced.push(units.pacman.indexMap);
     }
     //Invulnerable pacman 10 sec
     if (mapGame[units.pacman.indexMap] === 4) {
-      units.pacman.score += 50;
+      units.pacman.score += 5;
       units.pacman.canKill = true;
       clearTimeout(killTimer);
       killGhost(units.pacman.killTime);
       units.pacman.countCoin++; // count coin for - check win game
     }
-
     if (units.pacman.indexMap !== 420 && units.pacman.indexMap !== 391) {
       mapGame[units.pacman.indexMap] = 9;
     }

@@ -1043,75 +1043,16 @@ const startTime = () => {
 // add audio,
 //ref class component
 
-//add instruction modal window  - how to play game
-//start project -> History || scorebaord
-//coin -> picture -> coronavirus, ghost - mouse fly
-
 //add keyframe - when pacman death
+//transalte - eng
+//audio - speech text, soundeffects -> own
 
-//if win -> bg good, if lose - apocalipse image
-//pacman + - как крестоносец, монеты - ковид, призраки мыши
-//  ?/разный bg - на сцены
-//  transalte - eng
-//  score - очищеные улицы от вируса / Max 260, Not 2600 score
-//  time - 1 age(min), 2 day(sec)
-//  next - opacity - transiiton 2s
-//  text in array -> control left/ right - next prev text
-//  - show modal[lastElement]
-
-//  1time  когда печеньки next - ящик 4 с вакционой
-//  1time когда потерял жизнь, next
-//final - все те жизни lose
-// find picture, coin, ghot, coin - medical
-//  bg, - black, always, if win - bg white
-
-// props.modal.children[5].children[0].textContent=''
-//Main Menu - start game btn -> skip || next prev text, last elem props.scene
-// modal -> inside elems - text, if last elems || skip -> startGame
-//inProcess game - if lost value, show 1 time - msg
-//if take medical - show 1 time msg
-
-//add each picure - for context
-// audio - text -> выразителбно и четко записатьб
-//audio - for pacman - death - текст типа - ты умер, ну ничего страшного.. etc
-
-// prologue audio, 2 min -> ..
-// Nyctalgia
-// Current track: Nyctalgia- Time Changed Everything...Nyctalgia- Time Changed Everyt
-
-//add sound Maga, soundeffect - my
-//minus add -> with sound Maga
-// Across The Waves
-// Current track: A Gaze Into The HorizenA Gaze Into The Horizen
-
-//restart - coin fix, and score after restart
+// prologue audio, 2 min -> . Nyctalgia- Time Changed Everything,  A Gaze Into The HorizenA Gaze Into The Horizen
 //if pacman - death -> todo effect || notify
-
-// option - on/off - sound,
-//after lose || win -> show menu - restart/ go main menu
-//if lose || win || prologu add prefix for image
-//aduio fix play pause
 // fix keydown manipulate menu
-//if play game - not use space n, p button
-//main menu -> fix, not work, set def values - like restart()
-//if first start game -> show modal - press button for start
-//block - keys -> asdw, -> when prologue
 
-// fix - show prologue - each time
-// fix restart - hide menu
-//restart func -> -> show hide - modal fix ?
-//todo - gameMenu show, func if gameMenu false -> mainMEnu true -> show mainMenu
-// img.src = `./assets/${prefix}${textPos + 1}.png`;
 //images -> in gameBoard -> coin -> coronavirus, ghost -> bat, pacman -> pacman, cookie - medical, live -> little count little baby
-//add 3 sound - in prologue/win/lose - then - add soundeffects in game, own sound chomp etc
 //add confetti - if win, if lose - blood confetti
-
-//some case - .gameMenu, props.modal.children[1] = none
-//if image not found -> not appedn in document
-
-fix - repaeted call func -> when prologue, fisx repeated picture, intersect with prev gameState and current//1 win, 2 prolog
-
-//show only parent, child elems - default -display - block
 
 const showHide = (type) => {
   console.log("inside showHide", props.skip);
@@ -1120,12 +1061,9 @@ const showHide = (type) => {
     if (type === "final") {
       props.modal.style.display = "block";
       //hide cont, restart, main menu
-      // .modal a {
       props.modal.children[1].style.display = "none";
       //hist
-      props.modal.children[3].style.display = "block";
-      //fqa hidden
-      props.modal.children[3].children[1].style.display = "none";
+      props.modal.children[3].style.display = "flex";
     }
   }
   //main menu
@@ -1135,27 +1073,18 @@ const showHide = (type) => {
     props.modal.style.background = "rgba(0, 0, 0, 0)";
     props.modal.style.display = "block";
     props.modal.children[0].textContent = "";
-    props.modal.children[1].children[0].style.display = "none";
-    props.modal.children[1].children[1].style.display = "none";
-    props.modal.children[1].children[2].style.display = "none";
     props.modal.children[3].style.display = "none";
     props.modal.children[2].style.display = "none";
-    // props.modal.children[5].style.display = "none";
-
-    if (!props.skip) {
-      props.modal.children[4].style.display = "block";
-      let links = document.getElementsByClassName("links")[0];
-      //if start game,
-      links.children[0].addEventListener("click", function () {
-        props.modal.children[4].style.display = "none";
-        props.modal.children[3].style.display = "block";
-        //each start -> restore data
-        props.mainMenu = false;
-        restart();
-      });
-    } else if (props.skip) {
-      props.modal.children[3].style.display = "block";
-    }
+    props.modal.children[4].style.display = "block";
+    let links = document.getElementsByClassName("links")[0];
+    //if start game,
+    links.children[0].addEventListener("click", function () {
+      props.modal.children[4].style.display = "none";
+      props.modal.children[3].style.display = "flex";
+      //each start -> restore data
+      props.mainMenu = false;
+      restart();
+    });
     props.mainMenu = false;
   }
 };
@@ -1163,7 +1092,6 @@ const showHide = (type) => {
 const beginParty = (type) => {
   let textPos = 0;
   let lastPos = 0;
-  // unitsMT.pacman.pause = true;
   let text = [];
   text = [...history[type]]; // copy array data, not change by reference
   let msg = "";
@@ -1178,34 +1106,31 @@ const beginParty = (type) => {
   }
   //show first time
   props.modal.style.display = "block";
-  // unitsMT.pacman.pause = true;
-  let img = document.createElement("img");
-  img.style.maxWidth = "800px";
-  img.style.maxHeight = "600px";
+
   //show hfirst page in History
   if (type === "lose" || type === "win") {
     //history show
-    props.modal.children[3].style.display = "block";
+    props.modal.children[3].style.display = "flex";
     //hide menu
     props.modal.children[1].style.display = "none";
-    // props.sceneType = "";
     msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days`;
+    //push - stats
     text.push(msg);
     lastPos = text.length - 1;
-    props.sceneType = "";
     unitsMT.pacman.pause = true;
     //show gameMenu
   }
   if (type === "prologue") {
     props.modal.children[1].style.display = "none";
     prefix = "prologue";
-    props.sceneType = "";
     lastPos = text.length - 1;
   }
+
+  console.log(textPos, lastPos);
   //first image
-  img.src = `./assets/${prefix}${textPos + 1}.png`;
-  props.modal.children[3].children[0].textContent = text[textPos];
-  props.modal.children[3].children[0].append(img);
+  let firstImage = props.modal.children[3].children[0];
+  firstImage.src = `./assets/${prefix}${textPos + 1}.png`;
+  props.modal.children[3].children[1].textContent = text[textPos];
 
   document.addEventListener("keydown", (e) => {
     if (e.key !== 32) {
@@ -1215,91 +1140,75 @@ const beginParty = (type) => {
         }
         if (e.key === "n" && textPos <= lastPos) {
           textPos++;
-          if (textPos == lastPos) {
-            //prlogue case -> hide hide mainMenu, and
-            if (type == "win" || type == "lose") {
-              props.sceneType = "";
-              //hide history, show menu
-              props.modal.style.display = "block";
-              props.modal.children[1].style.display = "block";
-              props.modal.children[1].children[1].style.display = "block";
-              props.modal.children[1].children[2].style.display = "block";
-              props.modal.children[3].style.display = "none";
-            } else {
-              props.modal.style.display = "none";
-            }
-            textPos = 0;
-            text = "";
-          }
         }
-
-        //if picture not foun - not append
-        props.modal.children[3].children[0].textContent = text[textPos];
-        //play/pause -next prev
-        let audio = new Audio("./assets/text1.aac");
-        // audio.play();
+        //hide faq
+        if (textPos > 0) {
+          props.modal.children[3].children[2].style.display = "none";
+        }
+        //get elems in Dom by ref - update path src
+        let img = props.modal.children[3].children[0];
         img.src = `./assets/${prefix}${textPos + 1}.png`;
-        console.log(img);
-        props.modal.children[3].children[1].append(img);
-        //skip case, after scene
-        if (e.key === " ") {
-          //add case - > prlogue case -> hide hide mainMenu, and
+        // img.onerror = "this.style.display='none';"
+        // console.log(img.onerror, img);
+        props.modal.children[3].children[1].textContent = text[textPos];
+
+        if (textPos == lastPos) {
+          //prlogue case -> hide hide mainMenu, and
           if (type == "win" || type == "lose") {
-            // case : win || lose -> show menu, else -> prologue -> hidden all
-            props.modal.style.display = "block";
-            props.modal.children[3].style.display = "none";
-            props.modal.children[1].style.display = "block";
-            props.modal.children[1].children[1].style.display = "block";
-            props.modal.children[1].children[2].style.display = "block";
-            props.skip = true;
             props.sceneType = "";
+            //hide history, show menu
+            props.modal.style.display = "block";
+            props.modal.children[1].style.display = "block";
+            props.modal.children[3].style.display = "none";
+            props.modal.children[1].children[0].style.display = "none";
           } else {
             props.modal.style.display = "none";
           }
-          textPos = 0;
-          text = "";
         }
-        //delete prev called ds
-        console.log(
-          textPos,
-          "pos picture",
-          text.length,
-          "len text arr",
-          type,
-          "type",
-          props.sceneType,
-          "type",
-          e.keyCode,
-          "code"
-        );
+      }
+      //play/pause -next prev
+      let audio = new Audio("./assets/text1.aac");
+      // audio.play();
+
+      //skip case, after scene
+      if (e.key === " ") {
+        //add case - > prlogue case -> hide hide mainMenu, and
+        if (type == "win" || type == "lose") {
+          // case : win || lose -> show menu, else -> prologue -> hidden all
+          props.modal.style.display = "block";
+          props.modal.children[3].style.display = "none";
+          props.modal.children[1].style.display = "block";
+          props.sceneType = "";
+          props.modal.children[1].children[0].style.display = "none";
+        } else {
+          props.modal.style.display = "none";
+        }
       }
     }
   });
 };
-
-// if (document.URL.includes("index.html")) {
-//   let start = 0;
-//   let links = document.getElementsByClassName("links")[0];
-//   document.addEventListener("keydown", (e) => {
-//     if (e.code === "ArrowDown") {
-//       if (start < 3) {
-//         links.children[start].style.color = "#fff";
-//         start++;
-//         links.children[start].style.color = "red";
-//       }
+//keydown menu
+// let start = 0;
+// let links = document.getElementsByClassName("links")[0];
+// document.addEventListener("keydown", (e) => {
+//   if (e.code === "ArrowDown") {
+//     if (start < 3) {
+//       links.children[start].style.color = "#000";
+//       start++;
+//       links.children[start].style.color = "red";
 //     }
-//     if (e.code === "ArrowUp") {
-//       if (start > 0) {
-//         links.children[start].style.color = "#fff";
-//         start--;
-//         links.children[start].style.color = "red";
-//       }
+//   }
+//   if (e.code === "ArrowUp") {
+//     if (start > 0) {
+//       links.children[start].style.color = "#000";
+//       start--;
+//       links.children[start].style.color = "red";
 //     }
-//     if (e.code === "Enter") {
-//       links.children[start].click();
-//     }
-//   });
-// }
+//   }
+//   if (e.code === "Enter") {
+//     links.children[start].click();
+//   }
+// });
 
 document.addEventListener("keydown", (e) => {
   if (e.code in keys) {
@@ -1329,11 +1238,9 @@ document.addEventListener("keydown", (e) => {
     //   keys.death = false;
     //   // obj.pacman.classList.add("pacman-death");
     // }
-    // && props.skip
     if (!props.inPlay) {
       props.inPlay = true;
       props.rafId = requestAnimationFrame(step);
-      //time
       startTime();
     }
     // && props.skip
@@ -1365,13 +1272,6 @@ const restart = () => {
   unitsMT.pacman.life = 5;
   unitsMT.pacman.countCoin = 0;
   unitsMT.pacman.score = 0;
-  console.log(props.sceneType);
-
-  // if (props.sceneType == "" && props.finalState) {
-  //   props.modal.children[3].style.display = "none";
-  // }
-
-  // props.skip = true;
 
   obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
   //show notify
@@ -1404,14 +1304,9 @@ const endGame = (type) => {
   size = 2;
   //show hide menu items
   props.modal.style.display = "block";
-  // props.modal.children[1].style.display = "block";
   showHide(type);
   if (type === "escape") {
     props.modal.children[1].style.display = "block";
-    //continue btn
-    props.modal.children[1].children[0].style.display = "block";
-    props.modal.children[1].children[1].style.display = "block";
-    props.modal.children[1].children[2].style.display = "block";
     props.modal.children[3].style.display = "none";
     props.mainMenu = false;
     unitsMT.pacman.pause = true;
@@ -1427,9 +1322,6 @@ const endGame = (type) => {
       props.modal.children[1].style.display = "none";
     };
   }
-  //show notify - you win || lose
-  // props.sceneType === "prologue";
-  //
   if (props.sceneType === "win" || props.sceneType === "lose") {
     // show only text
     beginParty(props.sceneType);
@@ -1504,7 +1396,6 @@ const step = () => {
         unitsMT.pacman.transX = e.data.pacman.transX;
         unitsMT.pacman.death = e.data.pacman.death;
         keys.restart = e.data.pacman.restart;
-
         // console.log(
         //   unitsMT.pacman.indexMap,
         //   e.data.pacman.indexMap,
@@ -1570,7 +1461,6 @@ const createBoard = () => {
   mapGame.forEach((el, idx) => {
     createBlock(el);
   });
-
   // get static elems -> add in Obejct, then add array - tags, change values -> render new value
   for (let i = 0; i < props.size; i++) {
     props.x += 30 + "px "; //cell grid height, width count - for grid
@@ -1584,6 +1474,7 @@ const createBoard = () => {
   props.grid.style.gridTemplateRows = props.y;
   //board localy dom, props.grid -> in DOm browser inserted
 };
+
 const createBlock = (type) => {
   let div = document.createElement("div");
   div.classList.add("box");
