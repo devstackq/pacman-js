@@ -1057,15 +1057,14 @@ const startTime = () => {
 
 const showHide = (type) => {
 
-    if (!props.mainMenu) {
-        if (type === "final") {
-            props.modal.style.display = "block";
-            //hide cont, restart, main menu
-            props.modal.children[1].style.display = "none";
-            //hist
-            props.modal.children[3].style.display = "flex";
-        }
-    }
+    // if (!props.mainMenu) {
+    //     //if (type === "final") {
+    //     props.modal.style.display = "block";
+    //     //hide cont, restart, main menu
+    //     props.modal.children[1].style.display = "none";
+    //     //hist
+    //     props.modal.children[3].style.display = "flex";
+    // }
     //main menu
     if (props.mainMenu) {
         //DRY
@@ -1085,21 +1084,28 @@ const showHide = (type) => {
             restart();
             props.sceneType = 'prologue'
             beginParty(props.sceneType);
+            // showFirst(props.sceneType)
         });
         props.mainMenu = false;
     }
 };
 
+const showFirst = (type) => {
+    let text = [];
+    text = [...history[type]];
+    let firstImage = props.modal.children[3].children[0];
+    firstImage.src = `./assets/${type}${1}.png`;
+    props.modal.children[3].children[1].textContent = text[0];
+}
 
 const beginParty = (type) => {
 
-    console.log(props.sceneType, type, 'begin party')
+    // console.log(props.sceneType, type, 'begin party')
 
     if (type !== '') {
 
         let text = [];
         let textPos = 0;
-        let lastPos = 0;
 
         text = [...history[type]]; // copy array data, not change by reference
         let msg = "";
@@ -1117,7 +1123,7 @@ const beginParty = (type) => {
         props.modal.children[1].style.display = "none";
         props.modal.children[3].style.display = "flex";
         lastPos = text.length;
-        unitsMT.pacman.pause = true;
+        // unitsMT.pacman.pause = true;
 
         if (type === "lose" || type === "win") {
             msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days`;
@@ -1127,100 +1133,13 @@ const beginParty = (type) => {
         } else if (type === "prologue") {
             prefix = "prologue";
         }
-
         //first image
         let firstImage = props.modal.children[3].children[0];
         firstImage.src = `./assets/${prefix}${textPos + 1}.png`;
         props.modal.children[3].children[1].textContent = text[textPos];
 
-        // if (
-        //     keys !== "w" &&
-        //     keys !== "s" &&
-        //     keys !== "a" &&
-        //     keys !== "d" &&
-        //     keys !== "Escape"
-
-        console.log(3, keys);
-        if (keys.KeySpace || keys.KeyN || keys.KeyP) {
-            //hide faq
-            // console.log(textPos, lastPos, text.length, type);
-            console.log(3, 'inside');
-            if (keys.KeyP && textPos > 0) {
-                textPos--;
-            } else if (keys.KeyN && textPos <= lastPos) {
-
-                textPos++;
-            } else if (keys.space) {
-                //skip case, after scene
-                //add case - > prlogue case -> hide hide mainMenu, and
-                if (type == "win" || type == "lose") {
-                    // case : win || lose -> show menu, else -> prologue -> hidden all
-                    // props.sceneType = "";
-                    props.modal.style.display = "block";
-                    props.modal.children[3].style.display = "none";
-                    props.modal.children[1].style.display = "block";
-                    props.modal.children[1].children[0].style.display = "none";
-                } else {
-                    props.modal.style.display = "none";
-                }
-                unitsMT.pacman.pause = false
-                console.log(5);
-                props.sceneType = "";
-                text = [];
-                textPos = 0;
-                prefix = "";
-            }
-
-            //hide faq
-            if (textPos > 0) {
-                props.modal.children[3].children[2].style.display = "none";
-            }
-            //get elems in Dom by ref - update path src
-            let img = props.modal.children[3].children[0];
-            img.src = `./assets/${prefix}${textPos + 1}.png`;
-
-            img.onload = function(e) {
-                img.style.display = "block";
-                props.modal.children[3].children[1].style.bottom = '5%'
-            };
-
-            img.onerror = function(e) {
-                img.style.display = "none";
-                props.modal.children[3].children[1].style.bottom = '40%'
-            };
-            props.modal.children[3].children[1].textContent = text[textPos];
-
-            // if (type !== "prologue") {
-            if (textPos == lastPos) {
-                console.log(6);
-                //prlogue case -> hide hide mainMenu, and
-                if (type == "win" || type == "lose") {
-                    console.log(7);
-                    //hide history, show menu
-                    props.modal.style.display = "block";
-                    props.modal.children[3].style.display = "none";
-                    props.modal.children[1].style.display = "block";
-                    props.modal.children[1].children[0].style.display = "none";
-                    props.sceneType = "";
-                    text = [];
-                    textPos = 0;
-                    // props.skip = true;
-                } else {
-                    props.modal.style.display = "none";
-                }
-                unitsMT.pacman.pause = false
-            }
-        }
-        //play/pause -KeyN KeyP
-        let audio = new Audio("./assets/text1.aac");
-        // audio.play();
+        console.log(text.length)
     }
-    console.log(keys)
-        // console.log(props.sceneType,
-        //     text.length,
-        //     textPos, lastPos,
-        //     prefix, 'after')
-
 }
 
 //keydown menu
@@ -1250,11 +1169,12 @@ const beginParty = (type) => {
 //   console.log("grid func");
 // };
 
+show last msg - fix
+
 let text = [];
 let textPos = 0;
 let lastPos = 0;
 let msg = "";
-
 
 document.addEventListener("keydown", (e) => {
 
@@ -1284,8 +1204,11 @@ document.addEventListener("keydown", (e) => {
             //push - stats
             text = [...text, msg];
         }
+        //first image
+        props.modal.children[3].children[0].src = `./assets/${prefix}1.png`;
+        props.modal.children[3].children[1].textContent = text[textPos];
 
-        console.log(props.sceneType, textPos, lastPos, text.length);
+        console.log(props.sceneType, textPos, lastPos, text.length, text);
 
         if (e.key == 'n' || e.key == 'p' || e.key == ' ') {
 
@@ -1313,7 +1236,7 @@ document.addEventListener("keydown", (e) => {
             }
 
             //hide faq
-            if (textPos > 0) {
+            if (textPos === 1) {
                 props.modal.children[3].children[2].style.display = "none";
             }
             //get elems in Dom by ref - update path src
@@ -1343,7 +1266,7 @@ document.addEventListener("keydown", (e) => {
                     props.sceneType = "";
                     text = [];
                     textPos = 0;
-                    // props.skip = true;
+                    // 
                 } else {
                     console.log('last pos proglo');
                     props.modal.style.display = "none";
@@ -1490,13 +1413,13 @@ const endGame = () => {
     props.modal.children[1].children[1].onclick = (e) => {
         //set def value,  hide modal
         props.modal.children[1].style.display = "none";
-        props.skip = false;
+        props.sceneType = ''
         restart();
     };
     //main menu, goTo mainMenu
     props.modal.children[1].children[2].onclick = (e) => {
         props.mainMenu = true;
-        props.skip = false;
+        props.sceneType = 'prologue'
         showHide();
         //show menu, another hide
     };
