@@ -907,7 +907,7 @@ const props = {
     min: 0,
   },
   skip: false,
-  sceneType: "prologue",
+  sceneType: "",
   mainMenu: true,
   finalState: false,
 };
@@ -1014,13 +1014,8 @@ document.addEventListener("DOMContentLoaded", () => {
   obj.pinkGhost = document.querySelector("div.pink");
   obj.cyanGhost = document.querySelector("div.cyan");
   createBoard();
-  // startGame();
   console.log("loaded");
   showHide();
-  if (!props.mainMenu) {
-    props.modal.children[3].style.display = "none";
-    beginParty("prologue");
-  }
 });
 
 document.addEventListener("keyup", (e) => {
@@ -1048,15 +1043,17 @@ const startTime = () => {
 //audio - speech text, soundeffects -> own
 
 // prologue audio, 2 min -> . Nyctalgia- Time Changed Everything,  A Gaze Into The HorizenA Gaze Into The Horizen
-//if pacman - death -> todo effect || notify
 // fix keydown manipulate menu
 
+//if pacman - death -> todo effect || notify
 //images -> in gameBoard -> coin -> coronavirus, ghost -> bat, pacman -> pacman, cookie - medical, live -> little count little baby
 //add confetti - if win, if lose - blood confetti
+//fix - call1, call2 -> accum value ?, cut last text ?, not show
+//each restart, textpSO -1, and need 1 time click next?
+//fix -> each item - own addEventlistener
+//img -> full width, height
 
 const showHide = (type) => {
-  console.log("inside showHide", props.skip);
-
   if (!props.mainMenu) {
     if (type === "final") {
       props.modal.style.display = "block";
@@ -1068,7 +1065,6 @@ const showHide = (type) => {
   }
   //main menu
   if (props.mainMenu) {
-    console.log("in main menu");
     //DRY
     props.modal.style.background = "rgba(0, 0, 0, 0)";
     props.modal.style.display = "block";
@@ -1084,83 +1080,246 @@ const showHide = (type) => {
       //each start -> restore data
       props.mainMenu = false;
       restart();
+      beginParty("prologue");
     });
     props.mainMenu = false;
   }
 };
 
+const manageScene = (e, lastPos, textPos, text) => {
+  if (
+    e.key !== "w" &&
+    e.key !== "s" &&
+    e.key !== "a" &&
+    e.key !== "d" &&
+    e.key !== "Escape"
+  ) {
+    if (e.key === " " || e.key === "n" || e.key === "p") {
+      //hide faq
+      console.log(e.key);
+
+      console.log(textPos, lastPos, text.length, type);
+      if (e.key === "p" && textPos > 0) {
+        textPos--;
+      }
+      if (e.key === "n" && textPos <= lastPos) {
+        textPos++;
+      }
+      if (textPos > 0) {
+        props.modal.children[3].children[2].style.display = "none";
+      }
+
+      //get elems in Dom by ref - update path src
+      let img = props.modal.children[3].children[0];
+      img.src = `./assets/${prefix}${textPos + 1}.png`;
+
+      img.onload = function (e) {
+        img.style.display = "block";
+      };
+
+      img.onerror = function (e) {
+        img.style.display = "none";
+      };
+      props.modal.children[3].children[1].textContent = text[textPos];
+
+      if (textPos == lastPos) {
+        //prlogue case -> hide hide mainMenu, and
+        if (type == "win" || type == "lose") {
+          props.modal.style.display = "block";
+          //hide history, show menu
+          props.modal.children[1].style.display = "block";
+          props.modal.children[3].style.display = "none";
+          props.modal.children[1].children[0].style.display = "none";
+          props.sceneType = "";
+          text = [];
+          textPos = 0;
+          // props.skip = true;
+        } else {
+          props.modal.style.display = "none";
+        }
+      }
+      //0, n, 1
+    }
+    //play/pause -next prev
+    let audio = new Audio("./assets/text1.aac");
+    // audio.play();
+
+    //skip case, after scene
+    if (e.key === " ") {
+      //add case - > prlogue case -> hide hide mainMenu, and
+      if (type == "win" || type == "lose") {
+        // case : win || lose -> show menu, else -> prologue -> hidden all
+        props.sceneType = "";
+        props.modal.style.display = "block";
+        props.modal.children[3].style.display = "none";
+        props.modal.children[1].style.display = "block";
+        props.modal.children[1].children[0].style.display = "none";
+      } else {
+        props.modal.style.display = "none";
+      }
+      props.sceneType = "";
+      text = [];
+      textPos = 0;
+      // textPos = lastPos
+    }
+  }
+};
+
 const beginParty = (type) => {
+  let text = [];
   let textPos = 0;
   let lastPos = 0;
-  let text = [];
+
   text = [...history[type]]; // copy array data, not change by reference
   let msg = "";
   let prefix = "";
+
   if (type === "win") {
+    console.log(1);
     prefix = "win";
-    msg = "Твое достижения останутся на скалах предков... \\n";
+    msg = "Твое достижения останутся на скалах предков... ";
   }
   if (type === "lose") {
     prefix = "lose";
-    msg = "Ты умер раз и навсегда... пока \n";
+    msg = "Ты умер раз и навсегда... пока!";
   }
-  //show first time
-  props.modal.style.display = "block";
 
   //show hfirst page in History
   if (type === "lose" || type === "win") {
+    console.log(2);
     //history show
     props.modal.children[3].style.display = "flex";
     //hide menu
     props.modal.children[1].style.display = "none";
     msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days`;
     //push - stats
-    text.push(msg);
-    lastPos = text.length - 1;
+    text = [...text, msg];
+    lastPos = text.length;
     unitsMT.pacman.pause = true;
     //show gameMenu
-  }
-  if (type === "prologue") {
+  } else if (type === "prologue") {
     props.modal.children[1].style.display = "none";
     prefix = "prologue";
-    lastPos = text.length - 1;
+    lastPos = text.length;
   }
 
-  console.log(textPos, lastPos);
   //first image
   let firstImage = props.modal.children[3].children[0];
   firstImage.src = `./assets/${prefix}${textPos + 1}.png`;
   props.modal.children[3].children[1].textContent = text[textPos];
+  console.log(props.modal);
 
-  document.addEventListener("keydown", (e) => {
-    if (e.key !== 32) {
+  // props.modal.onkeydown = manageScene(e);
+  //prefix - delete, lastPos - ? wtf prologue value
+
+  document.addEventListener("keydown", function (e) {
+    //   let text = [];
+    //   let textPos = 0;
+    //   let lastPos = 0;
+
+    //   text = [...history[type]]; // copy array data, not change by reference
+    //   let msg = "";
+    //   let prefix = "";
+
+    //   if (type === "win") {
+    //     console.log(1);
+    //     prefix = "win";
+    //     msg = "Твое достижения останутся на скалах предков... ";
+    //   }
+    //   if (type === "lose") {
+    //     prefix = "lose";
+    //     msg = "Ты умер раз и навсегда... пока!";
+    //   }
+
+    //   //show hfirst page in History
+    //   if (type === "lose" || type === "win") {
+    //     console.log(2);
+    //     //history show
+    //     props.modal.children[3].style.display = "flex";
+    //     //hide menu
+    //     props.modal.children[1].style.display = "none";
+    //     msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days`;
+    //     //push - stats
+    //     text = [...text, msg];
+    //     lastPos = text.length;
+    //     unitsMT.pacman.pause = true;
+    //     //show gameMenu
+    //   } else if (type === "prologue") {
+    //     props.modal.children[1].style.display = "none";
+    //     prefix = "prologue";
+    //     lastPos = text.length;
+    //   }
+
+    if (
+      e.key !== "w" &&
+      e.key !== "s" &&
+      e.key !== "a" &&
+      e.key !== "d" &&
+      e.key !== "Escape"
+    ) {
+      console.log(3);
       if (e.key === " " || e.key === "n" || e.key === "p") {
+        //hide faq
+        console.log(textPos, lastPos, text.length, type);
+
         if (e.key === "p" && textPos > 0) {
           textPos--;
-        }
-        if (e.key === "n" && textPos <= lastPos) {
+        } else if (e.key === "n" && textPos <= lastPos) {
+          console.log(4);
           textPos++;
+        } else if (e.key === " ") {
+          //skip case, after scene
+          //add case - > prlogue case -> hide hide mainMenu, and
+          if (type == "win" || type == "lose") {
+            // case : win || lose -> show menu, else -> prologue -> hidden all
+            // props.sceneType = "";
+            props.modal.style.display = "block";
+            props.modal.children[3].style.display = "none";
+            props.modal.children[1].style.display = "block";
+            props.modal.children[1].children[0].style.display = "none";
+          } else {
+            props.modal.style.display = "none";
+          }
+          console.log(5);
+          props.sceneType = "";
+          text = [];
+          textPos = 0;
+          prefix = "";
         }
+
         //hide faq
         if (textPos > 0) {
           props.modal.children[3].children[2].style.display = "none";
         }
+
         //get elems in Dom by ref - update path src
         let img = props.modal.children[3].children[0];
         img.src = `./assets/${prefix}${textPos + 1}.png`;
-        // img.onerror = "this.style.display='none';"
-        // console.log(img.onerror, img);
+
+        img.onload = function (e) {
+          img.style.display = "block";
+        };
+
+        img.onerror = function (e) {
+          img.style.display = "none";
+        };
         props.modal.children[3].children[1].textContent = text[textPos];
 
+        // if (type !== "prologue") {
         if (textPos == lastPos) {
+          console.log(6);
           //prlogue case -> hide hide mainMenu, and
           if (type == "win" || type == "lose") {
-            props.sceneType = "";
-            //hide history, show menu
+            console.log(7);
             props.modal.style.display = "block";
-            props.modal.children[1].style.display = "block";
+            //hide history, show menu
             props.modal.children[3].style.display = "none";
+            props.modal.children[1].style.display = "block";
             props.modal.children[1].children[0].style.display = "none";
+            props.sceneType = "";
+            text = [];
+            textPos = 0;
+            // props.skip = true;
           } else {
             props.modal.style.display = "none";
           }
@@ -1169,24 +1328,10 @@ const beginParty = (type) => {
       //play/pause -next prev
       let audio = new Audio("./assets/text1.aac");
       // audio.play();
-
-      //skip case, after scene
-      if (e.key === " ") {
-        //add case - > prlogue case -> hide hide mainMenu, and
-        if (type == "win" || type == "lose") {
-          // case : win || lose -> show menu, else -> prologue -> hidden all
-          props.modal.style.display = "block";
-          props.modal.children[3].style.display = "none";
-          props.modal.children[1].style.display = "block";
-          props.sceneType = "";
-          props.modal.children[1].children[0].style.display = "none";
-        } else {
-          props.modal.style.display = "none";
-        }
-      }
     }
   });
 };
+
 //keydown menu
 // let start = 0;
 // let links = document.getElementsByClassName("links")[0];
@@ -1210,10 +1355,14 @@ const beginParty = (type) => {
 //   }
 // });
 
+// props.grid.onkeydown = () => {
+//   console.log("grid func");
+// };
 document.addEventListener("keydown", (e) => {
   if (e.code in keys) {
     keys[e.code] = true;
   }
+  console.log("global");
   if (
     e.code === "KeyA" ||
     e.code === "KeyD" ||
@@ -1243,10 +1392,9 @@ document.addEventListener("keydown", (e) => {
       props.rafId = requestAnimationFrame(step);
       startTime();
     }
-    // && props.skip
-  } else if (e.code === "Escape" && !props.mainMenu) {
-    console.log("esc menu in game");
-    endGame("escape");
+  } else if (e.key === "Escape" && !props.mainMenu) {
+    props.sceneType = "escape";
+    endGame();
   }
 });
 //transform translate each item - change posit 0 in Dom
@@ -1258,8 +1406,6 @@ const render = (...args) => {
 
 const restart = () => {
   //lol  location.reload();
-  console.log(5, props.skip, "rest");
-
   //set default values
   props.inPlay = false;
   props.time.min = 0;
@@ -1289,23 +1435,18 @@ const restart = () => {
       }
     }
   }
+
   unitsMT.pacman.pause = false;
 };
 
 //menu - modal window ?
-const gameMenu = () => {
-  props.modal.children[1].style.display = "block";
-  unitsMT.pacman.pause = true;
-};
-//modal child - 1 - gameMenu,
 
-const endGame = (type) => {
+const endGame = () => {
   let size = 0;
   size = 2;
   //show hide menu items
   props.modal.style.display = "block";
-  showHide(type);
-  if (type === "escape") {
+  if (props.sceneType === "escape") {
     props.modal.children[1].style.display = "block";
     props.modal.children[3].style.display = "none";
     props.mainMenu = false;
@@ -1321,8 +1462,7 @@ const endGame = (type) => {
       startTime();
       props.modal.children[1].style.display = "none";
     };
-  }
-  if (props.sceneType === "win" || props.sceneType === "lose") {
+  } else if (props.sceneType === "win" || props.sceneType === "lose") {
     // show only text
     beginParty(props.sceneType);
     // then show menu hide text
@@ -1352,17 +1492,16 @@ const endGame = (type) => {
   });
   //onclick menu  //restart btn
   props.modal.children[1].children[1].onclick = (e) => {
-    //set def value
+    //set def value,  hide modal
     props.modal.children[1].style.display = "none";
+    props.skip = false;
     restart();
   };
-  //main menu
+  //main menu, goTo mainMenu
   props.modal.children[1].children[2].onclick = (e) => {
     props.mainMenu = true;
     props.skip = false;
-    unitsMT.pacman.pause = false;
     showHide();
-    beginParty("prologue");
     //show menu, another hide
   };
 };
@@ -1429,14 +1568,14 @@ const step = () => {
         //change mouth - pacman
         obj.pacman_mouth.style.transform = unitsMT.pacman.transX;
       }
-      if (unitsMT.pacman.life > 0) {
-        if (unitsMT.pacman.countCoin === 4) {
+      if (unitsMT.pacman.life > 4) {
+        if (unitsMT.pacman.countCoin === 244) {
           props.sceneType = "win";
-          endGame("win");
+          endGame();
         }
       } else {
         props.sceneType = "lose";
-        endGame("lose");
+        endGame();
       }
       //render
       obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
