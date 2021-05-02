@@ -576,3 +576,6 @@ const createBlock = (type) => {
 //add keyframe - when pacman death
 //add confetti - if win, if lose - blood confetti
 //chrome fps - 120ms / 16.7 * 8fps = 57fps 1 frame(16.7) - 8fps
+
+// scoreboard -> when lose || win -> show input , where user - enter own name -> json file -> open and save score, time, etc -> 
+//if go to score.html -> get all data, sorted  by coin & time
