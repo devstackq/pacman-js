@@ -291,18 +291,23 @@ document.addEventListener("keydown", (e) => {
             if (textPos === 1) {
                 props.modal.children[3].children[2].style.display = "none";
             }
-            //get elems in Dom by ref - update path src
-            img.src = `./assets/${prefix}${textPos + 1}.png`;
+
+
+            // img.onerror = function(e) {
+            //     console.log('erroe img')
+            //         // img.style.display = "none";
+            //     props.modal.children[3].children[1].style.bottom = "40%";
+            // };
+
+
             //img
             img.onload = function(e) {
                 img.style.display = "block";
+
                 props.modal.children[3].children[1].style.bottom = "5%";
             };
-
-            img.onerror = function(e) {
-                img.style.display = "none";
-                props.modal.children[3].children[1].style.bottom = "40%";
-            };
+            //get elems in Dom by ref - update path src
+            img.src = `./assets/${prefix}${textPos + 1}.png`;
             //text
             props.modal.children[3].children[1].textContent = text[textPos];
 
@@ -579,3 +584,11 @@ const createBlock = (type) => {
 
 // scoreboard -> when lose || win -> show input , where user - enter own name -> json file -> open and save score, time, etc -> 
 //if go to score.html -> get all data, sorted  by coin & time
+
+//1 image fix - play audio,
+//2 code - check -> for russin keypad
+//3 key pressed only 1 button
+//4 erros - failed resource - images, -> don't downlaod  iamges
+//5 first slide - press P -> repeat audio
+//6 audio - chomp - disable
+//7 add - transition pacamn, ghosts
