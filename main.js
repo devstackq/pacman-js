@@ -47,9 +47,6 @@ const keys = {
     KeyS: false,
     restart: false,
     death: false,
-    KeyN: false,
-    KeyP: false,
-    KeySpace: false,
 };
 
 let rafId = 0;
@@ -74,7 +71,6 @@ const props = {
     skip: false,
     sceneType: "",
     mainMenu: true,
-    finalState: false,
 };
 
 //unit objects - for manipualte game
@@ -111,9 +107,7 @@ let unitsMT = {
         score: 0,
         countCoin: 0,
         canKill: false,
-        gameState: "",
         pause: false,
-        lastIndex: 0,
     },
     cool: 0,
 };
@@ -219,13 +213,11 @@ const showHide = (type) => {
             props.mainMenu = false;
             restart();
             props.sceneType = "prologue";
-            // beginParty(props.sceneType);
             showFirst(props.sceneType);
         });
         props.mainMenu = false;
     }
     intro.pause()
-
 };
 
 const showFirst = (type) => {
@@ -236,42 +228,6 @@ const showFirst = (type) => {
     props.modal.children[3].children[1].textContent = text[0];
 };
 
-const beginParty = (type) => {
-    if (type !== "") {
-        let text = [];
-        let textPos = 0;
-
-        text = [...history[type]]; // copy array data, not change by reference
-        let msg = "";
-        let prefix = "";
-
-        if (type === "win") {
-            prefix = "win";
-            msg = "Твое достижения останутся на скалах предков... ";
-        }
-        if (type === "lose") {
-            prefix = "lose";
-            msg = "Ты умер раз и навсегда... пока!";
-        }
-        //hide menu, show hist
-        props.modal.children[1].style.display = "none";
-        props.modal.children[3].style.display = "flex";
-        lastPos = text.length;
-
-        if (type === "lose" || type === "win") {
-            msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days`;
-            //push - stats
-            text = [...text, msg];
-            //show gameMenu
-        } else if (type === "prologue") {
-            prefix = "prologue";
-        }
-        //first image
-        let firstImage = props.modal.children[3].children[0];
-        firstImage.src = `./assets/${prefix}${textPos + 1}.png`;
-        props.modal.children[3].children[1].textContent = text[textPos];
-    }
-};
 
 let text = [];
 let textPos = 0;
@@ -351,8 +307,7 @@ document.addEventListener("keydown", (e) => {
             props.modal.children[3].children[1].textContent = text[textPos];
 
             if (e.key == " " || textPos == lastPos) {
-                audio.pause()
-                    //skip case, after scene
+                //skip case, after scene
                 if (prefix === "win" || prefix === "lose") {
                     // case : win || lose -> show menu, else -> prologue -> hidden all
                     props.modal.style.display = "block";
@@ -367,11 +322,14 @@ document.addEventListener("keydown", (e) => {
                 textPos = 0;
                 unitsMT.pacman.pause = false;
                 props.skip = true
+                audio.pause()
+
             }
         }
     }
     //move pacman
     if (!props.mainMenu && props.skip) {
+
         if (
             e.code === "KeyA" ||
             e.code === "KeyD" ||
@@ -476,7 +434,6 @@ const endGame = () => {
         showFirst(props.sceneType);
         // then show menu hide text
     }
-
     //onclick menu  //restart btn
     props.modal.children[1].children[1].onclick = (e) => {
         //set def value,  hide modal
@@ -618,3 +575,4 @@ const createBlock = (type) => {
 //refactor class component
 //add keyframe - when pacman death
 //add confetti - if win, if lose - blood confetti
+//chrome fps - 120ms / 16.7 * 8fps = 57fps 1 frame(16.7) - 8fps
