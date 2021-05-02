@@ -1,38 +1,37 @@
 const mapGame = [
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 4, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 4, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-    1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 6, 6, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 9, 9, 9, 9, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 8,
-    9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 1, 1, 2, 2, 2, 2, 1, 1, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9,
-    8, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
-    1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
-    1, 4, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 4, 1,
-    1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-    1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
-    1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
-    1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-    1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
-    1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
-    1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
-]
-
-//1 wall, 0 coin, 4 cookie, 8 teleport, 3 -empty, 9 freepath
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 4, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 4, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+        1, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 1, 1, 1, 9, 1, 1, 9, 1, 1, 1, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 6, 6, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 9, 9, 9, 9, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 8,
+        9, 9, 9, 9, 9, 9, 0, 9, 9, 9, 1, 1, 2, 2, 2, 2, 1, 1, 9, 9, 9, 0, 9, 9, 9, 9, 9, 9,
+        8, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 9, 9, 9, 9, 9, 9, 9, 9, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        3, 3, 3, 3, 3, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 3, 3, 3, 3, 3,
+        1, 1, 1, 1, 1, 1, 0, 1, 1, 9, 1, 1, 1, 1, 1, 1, 1, 1, 9, 1, 1, 0, 1, 1, 1, 1, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 0, 1, 1, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 0, 1, 1, 1, 1, 0, 1,
+        1, 4, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 0, 9, 9, 0, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 4, 1,
+        1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
+        1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 0, 1, 1, 1,
+        1, 0, 0, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 1, 1, 0, 0, 0, 0, 0, 0, 1,
+        1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+        1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1, 1, 0, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 0, 1,
+        1, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 1,
+        1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1, 1
+    ]
+    //1 wall, 0 coin, 4 cookie, 8 teleport, 3 -empty, 9 freepath
 
 //for work - another thread calculate hard func
 const worker = new SharedWorker("worker.js", {
@@ -121,24 +120,27 @@ let unitsMT = {
 
 const history = {
     prologue: [
-        "В паралельной вселенной, есть такая планета Noveus2D, это двумерный мир со своими правилами и законами, ее наслеяют разные сказочные обитатели, от лилипутов-жирафов до розовых единорогов. Все они жили мирно счастливо, пока однажды не случилась беда...",
+        "В паралельной вселенной, есть такая планета Noveus2D, это двумерный мир со своими правилами и законами, ее наслеяют разные сказочные обитатели, от лилипутов-жирафов до розовых единорогов. Все они жили мирно и счастливо, пока однажды не случилась беда...",
         "На планету упал астероид. Ученые начали выяснять, что это за объект. Проводя эксперементы и исследования, выяснялось что на этом астероиде находится мутирующий вирус...",
         "Он прибыл с другой планеты - Terra, но все это уже было поздно...",
         "В течении 3 дней и 3 ночей, вирус смог заразить ученых и начал распространться по экспоненте.  Черное бремя наступило для сказочных обителей планеты Noveus2D...",
         "Через время появились они... Это те рыцари, великие спасатели, герои нашего времени - прозвали их Пакманами, что означает на древнем языке - беспощадный убийца летучих падонков. Или в простонародии - чистильщики...",
+
         "Пакманы это бывшие военные, большинство из них потеряли свои семьи из-за летучих падонков, и им уже нечего терять... Пакманы сотрудничают с лабороторией X69, где изучается вирус и разрабатывается вакцина...",
         "В мире их осталось не так много, но те что остались,  идут от города к городу рискуя своей жизнью, что бы очистить этот грязный город BloodyBoobs и вакцинировать зараженных...",
         "Если повезет...",
         "Вирус превращал из любого кто попадался ему на пути - в огромную и сильную летучую мышь, помимо физиологической деформации, вирус также завладевал разумом, что теперь зараженый становился рабом вируса и выполнял функцию распространителя...",
         "Те же кто уже заразился, местные называли их - ",
+
         "ЛЕТУЧИЕ ПОДОНКИ...",
-        "Зараженые интуитивно искали своих здоровых собратьев, обхватив их крыльями они крепко держали жертву  и целовали его в засос...",
+        "Зараженые интуитивно искали своих здоровых собратьев, обхватив их крыльями они крепко держали жертву и целовали его в засос...",
         "Так вирус и передовался, процесс был долгим и мучительным...",
         "Вирус заполонил многие города, некоторые вовсе исчахли...",
         "Единственная надежда жителей города BloodyBoobs, это Пакман",
+
         "Если пакман появляется в городах, то все жители страраются помочь им, даруя жизни и пропитание...",
-        "Находи ящики с вакционой Sugar V, с их помощью ты можешь лечить зараженых, не боясь заразиться, т.к летечие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничен...",
-        "Имей ввиду, леча одного появится, обязательно появятся новые зараженные, которые будут патрулировать город",
+        "Находи ящики с вакционой Sugar V, с их помощью ты можешь лечить зараженых, не боясь заразиться, т.к летучие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничено...",
+        "Но имей ввиду, излечив одного, обязательно появятся новый зараженный, который будет патрулировать город..",
     ],
     takeMedical: "Вы нашли ящик с вакционой Спутник V, теперь вы можете лечить зараженых, не боясь заразиться, т.к летечие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничен... Имейте ввиду, леча одного появится обязательно новые зараженные, которые будут патрулировать город",
     death: "Ну ничего страшного, тяу тяу тяу. Местные верят в тебя и даруют тебе еще 1 жизнь, но помни, жизни ограничены...",
@@ -149,20 +151,20 @@ const history = {
         "Если только не придет, новый чистильщик...",
     ],
     win: [
-        "Ты рискуя жизнью, даришь новую жизнь и надежду BloodyBoobs и его жителям!",
+        "Рискуя жизнью, ты даришь надежду этому городу!",
         "Дни и ночи не покладая рук ты боролся с нечистью и теперь этот грязный город очищен...",
         "+10 к ЧСВ, +10 к карме, Ты лучший!",
         "Местные благодарны и некотрые даже начали называть своих детей твоим именем...",
-        "Оставшихся зараженых вакцинировали и они обратились вновь в себя...",
+        "Оставшихся зараженых вакцинировали и они  вновь обратились  в себя...",
         "Тебя запомнят как великого и бесстрашного спасителя! И будут рассказывать своим внукам еще не 1 десяток лет...",
         "Несколько дней продолжались гуляния на главной площади...",
         "Но вот что тревожило Пакмана, что есть еще кучу других городов и надо бы туда отправляться...",
-        "Отдохнув и набравшився сил, Пакман исчез из BloodyBoobs...",
+        "Отдохнув и набрав сил, Пакман исчез из BloodyBoobs...",
     ],
 };
+let intro = new Audio('./assets/intro.mp3')
 
 //dom onladed -> get grid elem, -> append - block, then manipulate this dom object, etc
-// document.URL.includes("index.html")
 document.addEventListener("DOMContentLoaded", () => {
     //save cache dom in nodes - addres in Ram - > then change by pointer
     props.grid = document.querySelector("div.grid");
@@ -176,8 +178,8 @@ document.addEventListener("DOMContentLoaded", () => {
     obj.orangeGhost = document.querySelector("div.orange");
     obj.pinkGhost = document.querySelector("div.pink");
     obj.cyanGhost = document.querySelector("div.cyan");
+    intro.play()
     createBoard();
-    console.log("loaded");
     showHide();
 });
 
@@ -195,27 +197,7 @@ const startTime = () => {
     }, 1000);
 };
 
-//TODO
-//if frame drop, trans off, off timer
-//check fps google
-// add audio,
-//ref class component
 
-//add keyframe - when pacman death
-//transalte - eng
-//audio - speech text, soundeffects -> own
-
-// prologue audio, 2 min -> . Nyctalgia- Time Changed Everything,  A Gaze Into The HorizenA Gaze Into The Horizen
-// fix keydown manipulate menu
-
-//if pacman - death -> todo effect || notify
-//images -> in gameBoard -> coin -> coronavirus, ghost -> bat, pacman -> pacman, cookie - medical, live -> little count little baby
-//add confetti - if win, if lose - blood confetti
-//fix - call1, call2 -> accum value ?, cut last text ?, not show
-//each restart, textpSO -1, and need 1 time click next?
-//fix -> each item - own addEventlistener
-// fps checlk - without - audio, trans off
-//if kedown 1pos, now change pos, freeze ?
 
 const showHide = (type) => {
     //main menu
@@ -242,6 +224,8 @@ const showHide = (type) => {
         });
         props.mainMenu = false;
     }
+    intro.pause()
+
 };
 
 const showFirst = (type) => {
@@ -253,7 +237,6 @@ const showFirst = (type) => {
 };
 
 const beginParty = (type) => {
-    // console.log(props.sceneType, type, 'begin party')
     if (type !== "") {
         let text = [];
         let textPos = 0;
@@ -274,7 +257,6 @@ const beginParty = (type) => {
         props.modal.children[1].style.display = "none";
         props.modal.children[3].style.display = "flex";
         lastPos = text.length;
-        // unitsMT.pacman.pause = true;
 
         if (type === "lose" || type === "win") {
             msg += `${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days`;
@@ -288,34 +270,8 @@ const beginParty = (type) => {
         let firstImage = props.modal.children[3].children[0];
         firstImage.src = `./assets/${prefix}${textPos + 1}.png`;
         props.modal.children[3].children[1].textContent = text[textPos];
-
-        console.log(text.length);
     }
 };
-
-//keydown menu
-// let start = 0;
-// let links = document.getElementsByClassName("links")[0];
-// document.addEventListener("keydown", (e) => {
-//   if (e.code === "ArrowDown") {
-//     if (start < 3) {
-//       links.children[start].style.color = "#000";
-//       start++;
-//       links.children[start].style.color = "red";
-//     }
-//   }
-//   if (e.code === "ArrowUp") {
-//     if (start > 0) {
-//       links.children[start].style.color = "#000";
-//       start--;
-//       links.children[start].style.color = "red";
-//     }
-//   }
-//   if (e.code === "Enter") {
-//     links.children[start].click();
-//   }
-// });
-text - sound todo - and start audit
 
 let text = [];
 let textPos = 0;
@@ -328,7 +284,6 @@ document.addEventListener("keydown", (e) => {
     if (e.code in keys) {
         keys[e.code] = true;
     }
-
     if (props.sceneType === "" && !props.mainMenu) {
         unitsMT.pacman.pause = false;
     }
@@ -336,14 +291,13 @@ document.addEventListener("keydown", (e) => {
     if (props.sceneType == "lose" || props.sceneType == 'win' || props.sceneType == 'prologue') {
         props.skip = false
         let msg = "";
-        console.log(props.sceneType, 'type')
         let prefix = props.sceneType;
         let img = props.modal.children[3].children[0];
         text = [...history[prefix]]; // copy array data, not change by reference
 
         if (prefix === "lose" || prefix === "win") {
             if (prefix === "win") {
-                msg = "Твое достижения останутся на скалах предков... ";
+                msg = "Твое достижение останется на скалах предков... ";
             }
             if (prefix === "lose") {
                 msg = "Ты умер раз и навсегда... пока! ";
@@ -359,30 +313,25 @@ document.addEventListener("keydown", (e) => {
         props.modal.children[1].style.display = "none";
         props.modal.children[3].style.display = "flex";
         lastPos = text.length;
-
         //first image & text
         unitsMT.pacman.pause = true;
-        // console.log(props.sceneType, textPos, lastPos, text.length, "before");
-        //0 s - play0, audio2
+
         if (e.key === "n" || e.key === "p" || e.key === " ") {
             if (e.key === "p" && textPos > 0) {
                 textPos--;
-                //get audio, playe, if next || prev pause current, play next
+                //get audio, play, if next || prev pause current, play next
                 if (audio) {
                     audio.pause()
                 }
-
             } else if (e.key === "n" && textPos <= lastPos) {
                 textPos++;
                 if (audio) {
                     audio.pause()
                 }
             }
-
             audio = new Audio(`./assets/${prefix}${textPos + 1}.aac`);
             audio.play()
-
-            //hide faq
+                //hide faq
             if (textPos === 1) {
                 props.modal.children[3].children[2].style.display = "none";
             }
@@ -402,17 +351,12 @@ document.addEventListener("keydown", (e) => {
             props.modal.children[3].children[1].textContent = text[textPos];
 
             if (e.key == " " || textPos == lastPos) {
-
-                if (audio) {
-                    audio.pause()
-                }
-                // console.log(props.sceneType, e.key, "finish scene");
-                //skip case, after scene
-                //add case - > prlogue case -> hide hide mainMenu, and
+                audio.pause()
+                    //skip case, after scene
                 if (prefix === "win" || prefix === "lose") {
                     // case : win || lose -> show menu, else -> prologue -> hidden all
                     props.modal.style.display = "block";
-                    props.modal.children[1].style.display = "block";
+                    props.modal.children[1].style.display = "flex";
                     props.modal.children[3].style.display = "none";
                     props.modal.children[1].children[0].style.display = "none";
                 } else {
@@ -425,12 +369,8 @@ document.addEventListener("keydown", (e) => {
                 props.skip = true
             }
         }
-        // console.log(props.sceneType, textPos, lastPos, text.length, "after");
-
-        // let audio = new Audio("./assets/text1.aac");
-        // audio.play();
     }
-    //&& props.sceneType === ""
+    //move pacman
     if (!props.mainMenu && props.skip) {
         if (
             e.code === "KeyA" ||
@@ -438,7 +378,6 @@ document.addEventListener("keydown", (e) => {
             e.code === "KeyS" ||
             e.code === "KeyW"
         ) {
-            // chomp.play();
             //cahnge bg pacman & ghost if canKill
             if (unitsMT.pacman.canKill) {
                 obj.pacman.style.background = "red";
@@ -455,7 +394,9 @@ document.addEventListener("keydown", (e) => {
             }
             if (unitsMT.pacman.death) {
                 //keuyframe ?
-                death.play()
+                if (unitsMT.pacman.life === 4) {
+                    death.play()
+                }
                 obj.pacman.style.opacity = ".4";
             } else {
                 obj.pacman.style.opacity = "1";
@@ -514,16 +455,13 @@ const restart = () => {
 };
 
 const endGame = () => {
-    let size = 0;
-    size = 2;
     //show hide menu items
     props.modal.style.display = "block";
     if (props.sceneType === "escape") {
-        props.modal.children[1].style.display = "block";
+        props.modal.children[1].style.display = "flex";
         props.modal.children[3].style.display = "none";
         props.mainMenu = false;
         unitsMT.pacman.pause = true;
-        size = 3;
         //continue btn
         props.modal.children[1].children[0].onclick = (e) => {
             rafId = requestAnimationFrame(step);
@@ -538,40 +476,16 @@ const endGame = () => {
         showFirst(props.sceneType);
         // then show menu hide text
     }
-    //keydown menu
-    let links = document.getElementsByClassName("modal")[0];
-    let start = 0;
 
-    document.addEventListener("keydown", (e) => {
-        if (e.keyCode === 38) {
-            if (start > 0) {
-                links.children[start].style.color = "#000";
-                start--;
-                links.children[start].style.color = "cyan";
-            }
-        }
-        if (e.keyCode === 40) {
-            if (start < size) {
-                links.children[start].style.color = "#000";
-                start++;
-                links.children[start].style.color = "cyan";
-            }
-        }
-        if (e.code === "Enter") {
-            links.children[start].click();
-        }
-    });
     //onclick menu  //restart btn
     props.modal.children[1].children[1].onclick = (e) => {
         //set def value,  hide modal
         props.modal.children[1].style.display = "none";
-        // props.sceneType = "";
         restart();
     };
     //main menu, goTo mainMenu
     props.modal.children[1].children[2].onclick = (e) => {
         props.mainMenu = true;
-        // props.sceneType = "prologue";
         showHide();
         //show menu, another hide
     };
@@ -606,24 +520,6 @@ const step = () => {
                 unitsMT.pacman.transX = e.data.pacman.transX;
                 unitsMT.pacman.death = e.data.pacman.death;
                 keys.restart = e.data.pacman.restart;
-                // console.log(
-                //   unitsMT.pacman.indexMap,
-                //   e.data.pacman.indexMap,
-                //   "index",
-                //   unitsMT.pacman.score,
-                //   e.data.pacman.score,
-                //   "score",
-                //   unitsMT.pacman.life,
-                //   e.data.pacman.life,
-                //   "life",
-                //   unitsMT.pacman.countCoin,
-                //   e.data.pacman.countCoin,
-                //   "coin",
-                //   unitsMT.pacman.pause,
-                //   "pause",
-                //   props.sceneType,
-                //   props.mainMenu
-                // );
             };
             //if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
             if (mapGame[unitsMT.pacman.indexMap] !== 1) {
@@ -718,3 +614,7 @@ const createBlock = (type) => {
     mapItemsInDom.push(div);
     props.grid.append(div);
 };
+//if frame drop, transition off
+//refactor class component
+//add keyframe - when pacman death
+//add confetti - if win, if lose - blood confetti
