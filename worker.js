@@ -438,8 +438,7 @@ const pacmanMove = (keys) => {
                 units.pacman.posX += 840;
             }
         }
-    }
-     if (keys.KeyD) {
+    }else    if (keys.KeyD) {
         units.pacman.direct = "right";
         if (mapGame[units.pacman.indexMap + 1] !== 1) {
             //canKill - and intersect -> -life
@@ -450,15 +449,13 @@ const pacmanMove = (keys) => {
                 units.pacman.posX -= 840;
             }
         }
-    }
-     if (keys.KeyW) {
+    }else if (keys.KeyW) {
         units.pacman.direct = "up";
         if (mapGame[units.pacman.indexMap - 28] !== 1) {
             units.pacman.indexMap -= 28;
             units.pacman.posY -= 30;
         }
-    } 
-     if (keys.KeyS) {
+    } else  if (keys.KeyS) {
         units.pacman.direct = "down";
         if (
             mapGame[units.pacman.indexMap + 28] !== 1 &&

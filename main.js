@@ -221,14 +221,19 @@ const showHide = (type) => {
 let audio = null
 //show first image & audio
 const showFirst = (type) => {
+    
     let text = [];
     text = [...history[type]];
     let firstImage = props.modal.children[3].children[0];
     firstImage.src = `./assets/${type}${1}.png`;
     props.modal.children[3].children[1].textContent = text[0];
 //first audio
+if(audio) {
+    audio.pause()
+}
      audio = new Audio(`./assets/${type}${1}.aac`);
     audio.play()
+   
 };
 
 let text = [];
@@ -495,7 +500,7 @@ const step = () => {
                 obj.pacman_mouth.style.transform = unitsMT.pacman.transX;
             }
             if (unitsMT.pacman.life > 0) {
-                if (unitsMT.pacman.countCoin === 244) {
+                if (unitsMT.pacman.countCoin ===244) {
                     props.sceneType = "win";
                     endGame();
                 }
