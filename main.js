@@ -136,7 +136,7 @@ const history = {
         "Находи ящики с вакционой Sugar V, с их помощью ты можешь лечить зараженых, не боясь заразиться, т.к летучие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничено...",
         "Но имей ввиду, излечив одного, обязательно появятся новый зараженный, который будет патрулировать город..",
     ],
-    takeMedical: "Вы нашли ящик с вакционой Спутник V, теперь вы можете лечить зараженых, не боясь заразиться, т.к летечие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничен... Имейте ввиду, леча одного появится обязательно новые зараженные, которые будут патрулировать город",
+    takeMedical: "Вы нашли ящик с вакционой Sugar V, теперь вы можете лечить зараженых, не боясь заразиться, т.к летечие подонки бояться Пакманов с вакционой, но время жизни вакцин ограничен... Имейте ввиду, леча одного появится обязательно новые зараженные, которые будут патрулировать город",
     death: "Ну ничего страшного, тяу тяу тяу. Местные верят в тебя и даруют тебе еще 1 жизнь, но помни, жизни ограничены...",
     lose: [
         "Все те жизни которые были даны Пакману, это души младецнов, ибо только их души способны даровать жизнь...",
@@ -185,13 +185,12 @@ document.addEventListener("keyup", (e) => {
 
 const startTime = () => {
     props.notify.style.display = "none";
+    //  props.time.sec === 60 ? ((props.time.sec = 0), (props.time.min += 1)) : 0; def time
     interval = setInterval(() => {
         props.time.sec += 1;
-        props.time.sec === 60 ? ((props.time.sec = 0), (props.time.min += 1)) : 0;
+        props.time.sec === 30 ? ((props.time.sec = 0), (props.time.min += 1)) : 0;
     }, 1000);
 };
-
-
 
 const showHide = (type) => {
     //main menu
@@ -219,22 +218,25 @@ const showHide = (type) => {
     }
     intro.pause()
 };
-
+let audio = null
+//show first image & audio
 const showFirst = (type) => {
     let text = [];
     text = [...history[type]];
     let firstImage = props.modal.children[3].children[0];
     firstImage.src = `./assets/${type}${1}.png`;
     props.modal.children[3].children[1].textContent = text[0];
+//first audio
+     audio = new Audio(`./assets/${type}${1}.aac`);
+    audio.play()
 };
-
 
 let text = [];
 let textPos = 0;
 let lastPos = 0;
 let chomp = new Audio("./assets/chomp.aac");
 let death = new Audio("./assets/death.aac");
-let audio = null
+
 
 document.addEventListener("keydown", (e) => {
     if (e.code in keys) {
@@ -259,7 +261,7 @@ document.addEventListener("keydown", (e) => {
                 msg = "Ты умер раз и навсегда... пока! ";
             }
             //push - stats
-            msg += ` ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}   ${props.time.min} months ${props.time.sec} days `;
+            msg += ` ${unitsMT.pacman.score} Lives:${unitsMT.pacman.life}  months:${props.time.min} days:${props.time.sec}  `;
             text = [...text, msg];
         } else if (prefix === "prologue") {
             msg = ` Теперь все в твоих руках... В бой юный подован! `;
@@ -272,38 +274,34 @@ document.addEventListener("keydown", (e) => {
         //first image & text
         unitsMT.pacman.pause = true;
 
-        if (e.key === "n" || e.key === "p" || e.key === " ") {
-            if (e.key === "p" && textPos > 0) {
+        if (e.code === "KeyN" || e.code === "KeyP" || e.code === "Space") {
+            if (e.code === "KeyP" && textPos > 0) {
                 textPos--;
                 //get audio, play, if next || prev pause current, play next
                 if (audio) {
                     audio.pause()
                 }
-            } else if (e.key === "n" && textPos <= lastPos) {
+                audio = new Audio(`./assets/${prefix}${textPos + 1}.aac`);
+                audio.play()
+            } else if (e.code === "KeyN" && textPos <= lastPos) {
                 textPos++;
                 if (audio) {
                     audio.pause()
                 }
+                audio = new Audio(`./assets/${prefix}${textPos + 1}.aac`);
+                audio.play()
             }
-            audio = new Audio(`./assets/${prefix}${textPos + 1}.aac`);
-            audio.play()
                 //hide faq
             if (textPos === 1) {
                 props.modal.children[3].children[2].style.display = "none";
             }
-
-
-            // img.onerror = function(e) {
-            //     console.log('erroe img')
-            //         // img.style.display = "none";
-            //     props.modal.children[3].children[1].style.bottom = "40%";
-            // };
-
-
+            img.onerror = function(e) {
+                img.style.display = "none";
+                props.modal.children[3].children[1].style.bottom = "40%";
+            };
             //img
             img.onload = function(e) {
                 img.style.display = "block";
-
                 props.modal.children[3].children[1].style.bottom = "5%";
             };
             //get elems in Dom by ref - update path src
@@ -311,7 +309,7 @@ document.addEventListener("keydown", (e) => {
             //text
             props.modal.children[3].children[1].textContent = text[textPos];
 
-            if (e.key == " " || textPos == lastPos) {
+            if (e.code == "Space" || textPos == lastPos) {
                 //skip case, after scene
                 if (prefix === "win" || prefix === "lose") {
                     // case : win || lose -> show menu, else -> prologue -> hidden all
@@ -334,7 +332,6 @@ document.addEventListener("keydown", (e) => {
     }
     //move pacman
     if (!props.mainMenu && props.skip) {
-
         if (
             e.code === "KeyA" ||
             e.code === "KeyD" ||
@@ -506,14 +503,14 @@ const step = () => {
                 props.sceneType = "lose";
                 endGame();
             }
-            //render
+            //render - draw
             obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
             obj.redGhost.style.transform = `translate(${unitsMT.redGhost.posX}px, ${unitsMT.redGhost.posY}px)`;
             obj.orangeGhost.style.transform = `translate(${unitsMT.orangeGhost.posX}px, ${unitsMT.orangeGhost.posY}px)`;
             obj.cyanGhost.style.transform = `translate(${unitsMT.cyanGhost.posX}px, ${unitsMT.cyanGhost.posY}px)`;
             obj.pinkGhost.style.transform = `translate(${unitsMT.pinkGhost.posX}px, ${unitsMT.pinkGhost.posY}px)`;
             //updated value - render scoreboard
-            props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives ${unitsMT.pacman.life}  ${props.time.min} months ${props.time.sec} days`;
+            props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives:${unitsMT.pacman.life}  months:${props.time.min} days:${props.time.sec} `;
             //cooldwon, 5 * 16.7 -> reaction each 83ms
             unitsMT.cool = 6;
         }
@@ -576,19 +573,12 @@ const createBlock = (type) => {
     mapItemsInDom.push(div);
     props.grid.append(div);
 };
+
 //if frame drop, transition off
-//refactor class component
+//refactor class component, best practice
 //add keyframe - when pacman death
 //add confetti - if win, if lose - blood confetti
 //chrome fps - 120ms / 16.7 * 8fps = 57fps 1 frame(16.7) - 8fps
 
-// scoreboard -> when lose || win -> show input , where user - enter own name -> json file -> open and save score, time, etc -> 
+//scoreboard -> when lose || win -> show input , where user - enter own name -> json file -> open and save score, time, etc -> 
 //if go to score.html -> get all data, sorted  by coin & time
-
-//1 image fix - play audio,
-//2 code - check -> for russin keypad
-//3 key pressed only 1 button
-//4 erros - failed resource - images, -> don't downlaod  iamges
-//5 first slide - press P -> repeat audio
-//6 audio - chomp - disable
-//7 add - transition pacamn, ghosts

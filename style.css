@@ -32,7 +32,7 @@ body {
     height: 20px;
     border-radius: 50%;
     background-color: yellow;
-    /* transition: transform 0.2s ease; */
+    transition: transform 0.2s ease;
     will-change: transform;
     transform: translate(425px, 695px);
     z-index: 2;
@@ -201,7 +201,7 @@ body {
     background-image: url("assets/pinkbat.png");
     will-change: transform;
     transform: translate(360px, 420px);
-    /* transition: transform 0.2s; */
+    transition: transform 0.2s;
 }
 
 .orange {
@@ -209,7 +209,7 @@ body {
     background-image: url("assets/bat2.png");
     will-change: transform;
     transform: translate(390px, 420px);
-    /* transition: transform 0.2s; */
+    transition: transform 0.2s;
 }
 
 .red {
@@ -217,7 +217,7 @@ body {
     /* background: red; */
     background-image: url("assets/redbat.png");
     transform: translate(420px, 420px);
-    /* transition: transform 0.2s ease; */
+    transition: transform 0.2s ease;
 }
 
 .cyan {
@@ -225,7 +225,7 @@ body {
     background-image: url("assets/bluebat.png");
     will-change: transform;
     transform: translate(450px, 420px);
-    /* transition: transform 0.2s; */
+    transition: transform 0.2s;
 }
 
 

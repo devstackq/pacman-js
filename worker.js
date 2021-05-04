@@ -438,25 +438,27 @@ const pacmanMove = (keys) => {
                 units.pacman.posX += 840;
             }
         }
-    } else if (keys.KeyD) {
+    }
+     if (keys.KeyD) {
         units.pacman.direct = "right";
         if (mapGame[units.pacman.indexMap + 1] !== 1) {
             //canKill - and intersect -> -life
             units.pacman.indexMap += 1;
             units.pacman.posX += 30;
             units.pacman.transX = "translateX(100%)";
-
             if (mapGame[units.pacman.indexMap] === 8) {
                 units.pacman.posX -= 840;
             }
         }
-    } else if (keys.KeyW) {
+    }
+     if (keys.KeyW) {
         units.pacman.direct = "up";
         if (mapGame[units.pacman.indexMap - 28] !== 1) {
             units.pacman.indexMap -= 28;
             units.pacman.posY -= 30;
         }
-    } else if (keys.KeyS) {
+    } 
+     if (keys.KeyS) {
         units.pacman.direct = "down";
         if (
             mapGame[units.pacman.indexMap + 28] !== 1 &&
@@ -465,7 +467,6 @@ const pacmanMove = (keys) => {
             units.pacman.indexMap += 28;
             units.pacman.posY += 30;
         }
-
     }
     //if pacman stay 1 position, check interect
     if (!units.pacman.canKill) {
@@ -475,7 +476,7 @@ const pacmanMove = (keys) => {
         isIntersect(units.pacman.direct, "ghost");
     }
     // console.log(mapGame[units.pacman.indexMap], keys.restart);
-    // if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
+    // if changed pacman icndex, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
     if (mapGame[units.pacman.indexMap] !== 1) {
         if (mapGame[units.pacman.indexMap] === 0) {
             units.pacman.score += 1;
@@ -496,7 +497,7 @@ const pacmanMove = (keys) => {
         }
     }
 };
-//connetc -> receive data - call func - send main thread calcualted data
+//connect -> receive data - call func - send main thread calcualted data
 self.onconnect = (e) => {
     const port = e.ports[0];
     port.onmessage = function(e) {
