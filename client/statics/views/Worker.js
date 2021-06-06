@@ -497,15 +497,13 @@ const pacmanMove = (keys) => {
 self.onconnect = (e) => {
     const port = e.ports[0];
     port.onmessage = function(e) {
-        console.log(123)
-            //get state - goTOBase, if true -> set def value -> freeze 10sec, -> start boxGhost pos
+        //get state - goTOBase, if true -> set def value -> freeze 10sec, -> start boxGhost pos
         findAndDestroy(units.redGhost);
         findAndDestroy(units.orangeGhost);
         findAndDestroy(units.pinkGhost);
         intravenousPerimeter(units.cyanGhost);
         pacmanMove(e.data.key);
         //send ghost, and pacman.data
-        console.log(e.data.key, 123)
         port.postMessage(units);
     };
 };

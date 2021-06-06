@@ -9,7 +9,6 @@ export default class {
     }
 
     init() {
-        // import CommonWebWorker from "./test.js";
 
         const URL = 'http://localhost:6969'
 
@@ -51,18 +50,11 @@ export default class {
                 //1 wall, 0 coin, 4 cookie, 8 teleport, 3 -empty, 9 freepath
 
             //for work - another thread calculate hard func
-            const worker = new SharedWorker("Worker.js", {
+            const worker = new SharedWorker("./statics/views/Worker.js", {
                 type: "module",
                 name: "sharedWorker",
             });
 
-            // var = wwnew CommonWebWorker()
-            // var ww = new CommonWebWorker()
-            // var ww = new Worker(new CommonWebWorker());
-            // ww.postMessage('LOAD');
-            // ww.onmessage = function(e) {
-            //     console.log(e.data, 'res');
-            // }
 
             //keys state, l/r/u/d
             const keys = {
@@ -255,7 +247,6 @@ export default class {
             let chomp = new Audio("./statics/assets/chomp.aac");
             let death = new Audio("./statics/assets/death.aac");
 
-
             document.addEventListener("keydown", (e) => {
                 if (e.code in keys) {
                     keys[e.code] = true;
@@ -263,7 +254,6 @@ export default class {
                 if (props.sceneType === "" && !props.mainMenu) {
                     unitsMT.pacman.pause = false;
                 }
-                console.log(unitsMT.cool, 3, e.code, props.inPlay, unitsMT.pacman.pause, props.skip, props.mainMenu, unitsMT.pacman.posX)
 
                 // /(e.key == "n" || e.key == "p" || e.key === " ")
                 if (props.sceneType == "lose" || props.sceneType == 'win' || props.sceneType == 'prologue') {
@@ -293,6 +283,7 @@ export default class {
                     lastPos = text.length;
                     //first image & text
                     unitsMT.pacman.pause = true;
+
 
                     if (e.code === "KeyN" || e.code === "KeyP" || e.code === "Space") {
                         if (e.code === "KeyP" && textPos > 0) {
@@ -333,12 +324,17 @@ export default class {
                             //skip case, after scene
                             if (prefix === "win" || prefix === "lose") {
                                 // case : win || lose -> show menu, else -> prologue -> hidden all
-                                props.modal.style.display = "block";
-                                props.modal.children[1].style.display = "flex";
-                                props.modal.children[3].style.display = "none";
-                                props.modal.children[1].children[0].style.display = "none";
+                                // props.modal.style.display = "block";
+                                // props.modal.children[1].style.display = "flex";
+                                // props.modal.children[3].style.display = "none";
+                                // props.modal.children[1].children[0].style.display = "none";
 
                                 props.score.style.display = "block";
+                                props.modal.children[3].style.display = 'none'
+                                    //pause game, ||  bg - black, show input save result
+                                saveResult - > showRating, - > showMenu Restart, Menu, Score
+                                unitsMT.pacman.pause = true
+                                props.inPlay = false
 
                                 props.score.children[2].onclick = () => {
                                     console.log('save player func')
@@ -350,14 +346,16 @@ export default class {
                             props.sceneType = "";
                             text = [];
                             textPos = 0;
-                            unitsMT.pacman.pause = false;
+                            // unitsMT.pacman.pause = false;
                             props.skip = true
                             audio.pause()
                         }
                     }
                 }
+
                 //move pacman
                 if (!props.mainMenu && props.skip) {
+                    console.log(unitsMT.pacman.pause)
                     if (
                         e.code === "KeyA" ||
                         e.code === "KeyD" ||
@@ -399,6 +397,7 @@ export default class {
                     }
                 }
             });
+
             //transform translate each item - change posit 0 in Dom
             const render = (...args) => {
                 args.forEach((el, i) => {
@@ -544,7 +543,6 @@ export default class {
                             unitsMT.pacman.transX = e.data.pacman.transX;
                             unitsMT.pacman.death = e.data.pacman.death;
                             keys.restart = e.data.pacman.restart;
-                            console.log(e.data, 'data')
 
                         };
                         // console.log(unitsMT.pacman.posX)
@@ -563,7 +561,7 @@ export default class {
                             obj.pacman_mouth.style.transform = unitsMT.pacman.transX;
                         }
                         if (unitsMT.pacman.life > 0) {
-                            if (unitsMT.pacman.countCoin === 2) {
+                            if (unitsMT.pacman.countCoin === 4) {
                                 props.sceneType = "win";
                                 endGame();
                             }
@@ -648,8 +646,6 @@ export default class {
             window.onload = () => {
 
                 //save cache dom in nodes - addres in Ram - > then change by pointer
-                // props.root.children.style.display = "none";
-
                 props.root = document.querySelector("div#app")
                 props.grid = document.querySelector("div.grid");
                 props.modal = document.querySelector("div.modal");

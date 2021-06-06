@@ -2,9 +2,7 @@ import Scoreboard from "./views/Scoreboard.js";
 import Main from "./views/Main.js";
 import Play from "./views/Play.js";
 
-const URL = 'http://localhost:6969'
 
-//------------router
 const pathToRegex = path => new RegExp("^" + path.replace(/\//g, "\\/").replace(/:\w+/g, "(.+)") + "$");
 
 const getParams = match => {
@@ -21,42 +19,6 @@ const navigateTo = url => {
     history.pushState(null, null, url);
     router();
 };
-
-const showScore = () => {
-
-    // document.getElementById('score').onclick = async function() {
-
-    //     let e = document.getElementById("email").value;
-    //     let p = document.getElementById("password").value;
-    //     let u = document.getElementById("username").value;
-    //     let f = document.getElementById("fName").value;
-    //     let a = document.getElementById("age").value;
-    //     let c = document.getElementById("city").value;
-
-    //     let user = {
-    //         email: e,
-    //         password: p,
-    //         username: u,
-    //         fullname: f,
-    //         age: a,
-    //         city: c
-    //     };
-    //     console.log(user, "user")
-    //     let response = await fetch('http://localhost:6969/signup', {
-    //         method: 'POST',
-    //         headers: {
-    //             'Content-Type': 'application/json;charset=utf-8'
-    //         },
-    //         body: JSON.stringify(user)
-    //     });
-    //     let result = await response.json();
-    //     // redirect signin page 
-    //     console.log(result, 'result')
-    //     if (result > 0 && result != undefined) {
-    //         window.location.redirect = 'http://localhost:6969/signin'
-    //     }
-    // }
-}
 
 const router = async() => {
     const routes = [
@@ -88,12 +50,6 @@ const router = async() => {
     document.querySelector("#app").innerHTML = await view.getHtml();
     view.init()
 
-    if (document.getElementById('score') !== null) {
-        showScore()
-    }
-    // if (document.getElementById('play') !== null) {
-    //     view.init()
-    // }
 };
 
 window.addEventListener("popstate", router);
