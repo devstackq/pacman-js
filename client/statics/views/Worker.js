@@ -45,7 +45,6 @@ const keys = {
     KeyW: false,
     KeyS: false,
 };
-
 const units = {
     pinkGhost: {
         nick: "pinkGhost",
@@ -438,7 +437,7 @@ const pacmanMove = (keys) => {
                 units.pacman.posX += 840;
             }
         }
-    }else    if (keys.KeyD) {
+    } else if (keys.KeyD) {
         units.pacman.direct = "right";
         if (mapGame[units.pacman.indexMap + 1] !== 1) {
             //canKill - and intersect -> -life
@@ -449,13 +448,13 @@ const pacmanMove = (keys) => {
                 units.pacman.posX -= 840;
             }
         }
-    }else if (keys.KeyW) {
+    } else if (keys.KeyW) {
         units.pacman.direct = "up";
         if (mapGame[units.pacman.indexMap - 28] !== 1) {
             units.pacman.indexMap -= 28;
             units.pacman.posY -= 30;
         }
-    } else  if (keys.KeyS) {
+    } else if (keys.KeyS) {
         units.pacman.direct = "down";
         if (
             mapGame[units.pacman.indexMap + 28] !== 1 &&
@@ -498,13 +497,15 @@ const pacmanMove = (keys) => {
 self.onconnect = (e) => {
     const port = e.ports[0];
     port.onmessage = function(e) {
-        //get state - goTOBase, if true -> set def value -> freeze 10sec, -> start boxGhost pos
+        console.log(123)
+            //get state - goTOBase, if true -> set def value -> freeze 10sec, -> start boxGhost pos
         findAndDestroy(units.redGhost);
         findAndDestroy(units.orangeGhost);
         findAndDestroy(units.pinkGhost);
         intravenousPerimeter(units.cyanGhost);
         pacmanMove(e.data.key);
         //send ghost, and pacman.data
+        console.log(e.data.key, 123)
         port.postMessage(units);
     };
 };
