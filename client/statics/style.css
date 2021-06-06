@@ -140,7 +140,7 @@ body {
     top: 10%;
     width: 80%;
     height: 80%;
-    background-image: url("assets/corona.png");
+    background-image: url("./assets/corona.png");
     border-radius: 50%;
     background-repeat: no-repeat;
     will-change: opacity;
@@ -150,7 +150,7 @@ body {
 }
 
 .cookie {
-    background-image: url("assets/medical.png");
+    background-image: url("./assets/medical.png");
     border-radius: 50%;
     background-repeat: no-repeat;
     will-change: opacity;
@@ -198,7 +198,7 @@ body {
 
 .pink {
     will-change: opacity;
-    background-image: url("assets/pinkbat.png");
+    background-image: url("./assets/pinkbat.png");
     will-change: transform;
     transform: translate(360px, 420px);
     /* transition: transform 0.2s; */
@@ -206,7 +206,7 @@ body {
 
 .orange {
     will-change: opacity;
-    background-image: url("assets/bat2.png");
+    background-image: url("./assets/bat2.png");
     will-change: transform;
     transform: translate(390px, 420px);
     /* transition: transform 0.2s; */
@@ -215,65 +215,18 @@ body {
 .red {
     will-change: opacity;
     /* background: red; */
-    background-image: url("assets/redbat.png");
+    background-image: url("./assets/redbat.png");
     transform: translate(420px, 420px);
     /* transition: transform 0.2s ease; */
 }
 
 .cyan {
     will-change: opacity;
-    background-image: url("assets/bluebat.png");
+    background-image: url("./assets/bluebat.png");
     will-change: transform;
     transform: translate(450px, 420px);
     /* transition: transform 0.2s; */
 }
-
-
-/* .left_eye {
-  position: absolute;
-  width: 25%;
-  height: 30%;
-  background: #fff;
-  z-index: 3;
-  border: 0.5px solid red;
-  top: 20%;
-  left: 10%;
-  border-radius: 50%;
-}
-
-.left_eye::before {
-  content: "";
-  z-index: -1;
-  position: inherit;
-  width: 80%;
-  height: 60%;
-  bottom: -3%;
-  left: 20%;
-  border-radius: 50% 50% 40% 40%;
-  background: #000;
-}
-
-.right_eye {
-  position: absolute;
-  width: 25%;
-  height: 30%;
-  background: #fff;
-  top: 20%;
-  right: 10%;
-  border: 0.5px solid red;
-  border-radius: 50%;
-}
-
-.right_eye::before {
-  content: "";
-  position: inherit;
-  width: 80%;
-  height: 60%;
-  bottom: -3%;
-  left: 20%;
-  border-radius: 50% 50% 40% 40%;
-  background: #000;
-} */
 
 .scoreBoard {
     color: #fff;
@@ -378,4 +331,9 @@ body {
     top: 50%;
     left: 40%;
     z-index: 4;
+}
+
+#addScore {
+    z-index: 5;
+    color: red;
 }

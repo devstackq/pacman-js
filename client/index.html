@@ -3,16 +3,16 @@
 
 <head>
     <title>Super Pacman</title>
-    <link rel="stylesheet" href="style.css">
+    <link rel="stylesheet" type="text/css"  href="./statics/style.css">
     <link rel="icon" href="data:,">
     <meta charset="UTF-8">
 </head>
 
 <body>
 
-    <div id='notify' class='notify'> Click arrow key, for start game! </div>
+    <div id='notify' class='notify'>Нажми на кнопку(wsad), что бы начать игру</div>
     <div class="scoreBoard">
-        <span id='score' class="score">Score:0 Lives:5 months:0 days:0</span>
+        <span id='score' class="score">Вирусы:0 Жизни:5 Месяц:0 Дни:0</span>
     </div>
     <div id='grid' class="grid">
 
@@ -50,16 +50,15 @@
 
     <div class='modal' id='modal'>
         <span id='stats'> </span>
-
         <div class="gameMenu">
-            <a id='continue'> Continue </a>
-            <a> Restart </a>
-            <a> Main menu </a>
+            <a id='continue'>Продолжить </a>
+            <a>Рестарт </a>
+            <a>Меню</a>
         </div>
-        <div id='addScoreId' style='display:none'>
-            <label>enter your name </label>
-            <input type='text'> </input>
-            <input type='submit' value='ok'> </input>
+        <div class='addScore' style='display:none'>
+            <label> Введи имя:  </label>
+            <input type='text'/>
+            <input type='submit' value='Сохранить'/>
         </div>
         <div class="history-container">
             <img  src="" alt="">
@@ -70,19 +69,19 @@
         <!-- //menu -->
         <div class="mainPage">
             <div class='logo'>
-                <img src='assets/logo.png' />
+                <img src='./statics/assets/logo.png' />
             </div>
             <div class='menu'>
-                <img src='assets/pachead.png' />
+                <img src='./statics/assets/pachead.png' />
                 <div class='links'>
-                    <a>start game</a>
-                    <a href='score.html'>scoreboard</a>
-                    <a href='option.html'>options</a>
-                    <a href='about.html'>about</a>
+                    <a>Начать игру</a>
+                    <a href='./score.html'>Скала предков</a>
+                    <a href='./option.html'>Настройки</a>
+                    <a href='./about.html'>Об игре</a>
                 </div>
             </div>
         </div>
     </div>
 </body>
-<script type="module" src='./main.js'> </script>
+<script type="module" src='./statics/main.js'> </script>
 </html>

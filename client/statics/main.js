@@ -71,6 +71,7 @@ const props = {
     skip: false,
     sceneType: "",
     mainMenu: true,
+    grid: null,
 };
 
 //unit objects - for manipualte game
@@ -156,7 +157,7 @@ const history = {
         "Отдохнув и набрав сил, Пакман исчез из BloodyBoobs...",
     ],
 };
-let intro = new Audio('./assets/intro.mp3')
+let intro = new Audio('./statics/assets/intro.mp3')
 
 //dom onladed -> get grid elem, -> append - block, then manipulate this dom object, etc
 document.addEventListener("DOMContentLoaded", () => {
@@ -172,9 +173,12 @@ document.addEventListener("DOMContentLoaded", () => {
     obj.orangeGhost = document.querySelector("div.orange");
     obj.pinkGhost = document.querySelector("div.pink");
     obj.cyanGhost = document.querySelector("div.cyan");
-    intro.play()
+    props.score = document.querySelector("div.addScore");
+
+    intro.play();
     createBoard();
     showHide();
+    console.log('game start')
 });
 
 document.addEventListener("keyup", (e) => {
@@ -192,7 +196,7 @@ const startTime = () => {
     }, 1000);
 };
 
-const showHide = (type) => {
+const showHide = () => {
     //main menu
     if (props.mainMenu) {
         //DRY
@@ -219,28 +223,27 @@ const showHide = (type) => {
     intro.pause()
 };
 let audio = null
-//show first image & audio
+    //show first image & audio
 const showFirst = (type) => {
-    
+
     let text = [];
     text = [...history[type]];
     let firstImage = props.modal.children[3].children[0];
-    firstImage.src = `./assets/${type}${1}.png`;
+    firstImage.src = `./statics/assets/${type}${1}.png`;
     props.modal.children[3].children[1].textContent = text[0];
-//first audio
-if(audio) {
-    audio.pause()
-}
-     audio = new Audio(`./assets/${type}${1}.aac`);
+    //first audio
+    if (audio) {
+        audio.pause()
+    }
+    audio = new Audio(`./statics/assets/${type}${1}.aac`);
     audio.play()
-   
 };
 
 let text = [];
 let textPos = 0;
 let lastPos = 0;
-let chomp = new Audio("./assets/chomp.aac");
-let death = new Audio("./assets/death.aac");
+let chomp = new Audio("./statics/assets/chomp.aac");
+let death = new Audio("./statics/assets/death.aac");
 
 
 document.addEventListener("keydown", (e) => {
@@ -266,7 +269,7 @@ document.addEventListener("keydown", (e) => {
                 msg = "Ты умер раз и навсегда... пока! ";
             }
             //push - stats
-            msg += ` ${unitsMT.pacman.score} Lives:${unitsMT.pacman.life}  months:${props.time.min} days:${props.time.sec}  `;
+            msg += `Вирусов очищено ${unitsMT.pacman.score} Жизни:${unitsMT.pacman.life}  Месяц:${props.time.min} Дни:${props.time.sec}  `;
             text = [...text, msg];
         } else if (prefix === "prologue") {
             msg = ` Теперь все в твоих руках... В бой юный подован! `;
@@ -286,17 +289,17 @@ document.addEventListener("keydown", (e) => {
                 if (audio) {
                     audio.pause()
                 }
-                audio = new Audio(`./assets/${prefix}${textPos + 1}.aac`);
+                audio = new Audio(`./statics/assets/${prefix}${textPos + 1}.aac`);
                 audio.play()
             } else if (e.code === "KeyN" && textPos <= lastPos) {
                 textPos++;
                 if (audio) {
                     audio.pause()
                 }
-                audio = new Audio(`./assets/${prefix}${textPos + 1}.aac`);
+                audio = new Audio(`./statics/assets/${prefix}${textPos + 1}.aac`);
                 audio.play()
             }
-                //hide faq
+            //hide faq
             if (textPos === 1) {
                 props.modal.children[3].children[2].style.display = "none";
             }
@@ -310,7 +313,7 @@ document.addEventListener("keydown", (e) => {
                 props.modal.children[3].children[1].style.bottom = "5%";
             };
             //get elems in Dom by ref - update path src
-            img.src = `./assets/${prefix}${textPos + 1}.png`;
+            img.src = `./statics/assets/${prefix}${textPos + 1}.png`;
             //text
             props.modal.children[3].children[1].textContent = text[textPos];
 
@@ -322,6 +325,13 @@ document.addEventListener("keydown", (e) => {
                     props.modal.children[1].style.display = "flex";
                     props.modal.children[3].style.display = "none";
                     props.modal.children[1].children[0].style.display = "none";
+
+                    props.score.style.display = "block";
+
+                    props.score.children[2].onclick = () => {
+                        console.log('save player func')
+                        savePlayerResult()
+                    }
                 } else {
                     props.modal.style.display = "none";
                 }
@@ -331,7 +341,6 @@ document.addEventListener("keydown", (e) => {
                 unitsMT.pacman.pause = false;
                 props.skip = true
                 audio.pause()
-
             }
         }
     }
@@ -401,6 +410,7 @@ const restart = () => {
 
     // obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
     //show notify
+    props.modal.children[3].children[2].style.display = "block";
     props.notify.style.display = "block";
     props.modal.children[1].children[0].style.display = "block";
     //update time
@@ -418,6 +428,43 @@ const restart = () => {
     }
     unitsMT.pacman.pause = false;
 };
+
+const savePlayerResult = async() => {
+
+    let user = {
+        name: '',
+        score: 0,
+        time: ''
+    };
+
+    user.name = props.score.children[1].value
+    user.rank = unitsMT.pacman.score
+    user.time = `${props.time.min} ${props.time.sec}`
+
+    let response = await fetch('http://localhost:6969/rank', {
+        method: 'POST',
+        headers: {
+            'Content-Type': 'application/json;charset=utf-8'
+        },
+        body: JSON.stringify(user)
+    });
+
+    let result = await response.json();
+    props.score.style.display = "none";
+    console.log(result, 'result')
+        // showRank(result)
+
+}
+const getRank = () => {
+
+    fetch('http://localhost:6969/rank')
+        .then((response) => {
+            return response.json();
+        })
+        .then((data) => {
+            showRank(data)
+        });
+}
 
 const endGame = () => {
     //show hide menu items
@@ -437,9 +484,9 @@ const endGame = () => {
             props.modal.children[1].style.display = "none";
         };
     } else if (props.sceneType === "win" || props.sceneType === "lose") {
-        // show only text
+        // show only text, then show menu hide text
+        props.modal.children[3].children[2].style.display = "none";
         showFirst(props.sceneType);
-        // then show menu hide text
     }
     //onclick menu  //restart btn
     props.modal.children[1].children[1].onclick = (e) => {
@@ -485,6 +532,7 @@ const step = () => {
                 unitsMT.pacman.death = e.data.pacman.death;
                 keys.restart = e.data.pacman.restart;
             };
+            // console.log(unitsMT.pacman.posX)
             //if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
             if (mapGame[unitsMT.pacman.indexMap] !== 1) {
                 if (
@@ -500,7 +548,7 @@ const step = () => {
                 obj.pacman_mouth.style.transform = unitsMT.pacman.transX;
             }
             if (unitsMT.pacman.life > 0) {
-                if (unitsMT.pacman.countCoin ===244) {
+                if (unitsMT.pacman.countCoin === 2) {
                     props.sceneType = "win";
                     endGame();
                 }
@@ -515,7 +563,7 @@ const step = () => {
             obj.cyanGhost.style.transform = `translate(${unitsMT.cyanGhost.posX}px, ${unitsMT.cyanGhost.posY}px)`;
             obj.pinkGhost.style.transform = `translate(${unitsMT.pinkGhost.posX}px, ${unitsMT.pinkGhost.posY}px)`;
             //updated value - render scoreboard
-            props.scoreBoard.children[0].textContent = `Score ${unitsMT.pacman.score} Lives:${unitsMT.pacman.life}  months:${props.time.min} days:${props.time.sec} `;
+            props.scoreBoard.children[0].textContent = `Вирусы:${unitsMT.pacman.score} Жизни:${unitsMT.pacman.life}  Месяц:${props.time.min} Дни:${props.time.sec} `;
             //cooldwon, 5 * 16.7 -> reaction each 83ms
             unitsMT.cool = 6;
         }
@@ -586,4 +634,4 @@ const createBlock = (type) => {
 //chrome fps - 120ms / 16.7 * 8fps = 57fps 1 frame(16.7) - 8fps
 
 //scoreboard -> when lose || win -> show input , where user - enter own name -> json file -> open and save score, time, etc -> 
-//if go to score.html -> get all data, sorted  by coin & time
+//if go to score.html -> get all data, sorted  by coin & timelives
