@@ -251,9 +251,10 @@ export default class {
                 if (e.code in keys) {
                     keys[e.code] = true;
                 }
-                if (props.sceneType === "" && !props.mainMenu) {
-                    unitsMT.pacman.pause = false;
-                }
+                //props.sceneType === ""
+                // if (!props.mainMenu && props.skip) {
+                //     unitsMT.pacman.pause = false;
+                // }
 
                 // /(e.key == "n" || e.key == "p" || e.key === " ")
                 if (props.sceneType == "lose" || props.sceneType == 'win' || props.sceneType == 'prologue') {
@@ -282,8 +283,7 @@ export default class {
                     props.modal.children[3].style.display = "flex";
                     lastPos = text.length;
                     //first image & text
-                    unitsMT.pacman.pause = true;
-
+                    // unitsMT.pacman.pause = true;
 
                     if (e.code === "KeyN" || e.code === "KeyP" || e.code === "Space") {
                         if (e.code === "KeyP" && textPos > 0) {
@@ -331,14 +331,18 @@ export default class {
 
                                 props.score.style.display = "block";
                                 props.modal.children[3].style.display = 'none'
-                                    //pause game, ||  bg - black, show input save result
-                                saveResult - > showRating, - > showMenu Restart, Menu, Score
-                                unitsMT.pacman.pause = true
-                                props.inPlay = false
 
-                                props.score.children[2].onclick = () => {
+                                unitsMT.pacman.pause = true
+
+                                props.inPlay = false
+                                clearInterval(interval);
+                                console.log(props.sceneType, 1)
+
+                                props.score.children[0].children[2].onclick = () => {
                                     console.log('save player func')
                                     savePlayerResult()
+                                    props.modal.children[3].style.display = "none";
+                                    // history-container - hide
                                 }
                             } else {
                                 props.modal.style.display = "none";
@@ -448,24 +452,28 @@ export default class {
                     time: ''
                 };
 
-                user.name = props.score.children[1].value
-                user.rank = unitsMT.pacman.score
+                user.name = props.score.children[0].children[1].value
+                user.score = unitsMT.pacman.score
                 user.time = `${props.time.min} ${props.time.sec}`
 
-                let response = await fetch(`${URL}/rank`, {
+                //let response = await
+                await fetch(`${URL}/score`, {
                     method: 'POST',
                     headers: {
                         'Content-Type': 'application/json;charset=utf-8'
                     },
                     body: JSON.stringify(user)
                 });
-
-                let result = await response.json();
+                console.log(user, 'send value')
+                    // let result = await response.json();
                 props.score.style.display = "none";
-                console.log(result, 'result')
-                    // showRank(result)
 
+                window.location.replace(`${URL}/score`)
+
+                // get score ->  get sorted result -> redirect /score - show rank
+                // map(item=> idx, player <td> item.score, etc)
             }
+
             const getRank = () => {
 
                 fetch(`${URL}/rank`)
@@ -658,7 +666,7 @@ export default class {
                 obj.orangeGhost = document.querySelector("div.orange");
                 obj.pinkGhost = document.querySelector("div.pink");
                 obj.cyanGhost = document.querySelector("div.cyan");
-                props.score = document.querySelector("div.addScore");
+                props.score = document.querySelector("div.score-container");
 
                 intro.play();
                 createBoard();
@@ -714,10 +722,12 @@ export default class {
                 <a>Рестарт </a>
                 <a>Меню</a>
             </div>
-            <div class='addScore' style='display:none'>
+            <div class="score-container">
+            <div class='addScore' >
                 <label> Введи имя:  </label>
                 <input type='text'/>
                 <input type='submit' value='Сохранить'/>
+            </div>
             </div>
             <div class="history-container">
                 <img  src="" alt="">
