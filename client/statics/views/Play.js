@@ -64,6 +64,7 @@ export default class {
                 KeyS: false,
                 restart: false,
                 death: false,
+                x : 0,
             };
 
             let rafId = 0;
@@ -176,7 +177,6 @@ export default class {
             };
 
 
-
             document.addEventListener("keyup", (e) => {
                 if (e.code in keys) {
                     keys[e.code] = false;
@@ -238,6 +238,7 @@ export default class {
                     audio.pause()
                 }
                 audio = new Audio(`./statics/assets/${type}${1}.aac`);
+                console.log(audio, 'audio')
                 audio.play()
             };
 
@@ -286,6 +287,7 @@ export default class {
                     // unitsMT.pacman.pause = true;
 
                     if (e.code === "KeyN" || e.code === "KeyP" || e.code === "Space") {
+                       
                         if (e.code === "KeyP" && textPos > 0) {
                             textPos--;
                             //get audio, play, if next || prev pause current, play next
@@ -302,6 +304,7 @@ export default class {
                             audio = new Audio(`./statics/assets/${prefix}${textPos + 1}.aac`);
                             audio.play()
                         }
+                        console.log(e.code, textPos, prefix)
                         //hide faq
                         if (textPos === 1) {
                             props.modal.children[3].children[2].style.display = "none";
@@ -322,44 +325,39 @@ export default class {
 
                         if (e.code == "Space" || textPos == lastPos) {
                             //skip case, after scene
+                           
                             if (prefix === "win" || prefix === "lose") {
                                 // case : win || lose -> show menu, else -> prologue -> hidden all
-                                // props.modal.style.display = "block";
-                                // props.modal.children[1].style.display = "flex";
-                                // props.modal.children[3].style.display = "none";
-                                // props.modal.children[1].children[0].style.display = "none";
-
+                                props.modal.children[1].children[0].style.display = "none";
                                 props.score.style.display = "block";
                                 props.modal.children[3].style.display = 'none'
 
-                                unitsMT.pacman.pause = true
-
-                                props.inPlay = false
                                 clearInterval(interval);
-                                console.log(props.sceneType, 1)
 
                                 props.score.children[0].children[2].onclick = () => {
                                     console.log('save player func')
                                     savePlayerResult()
-                                    props.modal.children[3].style.display = "none";
                                     // history-container - hide
                                 }
                             } else {
                                 props.modal.style.display = "none";
                             }
+                            props.skip = true
+                            unitsMT.pacman.pause = true
                             props.sceneType = "";
                             text = [];
                             textPos = 0;
                             // unitsMT.pacman.pause = false;
-                            props.skip = true
+                            // props.skip = true
                             audio.pause()
                         }
                     }
                 }
 
                 //move pacman
-                if (!props.mainMenu && props.skip) {
-                    console.log(unitsMT.pacman.pause)
+                if (!props.mainMenu && props.skip ) {
+                    unitsMT.pacman.pause = false
+                    console.log(unitsMT.pacman.pause, 'pause state in game')
                     if (
                         e.code === "KeyA" ||
                         e.code === "KeyD" ||
@@ -467,11 +465,9 @@ export default class {
                 console.log(user, 'send value')
                     // let result = await response.json();
                 props.score.style.display = "none";
+                props.modal.children[1].style.display = "flex";
 
-                window.location.replace(`${URL}/score`)
-
-                // get score ->  get sorted result -> redirect /score - show rank
-                // map(item=> idx, player <td> item.score, etc)
+                window.location.replace(`${URL}/scoreboard`)
             }
 
             const getRank = () => {
@@ -505,6 +501,8 @@ export default class {
                 } else if (props.sceneType === "win" || props.sceneType === "lose") {
                     // show only text, then show menu hide text
                     props.modal.children[3].children[2].style.display = "none";
+                    window.cancelAnimationFrame(props.rafId)
+                    unitsMT.pacman.pause=true
                     showFirst(props.sceneType);
                 }
                 //onclick menu  //restart btn
@@ -597,6 +595,10 @@ export default class {
 
             const createBoard = () => {
                 //create each block -> get data from mapGame array
+                //   let l = window.matchMedia("(max-width: 700px)")
+                //   if(l.matches) {
+                //     x = 13
+                //   }
                 mapGame.forEach((el, idx) => {
                     createBlock(el);
                 });

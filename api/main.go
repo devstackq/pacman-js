@@ -17,18 +17,21 @@ type Score struct {
 	Score int    `json:"score"`
 	Time  string `json:"time"`
 }
+type Signal struct {
+	Text string `json:"signa"`
+}
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	tmpl, err := template.ParseFiles("../client//index.html")
+	tmpl := template.Must(template.ParseFiles("../client/index.html"))
 	tmpl.Execute(w, nil)
-	if err != nil {
-		log.Println(err)
-	}
+	// w.Write(data)
+
 	//open json file, then only change data
 }
 func main() {
 	mux := http.NewServeMux()
 	//file server
+
 	mux.Handle("/statics/", http.StripPrefix("/statics/", http.FileServer(http.Dir("../client/statics/"))))
 	log.Println("Listening port:", 6969)
 	mux.HandleFunc("/", Index)
@@ -49,26 +52,13 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 	}
 	defer jsonFile.Close()
 
-	// jsonResp, _ := json.Marshal(byteValue)
-	ranks := []Score{}
-	err = json.Unmarshal(byteValue, &ranks)
-	if err != nil {
-		log.Println(err)
-	}
-
 	switch r.Method {
 
 	case "GET":
+		fmt.Println("get query in backend")
 		w.WriteHeader(200)
 		w.Header().Set("Content-Type", "application/json")
-		// w.Write(byteValue)
-		js, err := json.Marshal(ranks)
-		if err != nil {
-			http.Error(w, err.Error(), http.StatusInternalServerError)
-			return
-		}
-		w.Write(js)
-
+		w.Write(byteValue)
 	case "POST":
 		score := Score{}
 		b, err := ioutil.ReadAll(r.Body)
@@ -81,6 +71,12 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 		}
 		fmt.Println(score, "request data")
+		//get data from json
+		ranks := []Score{}
+		err = json.Unmarshal(byteValue, &ranks)
+		if err != nil {
+			log.Println(err)
+		}
 
 		ranks = append(ranks, score)
 
@@ -111,6 +107,3 @@ func getDataJson() {
 func saveDataJson() {
 
 }
-
-//todo: win || lose - pause
-//lose -> bug - fix

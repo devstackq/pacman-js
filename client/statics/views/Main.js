@@ -18,7 +18,7 @@ export default class {
             <img src='./statics/assets/pachead.png' />
             <div class='links'>
                 <a href='/play'>Начать игру</a>
-                <a href='/score'>Скала предков</a>
+                <a href='/scoreboard'>Скала предков</a>
                 <a href='/option'>Настройки</a>
                 <a href='/about'>Об игре</a>
         </div>

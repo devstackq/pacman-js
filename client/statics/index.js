@@ -23,8 +23,8 @@ const navigateTo = url => {
 const router = async() => {
     const routes = [
         { path: "/", view: Main },
+        { path: "/scoreboard", view: Scoreboard },
         { path: "/play", view: Play },
-        { path: "/score", view: Scoreboard },
     ];
 
     // Test each route for potential match
