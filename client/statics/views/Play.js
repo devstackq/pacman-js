@@ -452,7 +452,7 @@ export default class {
 
                 user.name = props.score.children[0].children[1].value
                 user.score = unitsMT.pacman.score
-                user.time = `${props.time.min} ${props.time.sec}`
+                user.time = `${props.time.min}:${props.time.sec}`
 
                 //let response = await
                 await fetch(`${URL}/score`, {

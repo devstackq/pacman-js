@@ -6,6 +6,7 @@ export default class {
         document.title = title;
     }
     init() {
+        let scoreBoard = []
 
         console.log('sort and show score')
         fetch(`http://localhost:6969/score`)
@@ -13,11 +14,51 @@ export default class {
                 return response.json();
             })
             .then((data) => {
-                generateDynamicTable(data, data.length)
+                generateDynamicTable(data, 5)
                 console.log(data, 'res')
+                scoreBoard = data
             });
 
             //create dynamic html table -> then append data
+
+//def value obj
+let typeSort = {
+    size:5 ,
+    numPage: 1,
+  };
+  //pagination next, prev func
+  const getNextPage = (arr, typeSort) => {
+    console.log(typeSort, "pagination func");
+  
+    let boundHeroes = [];
+    let t = arr.length / typeSort.size;
+    let last = 0;
+  
+    if (typeSort.numPage == Math.floor(t) + 1) {
+      let diff = typeSort.numPage * typeSort.size - arr.length;
+      last = typeSort.size;
+      typeSort.size = typeSort.size - diff;
+    }
+  
+    let start = 0;
+    let end = 0;
+    //for last values in pagination
+    if (typeSort.numPage == Math.floor(t) + 1) {
+      start = typeSort.numPage * last - last;
+      end = last * (typeSort.numPage - 1) + last;
+    } else {
+      start = typeSort.numPage * typeSort.size - typeSort.size;
+      end = typeSort.size * typeSort.numPage - 1;
+    }
+  
+    arr.forEach((el, idx) => {
+      if (idx >= start && idx <= end) {
+        boundHeroes.push(el);
+      }
+    });
+  
+    generateDynamicTable(boundHeroes, typeSort.size);
+  };
 
 
 const generateDynamicTable = (data, size) => {
@@ -63,14 +104,12 @@ const generateDynamicTable = (data, size) => {
 
     // ADD COLUMN HEADER TO ROW OF TABLE HEAD.
     // size  < capacity, capacity 10/20/50/100
-    console.log(size)
-    size = Math.floor(size)
     for (let i = 0; i < size; i++) {
       let bRow = document.createElement("tr"); // CREATE ROW FOR EACH RECORD .
       for (let j = 0; j < tHeaderValue.length; j++) {
         let td = document.createElement("td");
         if ([tHeaderValue[j]] == "rank") {
-          td.textContent = data[i].rank;
+          td.textContent = i+1;
         }
         if (tHeaderValue[j] == "name") {
           td.textContent = data[i].name;
@@ -93,14 +132,25 @@ const generateDynamicTable = (data, size) => {
   }
 };
             //escape case -> main menu || restart redirec -> /play
-            //rank assign new value back or client
             // todo pagination
             //check bugs
+
+            
+let btnPrev = document.createElement("button");
+btnPrev.className = "btn_prev";
+btnPrev.id = "prev";
+btnPrev.textContent = 1;
+
+let btnNext = document.createElement("button");
+btnNext.className = "btn_next";
+btnNext.id = "next";
+btnNext.textContent = Math.floor(typeSort.countPage);
 }
 
     async getHtml() {
         let wrapper = `
         <div id='score'>
+
         </div>
         `
         return wrapper;

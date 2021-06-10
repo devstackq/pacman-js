@@ -17,15 +17,10 @@ type Score struct {
 	Score int    `json:"score"`
 	Time  string `json:"time"`
 }
-type Signal struct {
-	Text string `json:"signa"`
-}
 
 func Index(w http.ResponseWriter, r *http.Request) {
 	tmpl := template.Must(template.ParseFiles("../client/index.html"))
 	tmpl.Execute(w, nil)
-	// w.Write(data)
-
 	//open json file, then only change data
 }
 func main() {
@@ -80,8 +75,6 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 
 		ranks = append(ranks, score)
 
-		//loop ranks, compare, then json file - delete, again write data
-		fmt.Println(ranks, "json")
 		//sort
 		sort.SliceStable(ranks, func(i, j int) bool {
 			return ranks[i].Score > ranks[j].Score
@@ -89,10 +82,8 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 
 		for i, v := range ranks {
 			v.Rank = i
-			fmt.Println(i, "rank idx", v.Rank)
 		}
-
-		fmt.Println(ranks, "after sort")
+		// fmt.Println(ranks, "after sort")
 
 		//save new data in json
 		jsonString, _ := json.Marshal(ranks)
