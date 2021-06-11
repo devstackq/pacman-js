@@ -13,7 +13,6 @@ export default class {
     async getHtml() {
         let wrapper = `
         <div class="mainPage">
-      
             <img src='./statics/assets/logo.png' />
             <img src='./statics/assets/pachead.png' />
             <div class='links'>

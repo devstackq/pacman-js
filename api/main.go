@@ -9,13 +9,15 @@ import (
 	"net/http"
 	"os"
 	"sort"
+	"strconv"
 )
 
 type Score struct {
-	Name  string `json:"name"`
-	Rank  int    `json:"rank"`
-	Score int    `json:"score"`
-	Time  string `json:"time"`
+	Name        string `json:"name"`
+	Rank        int    `json:"rank"`
+	Score       int    `json:"score"`
+	Time        string `json:"time"`
+	RankPercent string `json:"rankPercent"`
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
@@ -26,13 +28,14 @@ func Index(w http.ResponseWriter, r *http.Request) {
 func main() {
 	mux := http.NewServeMux()
 	//file server
-
 	mux.Handle("/statics/", http.StripPrefix("/statics/", http.FileServer(http.Dir("../client/statics/"))))
 	log.Println("Listening port:", 6969)
 	mux.HandleFunc("/", Index)
 	mux.HandleFunc("/score", CalculateRank)
 	log.Println(http.ListenAndServe(":6969", mux))
 }
+
+var rank int
 
 func CalculateRank(w http.ResponseWriter, r *http.Request) {
 
@@ -50,22 +53,21 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
 	case "GET":
-		fmt.Println("get query in backend")
 		w.WriteHeader(200)
 		w.Header().Set("Content-Type", "application/json")
 		w.Write(byteValue)
 	case "POST":
-		score := Score{}
+		last := Score{}
 		b, err := ioutil.ReadAll(r.Body)
 		if err != nil {
 			log.Println(err)
 		}
 		//get data -> from request
-		err = json.Unmarshal(b, &score)
+		err = json.Unmarshal(b, &last)
 		if err != nil {
 			log.Println(err)
 		}
-		fmt.Println(score, "request data")
+		fmt.Println(last, "request data")
 		//get data from json
 		ranks := []Score{}
 		err = json.Unmarshal(byteValue, &ranks)
@@ -73,28 +75,25 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 			log.Println(err)
 		}
 
-		ranks = append(ranks, score)
-
+		ranks = append(ranks, last)
 		//sort
 		sort.SliceStable(ranks, func(i, j int) bool {
-			return ranks[i].Score > ranks[j].Score
+			return ranks[i].Score > ranks[j].Score || (ranks[i].Score == ranks[j].Score && ranks[i].Time < ranks[j].Time)
 		})
-
+		// fmt.Println(len(ranks))
 		for i, v := range ranks {
-			v.Rank = i
-		}
-		// fmt.Println(ranks, "after sort")
+			if last.Name == v.Name && last.Score == v.Score {
+				temp := len(ranks)
+				percent := float32(i+1) / (float32(temp) / float32(100))
+				r := strconv.Itoa(int(percent))
 
+				ranks[i].RankPercent = r + " " + last.Name
+			}
+			ranks[i].Rank = i + 1
+		}
+		// fmt.Println(ranks)
 		//save new data in json
 		jsonString, _ := json.Marshal(ranks)
 		ioutil.WriteFile("scoreboard.json", jsonString, os.ModePerm)
-
 	}
-}
-
-func getDataJson() {
-
-}
-func saveDataJson() {
-
 }

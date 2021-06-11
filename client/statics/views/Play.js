@@ -64,7 +64,7 @@ export default class {
                 KeyS: false,
                 restart: false,
                 death: false,
-                x : 0,
+                x: 0,
             };
 
             let rafId = 0;
@@ -202,19 +202,7 @@ export default class {
                     props.modal.children[1].style.display = "none";
                     props.modal.children[3].style.display = "none";
                     props.modal.children[2].style.display = "none";
-                    // props.modal.children[4].style.display = "block";
-                    // let links = document.getElementsByClassName("links")[0];
-                    // //if start game,
-                    // links.children[0].addEventListener("click", function() {
 
-                    //     // props.modal.children[4].style.display = "none";
-                    //     props.modal.children[3].style.display = "flex";
-                    //     //each start -> restore data
-                    //     props.mainMenu = false;
-                    //     restart();
-                    //     props.sceneType = "prologue";
-                    //     showFirst(props.sceneType);
-                    // });
                     props.modal.children[3].style.display = "flex";
                     props.mainMenu = false;
                     restart();
@@ -238,7 +226,7 @@ export default class {
                     audio.pause()
                 }
                 audio = new Audio(`./statics/assets/${type}${1}.aac`);
-                console.log(audio, 'audio')
+                // console.log(audio, 'audio')
                 audio.play()
             };
 
@@ -252,11 +240,6 @@ export default class {
                 if (e.code in keys) {
                     keys[e.code] = true;
                 }
-                //props.sceneType === ""
-                // if (!props.mainMenu && props.skip) {
-                //     unitsMT.pacman.pause = false;
-                // }
-
                 // /(e.key == "n" || e.key == "p" || e.key === " ")
                 if (props.sceneType == "lose" || props.sceneType == 'win' || props.sceneType == 'prologue') {
                     props.skip = false
@@ -284,10 +267,9 @@ export default class {
                     props.modal.children[3].style.display = "flex";
                     lastPos = text.length;
                     //first image & text
-                    // unitsMT.pacman.pause = true;
 
                     if (e.code === "KeyN" || e.code === "KeyP" || e.code === "Space") {
-                       
+
                         if (e.code === "KeyP" && textPos > 0) {
                             textPos--;
                             //get audio, play, if next || prev pause current, play next
@@ -304,7 +286,6 @@ export default class {
                             audio = new Audio(`./statics/assets/${prefix}${textPos + 1}.aac`);
                             audio.play()
                         }
-                        console.log(e.code, textPos, prefix)
                         //hide faq
                         if (textPos === 1) {
                             props.modal.children[3].children[2].style.display = "none";
@@ -325,7 +306,6 @@ export default class {
 
                         if (e.code == "Space" || textPos == lastPos) {
                             //skip case, after scene
-                           
                             if (prefix === "win" || prefix === "lose") {
                                 // case : win || lose -> show menu, else -> prologue -> hidden all
                                 props.modal.children[1].children[0].style.display = "none";
@@ -335,9 +315,7 @@ export default class {
                                 clearInterval(interval);
 
                                 props.score.children[0].children[2].onclick = () => {
-                                    console.log('save player func')
                                     savePlayerResult()
-                                    // history-container - hide
                                 }
                             } else {
                                 props.modal.style.display = "none";
@@ -347,17 +325,15 @@ export default class {
                             props.sceneType = "";
                             text = [];
                             textPos = 0;
-                            // unitsMT.pacman.pause = false;
-                            // props.skip = true
                             audio.pause()
                         }
                     }
                 }
 
                 //move pacman
-                if (!props.mainMenu && props.skip ) {
+                if (!props.mainMenu && props.skip) {
                     unitsMT.pacman.pause = false
-                    console.log(unitsMT.pacman.pause, 'pause state in game')
+                        // console.log(unitsMT.pacman.pause, 'pause state in game')
                     if (
                         e.code === "KeyA" ||
                         e.code === "KeyD" ||
@@ -420,7 +396,6 @@ export default class {
                 unitsMT.pacman.life = 5;
                 unitsMT.pacman.countCoin = 0;
                 unitsMT.pacman.score = 0;
-
                 // obj.pacman.style.transform = `translate(${unitsMT.pacman.posX}px, ${unitsMT.pacman.posY}px)`;
                 //show notify
                 props.modal.children[3].children[2].style.display = "block";
@@ -462,23 +437,13 @@ export default class {
                     },
                     body: JSON.stringify(user)
                 });
-                console.log(user, 'send value')
-                    // let result = await response.json();
+                // let result = await response.json();
+
                 props.score.style.display = "none";
                 props.modal.children[1].style.display = "flex";
-
+                // export const Name = user.name
+                window.localStorage.setItem('name', user.name)
                 window.location.replace(`${URL}/scoreboard`)
-            }
-
-            const getRank = () => {
-
-                fetch(`${URL}/rank`)
-                    .then((response) => {
-                        return response.json();
-                    })
-                    .then((data) => {
-                        showRank(data)
-                    });
             }
 
             const endGame = () => {
@@ -502,7 +467,7 @@ export default class {
                     // show only text, then show menu hide text
                     props.modal.children[3].children[2].style.display = "none";
                     window.cancelAnimationFrame(props.rafId)
-                    unitsMT.pacman.pause=true
+                    unitsMT.pacman.pause = true
                     showFirst(props.sceneType);
                 }
                 //onclick menu  //restart btn
@@ -551,7 +516,6 @@ export default class {
                             keys.restart = e.data.pacman.restart;
 
                         };
-                        // console.log(unitsMT.pacman.posX)
                         //if changed pacman index, eqaul 4 || 0, add score, change - currentPos = 0, -> currPos = 9
                         if (mapGame[unitsMT.pacman.indexMap] !== 1) {
                             if (
@@ -567,7 +531,7 @@ export default class {
                             obj.pacman_mouth.style.transform = unitsMT.pacman.transX;
                         }
                         if (unitsMT.pacman.life > 0) {
-                            if (unitsMT.pacman.countCoin === 4) {
+                            if (unitsMT.pacman.countCoin === 244) {
                                 props.sceneType = "win";
                                 endGame();
                             }
@@ -595,6 +559,7 @@ export default class {
 
             const createBoard = () => {
                 //create each block -> get data from mapGame array
+
                 //   let l = window.matchMedia("(max-width: 700px)")
                 //   if(l.matches) {
                 //     x = 13
@@ -728,7 +693,7 @@ export default class {
             <div class='addScore' >
                 <label> Введи имя:  </label>
                 <input type='text'/>
-                <input type='submit' value='Сохранить'/>
+                <input type='submit' value='готово!'/>
             </div>
             </div>
             <div class="history-container">
