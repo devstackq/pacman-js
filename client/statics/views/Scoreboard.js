@@ -35,12 +35,15 @@ export default class {
             const showStats = () => {
                 let name = window.localStorage.getItem('name')
                 let f = scoreBoard.filter((i) => i.rankPercent.split(" ")[1] === name)[0]
+                if (f!= undefined) {
                 f.rankPercent = f.rankPercent.split(" ")[0]
                 let msg = `Congrats ${f.name}, you are in the top ${f.rankPercent}%, in the ${f.rank} position.`
                 let span = document.createElement('span')
                 span.className = 'textPercent'
                 span.textContent = msg
                 document.getElementById('score').appendChild(span)
+            }
+
             }
 
             let typeSort = {
