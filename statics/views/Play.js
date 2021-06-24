@@ -10,7 +10,8 @@ export default class {
 
     init() {
 
-        const URL = 'http://localhost:6969'
+        const URL = 'https://pacmanx.netlify.app/'
+        
 
         if (window.location.pathname === "/play") {
 
@@ -478,7 +479,7 @@ export default class {
                 };
                 //main menu, goTo mainMenu
                 props.modal.children[1].children[2].onclick = (e) => {
-                    window.location.href = `http://localhost:6969/`
+                    window.location.href = `${URL}/`
                     props.mainMenu = true;
                     showHide();
                     //show menu, another hide

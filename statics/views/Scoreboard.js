@@ -6,9 +6,10 @@ export default class {
         document.title = title;
     }
     init() {
-            let scoreBoard = []
+     const URL = 'https://pacmanx.netlify.app/'
+        let scoreBoard = []
 
-            fetch(`http://localhost:6969/score`)
+            fetch(`${URL}/score`)
                 .then((response) => {
                     return response.json();
                 })
@@ -27,7 +28,7 @@ export default class {
 
                     menu.children[0].onclick = (e) => {
                         menu.style.display = 'none'
-                        window.location.href = `http://localhost:6969/`
+                        window.location.href = `${URL}/`
                     }
                 }
             })
