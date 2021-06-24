@@ -21,14 +21,14 @@ type Score struct {
 }
 
 func Index(w http.ResponseWriter, r *http.Request) {
-	tmpl := template.Must(template.ParseFiles("../client/index.html"))
+	tmpl := template.Must(template.ParseFiles("./index.html"))
 	tmpl.Execute(w, nil)
 	//open json file, then only change data
 }
 func main() {
 	mux := http.NewServeMux()
 	//file server
-	mux.Handle("/statics/", http.StripPrefix("/statics/", http.FileServer(http.Dir("../client/statics/"))))
+	mux.Handle("/statics/", http.StripPrefix("/statics/", http.FileServer(http.Dir("./statics/"))))
 	log.Println("Listening port:", 6969)
 	mux.HandleFunc("/", Index)
 	mux.HandleFunc("/score", CalculateRank)
