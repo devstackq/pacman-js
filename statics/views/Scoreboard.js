@@ -6,7 +6,7 @@ export default class {
         document.title = title;
     }
     init() {
-     const URL = 'https://pacmanx.netlify.app/'
+     const URL = 'https://pacmanx.netlify.app'
         let scoreBoard = []
 
             fetch(`${URL}/score`)

@@ -10,9 +10,9 @@ export default class {
 
     init() {
 
-        const URL = 'https://pacmanx.netlify.app/'
+        const URL = 'https://pacmanx.netlify.app'
+        console.log(window.location.pathname)
         
-
         if (window.location.pathname === "/play") {
 
             const mapGame = [
