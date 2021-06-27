@@ -53,14 +53,9 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 	switch r.Method {
 
 	case "GET":
-
-		r.Header.Add("Accept-Charset", "UTF-8;q=1, ISO-8859-1;q=0")
+		r.Header.Add("Accept-Charset", "UTF-8")
 		w.WriteHeader(200)
-		js, err := json.Marshal(byteValue)
-		if err != nil {
-			http.Error(w, string(js), 400)
-			return
-		}
+
 		if origin := r.Header.Get("Origin"); origin != "" {
 			w.Header().Set("Access-Control-Allow-Origin", origin)
 		}
@@ -68,7 +63,8 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 		w.Header().Set("Access-Control-Allow-Headers", "Content-Type, Content-Length, Accept-Encoding, X-CSRF-Token")
 		w.Header().Set("Access-Control-Allow-Credentials", "true")
 		w.Header().Set("Content-Type", "application/json")
-
+		// w.Header().Set("Content-Type", "text/html")
+		w.Write(byteValue)
 	case "POST":
 		last := Score{}
 		b, err := ioutil.ReadAll(r.Body)
