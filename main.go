@@ -32,7 +32,7 @@ func main() {
 	log.Println("Run server..")
 	mux.HandleFunc("/", Index)
 	mux.HandleFunc("/score", CalculateRank)
-	log.Println(http.ListenAndServe(":8888", mux))
+	log.Println(http.ListenAndServe(":6969", mux))
 }
 
 var rank int
