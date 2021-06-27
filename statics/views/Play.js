@@ -9,10 +9,7 @@ export default class {
     }
 
     init() {
-
-        // const URL = 'https://pacmanx.netlify.app'
-        const URL = 'http:localhost:6969'
-        console.log(window.location.pathname)
+        const URL = 'https://pacmanx.netlify.app'
         
         if (window.location.pathname === "/play") {
 
