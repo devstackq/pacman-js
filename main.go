@@ -91,7 +91,7 @@ func CalculateRank(w http.ResponseWriter, r *http.Request) {
 			}
 			ranks[i].Rank = i + 1
 		}
-		// fmt.Println(ranks)
+		fmt.Println(ranks)
 		//save new data in json
 		jsonString, _ := json.Marshal(ranks)
 		ioutil.WriteFile("scoreboard.json", jsonString, os.ModePerm)
