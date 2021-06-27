@@ -29,10 +29,10 @@ func main() {
 	mux := http.NewServeMux()
 	//file server
 	mux.Handle("/statics/", http.StripPrefix("/statics/", http.FileServer(http.Dir("./statics/"))))
-	log.Println("Listening port:", 6969)
+	log.Println("Run server..")
 	mux.HandleFunc("/", Index)
 	mux.HandleFunc("/score", CalculateRank)
-	log.Println(http.ListenAndServe(":6969", mux))
+	log.Println(http.ListenAndServe(":8888", mux))
 }
 
 var rank int
